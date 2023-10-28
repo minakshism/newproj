@@ -1,0 +1,76 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog resizable="true" draggable="true" title="GPU Search/Create for {sys_model_no}" class="sapUiSizeCompact" titleAlignment="Start">
+		<content>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<Label labelFor="GPUSelect" text="Select Options"/>
+				<RadioButtonGroup columns="3" width="90%" select="onRBSelect">
+					<RadioButton text="Search" visible="{LocalDataModel>/bshowhideSearch}"/>
+					<RadioButton text="Create New GPU" enabled="{oUserModel>/is_trinityadmin}"/>
+				</RadioButtonGroup>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{LocalDataModel>/visible}">
+				<Table id="idGpuList" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" noDataText="No Matching Partner Found" busyIndicatorDelay="0"
+					fixedLayout="false"
+					items="{ path: '/ProductGpu', parameters :{ $$operationMode : 'Server',$orderby : 'gpu_model_no asc', $count : true} ,templateShareable: true }"
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridLarge" growingThreshold="100" growing="true" growingScrollToLoad="true"
+					mode="SingleSelectMaster" selectionChange=".gpuSelect(${$parameters>/listItem})" visible="{LocalDataModel>/visible}">
+					<headerToolbar>
+						<Toolbar>
+							<SearchField id="idCPUSearch" liveChange=".onSearchGPU"/>
+							<ToolbarSpacer/>
+							<Button id="gpuPopup" icon="sap-icon://action-settings" press="onPersoButtonPressed">
+								<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow"/>
+								</layoutData>
+							</Button>
+						</Toolbar>
+					</headerToolbar>
+					<ColumnListItem>
+						<cells>
+							<Text text="{path:'gpu_model_no', targetType : 'any'}"/>
+							<Text text="{path:'gpu_model_description', targetType : 'any'}"/>
+							<Text text="{path:'gpu_model_no_current', targetType : 'any'}"/>
+							<Text text="{path:'gpu_model_no2', targetType : 'any'}"/>
+							<Text text="{path:'gpu_architecture', targetType : 'any'}"/>
+							<!--<Text text="{gpu_architecture_group}"/>-->
+							<Text text="{path:'gpu_gf_segment', targetType : 'any'}"/>
+							<Text text="{path:'gpu_gf_sub_segment', targetType : 'any'}"/>
+							<Text text="{path:'gpu_class', targetType : 'any'}"/>
+						</cells>
+					</ColumnListItem>
+					<columns>
+						<Column id="idGpuModelNo">
+							<Text text="GPU Model Number"/>
+						</Column>
+						<Column id="idGpuModelDesc">
+							<Text text="GPU Model Description"/>
+						</Column>
+						<Column id="idGpuCurModNo">
+							<Text text="GPU Current Model No."/>
+						</Column>
+						<Column id="idModelNo2">
+							<Text text="GPU Model No. 2"/>
+						</Column>
+						<!--<Column>-->
+						<!--	<Text text="GPU Architecture Group"/>-->
+						<!--</Column>-->
+						<Column id="idGpuGfSubSeg">
+							<Text text="GPU GF Sub Segment"/>
+						</Column>
+						<Column id="idGpuClass">
+							<Text text="GPU Class"/>
+						</Column>
+					</columns>
+				</Table>
+			</VBox>
+			<VBox visible="{= ${LocalDataModel>/visible} === true ? false : true }">
+				<core:Fragment fragmentName="nv.productMaster.view.fragments.GPU_create" type="XML"/>
+			</VBox>
+		</content>
+		<buttons>
+			<Button text="Save" press=".confirmGPU" type="Accept" visible="{= ${LocalDataModel>/visible} === true ? false : true }"/>
+			<!--<Button id="rejectCreatePartner" text="Cancel" press=".onRejectPartnerDialog" type="Reject" visible="{= ${LocalDataModel>/visible} === true ? false : true }"/>-->
+			<Button text="Close" press="onCloseGPU"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,227 @@
+<mvc:View controllerName="nv.productMaster.controller.Home" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:layout="sap.ui.layout" xmlns:semantic="sap.m.semantic" class="sapUiSizeCompact"
+	height="100%">
+	<f:DynamicPage id="page" fitContent="true" headerExpanded="true" xmlns:plugins="sap.m.plugins" toggleHeaderOnTitleClick="true"
+		class="sapUiNoContentPadding" backgroundDesign="List">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="ProductMasterHeader" text="Product Master Data" textAlign="Center"/>
+				</f:heading>
+				<f:navigationActions>
+					<Link text="Logout" press="onPressLogout"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed"
+						showRestoreButton="true" showClearButton="true">
+						<fb:filterGroupItems>
+							<!--	<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="Search" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="25%"></SearchField>
+								</fb:control>
+							</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="System Model No" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput width="25%" tokenChange="onSearch" liveChange="onChangeSystem" class="sapUiSmallMarginBottom" id="idProductSysModelNo"
+										showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/ProductSystems'}">
+										<core:Item key="{sys_model_no}" text="{sys_model_no}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="GPU Model No" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput width="25%" tokenChange="onSearch" liveChange="onChangeGpu" class="sapUiSmallMarginBottom" id="idProductGPU"
+										showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/ProductGpu'}">
+										<core:Item key="{gpu_model_no}" text="{gpu_model_no}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="CPU Model No" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput width="25%" tokenChange="onSearch" liveChange="onChangeCpu" class="sapUiSmallMarginBottom" id="idProductCPU"
+										showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/ProductCpu'}">
+										<core:Item key="{cpu_model_no}" text="{cpu_model_no}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="E" label="Platform" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<ComboBox width="25%" change="onSearch" class="sapUiSmallMarginBottom" id="idProductPlatform"
+										items="{ path: '/ProductPlatform', length: 400 }">
+										<core:Item key="{id}" text="{description}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="G" label="Created On" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="cdate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="H" label="Changed On" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="chdate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="I" label="Completion Status" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="idStatField" change="onSearch">
+										<items>
+											<core:Item text="All" key=""/>
+											<core:Item text="Done" key="true"/>
+											<core:Item text="Not Done" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem name="J" label="Assign To" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">-->
+							<!--	<fb:control>-->
+							<!--		<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeAssignTo" class="sapUiSmallMarginBottom" id="idKnownas"-->
+							<!--			showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/PartnerSalesrep'}">-->
+							<!--			<core:Item key="{empid}" text="{knownas}"/>-->
+							<!--		</MultiInput>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem name="K" label="System Manufacturer" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">
+								<fb:control>
+									<ComboBox width="100%" change="onSearch" class="sapUiSmallMarginBottom" id="idmanufact" items="{ path: '/ProductManufacturer', length:400}">
+										<core:Item key="{id}" text="{name}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="L" label="GPU Manufacturer" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">
+								<fb:control>
+									<ComboBox width="100%" change="onSearch" class="sapUiSmallMarginBottom" id="idgpumanufc" items="{ path: '/ProductManufacturer', length:400}">
+										<core:Item key="{id}" text="{name}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--	<fb:FilterGroupItem name="M" label="GPU Memory Size" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">-->
+							<!--	<fb:control>-->
+							<!--		<ComboBox width="100%" change="onSearch"  class="sapUiSmallMarginBottom" id="idGPUMemorySize"-->
+							<!--			items="{ path: '/MemorySize', length: 400}">-->
+							<!--			<core:Item key="{id}" text="{description}"/>-->
+							<!--		</ComboBox>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem name="N" label="System Type" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">
+								<fb:control>
+									<ComboBox width="100%" change="onSearch" class="sapUiSmallMarginBottom" id="idSysType" items="{ path: '/SysType', length: 400}">
+										<core:Item key="{id}" text="{description}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="O" label="System Competitor" visibleInFilterBar="true" groupName="__$INTERNAL$" partOfCurrentVariant="true">
+								<fb:control>
+									<!--<Input id="idSysComp" value="" change="onSearch"/>-->
+									<Select id="idSysComp" change="onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+									<!--<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeSysType" class="sapUiSmallMarginBottom" id="idSysComp"-->
+									<!--	showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/SysType'}">-->
+									<!--	<core:Item key="{id}" text="{description}"/>-->
+									<!--</MultiInput>-->
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="masterList" class="sapFDynamicPageAlignContent" width="auto" mode="SingleSelectMaster" sticky="ColumnHeaders,HeaderToolbar"
+				showSeparators="All" showUnread="true"
+				items="{ path: '/ProductSystems', parameters:{ $$operationMode : 'Server', $count : true, $orderby :'created_on desc,sys_model_no desc'}}"
+				selectionChange=".navToDetailOf(${$parameters>/listItem})" growing="true" growingThreshold="100" growingScrollToLoad="true">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="ProductTitle" text="{$count} Products"/>
+						</content>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+						<Button id="idrefresh" text="Reset Filter" type="Accept" press="onPressClear"/>
+						<!--<Button id="idGpuBtn" press="OnGpuMdelPress" text="New GPU" type="Emphasized"/>-->
+						<!--<Button id="idCpuBtn" press="OnCpuMdelPress" text="New CPU" type="Emphasized"/>-->
+						<MenuButton type="Emphasized" text="Menu" icon="sap-icon://account" enabled="{editViewModel>/editing}">
+							<menu>
+								<Menu>
+									<MenuItem text="Edit/Create GPU" press="OnGpuMdelEditPress"/>
+									<MenuItem text="Edit/Create CPU" press="OnCpuMdelEditPress"/>
+									<MenuItem text="New Sys. Model No" press="newProduct" enabled="{oUserModel>/is_trinityadmin}"/>
+								</Menu>
+							</menu>
+						</MenuButton>
+						<!--<MenuButton type="Emphasized" text="New CPU" icon="sap-icon://account" enabled="{editViewModel>/editing}">-->
+						<!--	<menu>-->
+						<!--		<Menu>-->
+						<!--			<MenuItem text="Create CPU"  press="OnCpuMdelEditPress"/>-->
+						<!--			<MenuItem text="Edit CPU"  press="OnCpuMdelEditPress"/>-->
+						<!--		</Menu>-->
+						<!--	</menu>-->
+						<!--</MenuButton>-->
+						<!--<Button id="idBtnNew" press=".newProduct" text="New Sys. Model No" type="Emphasized"/>-->
+					</OverflowToolbar>
+				</headerToolbar>
+				<dependents>
+					<plugins:ColumnResizer/>
+				</dependents>
+				<columns>
+					<Column id="sysModelNum" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="SYS Model Number"/>
+					</Column>
+					<Column id="manufct" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="System Manufacturer"/>
+					</Column>
+					<Column id="gpuModelNum" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="GPU Model Number"/>
+					</Column>
+					<Column id="cpuModelNum" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="CPU Model Number"/>
+					</Column>
+					<Column id="platform" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Platform"/>
+					</Column>
+					<Column id="sysComptr" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="SYS Competitor"/>
+					</Column>
+					<Column id="sysType" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="SYS Type"/>
+					</Column>
+					<Column id="gpuMemorySize" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="GPU Memory Size"/>
+					</Column>
+					<Column id="crtdOn" hAlign="End">
+						<Text text="Created On"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".navToDetailOf(${$parameters>/listItem})">
+						<cells>
+							<ObjectIdentifier title="{sys_model_no}"/>
+							<Text text="{sys_manufacturer/name}"/>
+							<Text text="{gpu/gpu_model_no}"/>
+							<Text text="{cpu/cpu_model_no}"/>
+							<Text text="{sys_platform/description}"/>
+							<Text text="{sys_competitor}"/>
+							<Text text="{sys_type/description}"/>
+							<Text text="{gpu_memory_size/description}"/>
+							<Text text="{path:'created_on', formatter:'.fnFormatDate'}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,138 @@
+procedure "INVENTORY_PROCESSING_PARTNER"( in reporting_partner_id nvarchar(10)  )
+   language sqlscript
+   sql security definer
+   --DEFAULT SCHEMA <default_schema_name>
+    as
+  
+   lt_inventory    			pos_inventory;
+   lv_product_guid      	NVARCHAR(36);
+  
+begin
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+ 
+ declare cursor cursorStage for select  * from  pos_inventory_staging where processing_status = 'NEW' and reporterid = reporting_partner_id ;
+ 
+ for cursorRow as cursorStage
+   do
+   
+ 
+     
+     lv_product_guid = '';
+     CALL PRODUCT_AUTO_MAP(
+			REPORTING_PARTNER_ID => cursorRow.reporterid,
+			REPORTED_PRODUCT_ID => cursorRow.PRODUCTNUMBER,
+			REPORTED_PRODUCT_DESCRIPTION => cursorRow.PRODUCTDESCRIPTION,
+			MAPPING_ID => lv_product_guid
+);
+     
+     
+     
+   :lt_inventory.(
+				   	transaction_id,
+					filename,
+					create_datetime,
+					session_id,
+					inventory_date,
+					product_number,
+					product_description,
+					current_cost,
+					average_cost,
+					customer_backlog,
+					po_backlog,
+					disti_product_no,
+					manu_product_no,
+					serial_number,
+					store_number,
+					reporting_partner_id,
+					currency_local_id,
+					product_mapping_id,
+					quantity_onhand,
+					active_flag,
+					changed_by
+
+   )
+                   .insert(
+                   (
+                   		cursorRow.transactionid,
+						cursorRow.filename,
+						cursorRow.zymecreatedatetime,
+						cursorRow.sessionid,
+						cursorRow.inventorydate,
+						cursorRow.productnumber,
+						cursorRow.productdescription,
+						cursorRow.currentcost,
+						cursorRow.averagecost,
+						cursorRow.customerbacklog,
+						cursorRow.pobacklog,
+						cursorRow.distributorproductnumber,
+						cursorRow.manufacturerproductnumber,
+						cursorRow.serialnumber,
+						cursorRow.storenumber,
+						cursorRow.reporterid,
+						cursorRow.currencyofsale,
+						lv_product_guid,
+						cursorRow.quantityonhand,
+						true,
+     	            	upper( session_context('APPLICATIONUSER'))
+                    ));
+  
+ end for;
+ 
+ if is_empty(:lt_inventory) then
+    return;
+ else
+    upsert  pos_inventory
+    (
+    				transaction_id,
+					filename,
+					create_datetime,
+					session_id,
+					inventory_date,
+					product_number,
+					product_description,
+					current_cost,
+					average_cost,
+					customer_backlog,
+					po_backlog,
+					disti_product_no,
+					manu_product_no,
+					serial_number,
+					store_number,
+					reporting_partner_id,
+					currency_local_id,
+					product_mapping_id,
+					quantity_onhand,
+					active_flag,
+					changed_by	
+    )
+    select 
+    				transaction_id,
+					filename,
+					create_datetime,
+					session_id,
+					inventory_date,
+					product_number,
+					product_description,
+					current_cost,
+					average_cost,
+					customer_backlog,
+					po_backlog,
+					disti_product_no,
+					manu_product_no,
+					serial_number,
+					store_number,
+					reporting_partner_id,
+					currency_local_id,
+					product_mapping_id,
+					quantity_onhand,
+					active_flag,
+					changed_by
+    	
+     from  :lt_inventory ; 
+    update pos_inventory_staging set processing_status = 'COMPLETE' where  processing_status = 'NEW' and reporterid = reporting_partner_id ;
+ end if;
+ 
+   
+end

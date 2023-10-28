@@ -1,0 +1,215 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:layout="sap.ui.layout" xmlns:plugins="sap.m.plugins" xmlns:semantic="sap.m.semantic" controllerName="productmapping.controller.Master"
+	class="sapUiSizeCompact">
+	<f:DynamicPage id="page" fitContent="true" headerExpanded="true" toggleHeaderOnTitleClick="true" class="sapUiNoContentPadding"
+		backgroundDesign="List">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="productmappingManagementHeader" text="Product Mapping Management"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar class="clFilterBar" id="filterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel"
+						filtersDialogClosed="onFiltersDialogClosed" showRestoreButton="true" showClearButton="true">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="Search" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch"></SearchField>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="Z" label="RP ID / Name" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeRpId" class="sapUiSmallMarginBottom" id="idReporter"
+										showSuggestion="true" showValueHelp="false"
+										suggestionItems="{ path: '/PartnerMaster', filters:[{path : 'rp_flag', operator : 'EQ', value1 : true }]}">
+										<core:Item key="{id}" text="{id} - {name}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="Reported Product Type" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="rp" forceSelection="false" change="onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Unbundled" key="Unbundled"/>
+											<core:Item text="Bundled" key="Bundled"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="On Hold Flag" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="ec" forceSelection="false" change="onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="N" label="Mapped Records" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="mappedrecords" forceSelection="false" change="onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="Yes"/>
+											<core:Item text="No" key="No"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="W" label="RP Country" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<ComboBox id="country" change="onSearch"
+										items="{ path: '/Country', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'country_name', templateShareable: true }}">
+										<core:Item key="{id}" text="{country_name}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="X" label="RP Region" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<ComboBox change="onSearch" id="region"
+										items="{ path: '/Region', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+										<core:Item key="{id}" text="{description}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="Y" label="RP Sub-Region" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<ComboBox change="onSearch" id="subregion"
+										items="{ path: '/SubRegion', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+										<core:Item key="{id}" text="{description}"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="E" label="Created On" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="crdate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="F" label="Changed On" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="cddate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="masterList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" mode="MultiSelect"
+				sticky="ColumnHeaders,HeaderToolbar" showSeparators="All" showUnread="true"
+				items="{ path: '/ProductMappingHeader', parameters :{ $$operationMode : 'Server', $orderby : 'reported_product_id desc' , $count : true} ,templateShareable: true }"
+				select="onItemSelect">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="productmappingTitle" text="{$count} Product Mapping"/>
+						</content>
+						<ToolbarSpacer/>
+						<!--<HBox>-->
+						<!--	<SearchField id="searchField" liveChange=".onSearch" />-->
+						<!--	<Button class="sapUiSmallMarginBegin" id="idBtnresetButton" press=".newproductmapping" text="New Mapping" type="Emphasized"/>-->
+						<!--</HBox>-->
+						<MenuButton type="Emphasized" text="Assign To" icon="sap-icon://account" enabled="{editViewModel>/editing}">
+							<menu>
+								<Menu itemSelected="onSelectUser">
+									<MenuItem text="Self" id="self"/>
+									<MenuItem text="Unassign" id="unassign"/>
+									<MenuItem text="Others" visible="{LocalDataModel>/bvisible}" id="others"/>
+								</Menu>
+							</menu>
+						</MenuButton>
+						<Button id="idrefresh" text="Reset Filter" type="Accept" press="onPressClear"/>
+						<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+					</OverflowToolbar>
+				</headerToolbar>
+				<dependents>
+					<plugins:ColumnResizer/>
+				</dependents>
+				<columns>
+					<Column id="partId" minScreenWidth="Tablet" demandPopin="true" width="7rem">
+						<Text text="RP ID"/>
+					</Column>
+					<Column id="partnerNameId" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="RP Name"/>
+					</Column>
+					<Column id="RPid" minScreenWidth="Tablet" demandPopin="true" width="14rem">
+						<Text text="Reported Product Number"/>
+					</Column>
+					<Column id="RPdes" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="Reported Product Description"/>
+					</Column>
+					<Column id="RPtype" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="Reported Product Type"/>
+					</Column>
+					<Column id="AstoEmp" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="Assigned To"/>
+					</Column>
+					<Column id="crtOn" minScreenWidth="Tablet" demandPopin="true" visible="false" width="10rem">
+						<Text text="Created On"/>
+					</Column>
+					<Column id="crtBy" minScreenWidth="Tablet" demandPopin="true" visible="false" width="10rem">
+						<Text text="Created By"/>
+					</Column>
+					<Column id="chnOn" minScreenWidth="Tablet" demandPopin="true" visible="false" width="10rem">
+						<Text text="Changed On"/>
+					</Column>
+					<Column id="chnBy" minScreenWidth="Tablet" demandPopin="true" visible="false" width="10rem">
+						<Text text="Changed By"/>
+					</Column>
+					<Column id="idcountry" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="RP Country"/>
+					</Column>
+					<Column id="idregion" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="RP Region"/>
+					</Column>
+					<Column id="idsubreg" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="RP Sub Region"/>
+					</Column>
+					<Column id="commenttype" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="Comment Type"/>
+					</Column>
+					<!--<Column id="sysmodel" minScreenWidth="Tablet" demandPopin="true" width="10rem">-->
+					<!--	<Text text="System Model ID"/>-->
+					<!--</Column>-->
+					<Column id="onHldFlg" minScreenWidth="Tablet" demandPopin="true" width="10rem">
+						<Text text="On Hold Flag"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".navToDetailOf">
+						<cells>
+							<Text text="{partner_id}"/>
+							<Text text="{partner/name}"/>
+							<Text text="{reported_product_id}"/>
+							<Text text="{reported_product_description}"/>
+							<Text text="{reported_product_type}"/>
+							<Text text="{assigned_to/knownas}"/>
+							<Text text="{created_on}"/>
+							<Text text="{created_by}"/>
+							<Text text="{changed_on}"/>
+							<Text text="{changed_by}"/>
+							<Text text="{partner/country/country_name}"/>
+							<Text text="{partner/country/region/id} - {partner/country/region/description}"/>
+							<Text text="{partner/country/sub_region/description}"/>
+							<Text text="{comment_type}"/>
+							<!--<Text text="{Mapping_Items/sys_model/sys_model_no}"/>-->
+							<Switch state="{ path: 'on_hold' }" customTextOn="Active" customTextOff="off" enabled="On"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

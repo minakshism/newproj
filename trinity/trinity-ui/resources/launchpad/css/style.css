@@ -1,0 +1,45 @@
+.sapUiBody {
+	background :url("../images/nvidiaBg.png")!important ;
+    background-repeat: no-repeat!important;
+    background-size : cover!important;
+    background-attachment: fixed;
+}
+
+.sapMITBContent {
+	background-color : transparent!important;
+}
+
+.sapTntToolHeader.sapMTB {
+	background : #32363a !important;
+}
+
+.sapMITBSelected .sapMITBContentArrow::after {
+	background : #76B900!important;
+}
+
+.sapMITBTextOnly .sapMITBFilterDefault.sapMITBSelected .sapMITBText {
+	color : #76B900!important;
+	text-decoration: none!important;
+	outline : none!important;
+}
+
+.sapTntToolHeader .sapFAvatar {
+    background-color: #76b900 !important;
+}
+
+.sapFAvatarS {
+	width : 2rem !important;
+	height : 2rem !important;
+}
+
+.sapMLnk:active:not(.sapMLnkDsbl), .sapMLnk:focus:not(.sapMLnkDsbl), .clgreen {
+	 color: #76b900!important;
+	 outline : none!important;
+}
+.sapMITB.sapUiResponsiveContentPadding > .sapMITBContainerContent > .sapMITBContent {
+	border : transparent;
+}
+html.sap-desktop .sapMLnk:hover:not(.sapMLnkDsbl) {
+    text-decoration: none!important;
+    outline : none!important;
+}

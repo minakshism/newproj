@@ -1,0 +1,46 @@
+{
+	"welcomeFile": "index.html",
+	"authenticationMethod": "route",
+	"sessionTimeout": 60,
+	"routes": [{
+		"source": "/trinity/api/(.*)",
+		"destination": "srv_dest",
+		"csrfProtection": false,
+		"authenticationType": "xsuaa",
+		"cacheControl": "no-cache",
+		"scope": {
+			"GET": ["$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"],
+			"POST": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"PUT": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"DELETE": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"default": "$XSAPPNAME.trinityuser"
+		}
+	}, {
+		"source": "/(.*)",
+		"localDir": "resources",
+		"authenticationType": "xsuaa",
+		"scope": {
+			"GET": ["$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"],
+			"POST": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"PUT": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"DELETE": [
+				"$XSAPPNAME.trinityadmin", "$XSAPPNAME.trinityuser"
+			],
+			"default": "$XSAPPNAME.trinityuser"
+		}
+	}],
+	"logout": {
+		"logoutEndpoint": "/my/logout",
+		"logoutPage": "/launchpad/index.html"
+	}
+}

@@ -1,0 +1,10 @@
+<mvc:View controllerName="nv.Transaction.controller.Home" xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.f" xmlns="sap.m" xmlns:sap.ui.unified="sap.ui.unified" displayBlock="true" height="100%">
+	<f:FlexibleColumnLayout id="flexibleColumnLayout">
+		<f:beginColumnPages>
+			<!-- will be added by the Router -->
+		</f:beginColumnPages >
+		<f:midColumnPages>
+			<!-- will be added by the Router -->
+		</f:midColumnPages>
+	</f:FlexibleColumnLayout>
+</mvc:View>

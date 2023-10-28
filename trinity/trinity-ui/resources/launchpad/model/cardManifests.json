@@ -1,0 +1,391 @@
+{
+	"rpstatColumn": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "partner.stats",
+			"type": "card"
+		},
+		"sap.card": {
+			"type": "Analytical",
+
+			"header": {
+				"title": "Reporting Partners Details",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/partner/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"chartType": "StackedColumn",
+				"legend": {
+					"visible": true,
+					"position": "Bottom",
+					"alignment": "Left"
+				},
+				"plotArea": {
+					"dataLabel": {
+						"visible": false,
+						"showTotal": false
+					},
+					"colorPalette": ["#73B400"],
+					"categoryAxisText": {
+						"visible": false
+					},
+					"valueAxisText": {
+						"visible": false
+					}
+				},
+				"title": {
+					"visible": false
+				},
+				"measureAxis": "valueAxis",
+				"dimensionAxis": "categoryAxis",
+				"data": {
+					"request": {
+						"url": "/trinity/api/RPstat"
+					},
+
+					"path": "/value"
+				},
+				"dimensions": [{
+					"label": "Reporting Partner",
+					"value": "{category}"
+				}],
+				"measures": [{
+					"label": "Active",
+					"value": "{active_records}"
+				}, {
+					"label": "In Active",
+					"value": "{inactive_records}"
+				}]
+			}
+		}
+	},
+	"PartnerMappingAssign": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "partnerMapping.assign",
+			"type": "card"
+		},
+		"sap.card": {
+			"type": "Analytical",
+
+			"header": {
+				"title": "EC Mapping Assignment",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/ecAliasing/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"chartType": "StackedColumn",
+				"legend": {
+					"visible": true,
+					"position": "Bottom",
+					"alignment": "Left"
+				},
+				"plotArea": {
+					"dataLabel": {
+						"visible": false,
+						"showTotal": false
+					},
+					"colorPalette": ["#73B400"],
+					"categoryAxisText": {
+						"visible": false
+					},
+					"valueAxisText": {
+						"visible": false
+					}
+				},
+				"title": {
+					"visible": false
+				},
+				"measureAxis": "valueAxis",
+				"dimensionAxis": "categoryAxis",
+				"data": {
+					"request": {
+						"url": "/trinity/api/PartnerMappingAssign"
+					},
+					"updateInterval": 150,
+					"path": "/value"
+				},
+				"dimensions": [{
+					"label": "Assigned To",
+					"value": "{category}"
+				}],
+				"measures": [{
+					"label": "NALA",
+					"value": "{nala}"
+				}, {
+					"label": "APAC",
+					"value": "{apac}"
+				}, {
+					"label": "EMEA",
+					"value": "{emea}"
+				}]
+			}
+		}
+	},
+	"rpstatTable": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "partner.statsTable",
+			"type": "card"
+
+		},
+		"sap.card": {
+			"type": "Table",
+			"data": {
+				"request": {
+					"url": "/trinity/api/RPstat"
+				},
+
+				"path": "/value"
+			},
+			"header": {
+				"title": "Reporting Partners",
+				"subTitle": "Summary",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/partner/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"row": {
+					"columns": [{
+						"title": "Category",
+						"value": "{category}"
+					}, {
+						"title": "Active",
+						"value": "{active_records}"
+					}, {
+						"title": "Inactive",
+						"value": "{inactive_records}"
+					}, {
+						"title": "Total",
+						"value": "{total}"
+					}]
+				}
+			}
+		}
+	},
+	"PartnerMapping": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "partner.mapping",
+			"type": "card"
+
+		},
+		"sap.card": {
+			"type": "Table",
+			"data": {
+				"request": {
+					"url": "/trinity/api/PartnerMappingSummary"
+				},
+				"updateInterval": 100,
+				"path": "/value"
+			},
+			"header": {
+				"title": "End Customer Mapping",
+				"subTitle": "Summary",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/ecAliasing/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"row": {
+					"columns": [{
+						"title": "Category",
+						"value": "{category}"
+					}, {
+						"title": "Total Unmapped",
+						"value": "{new}"
+					}, {
+						"title": "On Hold",
+						"value": "{on_hold}"
+					}]
+				}
+			}
+		}
+	},
+	"ProductMapping": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "product.mapping",
+			"type": "card"
+
+		},
+		"sap.card": {
+			"type": "Table",
+			"data": {
+				"request": {
+					"url": "/trinity/api/ProductMappingSummary?$orderby=category desc"
+				},
+
+				"path": "/value"
+			},
+			"header": {
+				"title": "System Model Mapping",
+				"subTitle": "Summary",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/productmapping/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"row": {
+					"columns": [{
+						"title": "Category",
+						"value": "{category}"
+					}, {
+						"title": "New Mapping",
+						"value": "{new}"
+					}, {
+						"title": "On Hold",
+						"value": "{on_hold}"
+					}]
+				}
+			}
+		}
+	},
+	"RPREGION": {
+
+		"sap.app": {
+			"id": "rpregion",
+			"type": "card"
+		},
+		"sap.card": {
+			"type": "Analytical",
+			"header": {
+				"title": "Reporting Partners By Region",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/partner/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"chartType": "StackedColumn",
+				"legend": {
+					"visible": false,
+					"position": "Bottom",
+					"alignment": "Left"
+				},
+				"plotArea": {
+					"dataLabel": {
+						"visible": false,
+						"showTotal": false
+					},
+
+					"categoryAxisText": {
+						"visible": false
+					},
+					"valueAxisText": {
+						"visible": true
+					}
+				},
+				"title": {
+					"visible": false
+				},
+				"measureAxis": "valueAxis",
+				"dimensionAxis": "categoryAxis",
+				"data": {
+					"request": {
+						"url": "/trinity/api/RPRegion?$filter=count%20gt%200&$orderby=count desc"
+					},
+
+					"path": "/value"
+				},
+				"dimensions": [{
+					"label": "Reporting Partner",
+					"value": "{id}"
+				}],
+				"measures": [{
+					"label": "Partner Count",
+					"value": "{count}"
+				}]
+			}
+		}
+	},
+	"ProductSegmentCount": {
+		"_version": "1.14.0",
+		"sap.app": {
+			"id": "ProductSegmentCount",
+			"type": "card"
+		},
+		"sap.card": {
+			"type": "Analytical",
+			"header": {
+				"title": "Product- System Models",
+				"actions": [{
+					"type": "Navigation",
+					"parameters": {
+						"url": "/productmaster/index.html"
+					}
+				}]
+
+			},
+			"content": {
+				"chartType": "StackedColumn",
+				"legend": {
+					"visible": false,
+					"position": "Bottom",
+					"alignment": "Left"
+				},
+				"plotArea": {
+					"dataLabel": {
+						"visible": false,
+						"showTotal": false
+					},
+					"colorPalette": ["#73B400"],
+					"categoryAxisText": {
+						"visible": false
+					},
+					"valueAxisText": {
+						"visible": true
+					}
+				},
+				"title": {
+					"visible": false
+				},
+				"measureAxis": "valueAxis",
+				"dimensionAxis": "categoryAxis",
+				"data": {
+					"request": {
+						"url": "/trinity/api/ProductPlatformCount?$orderby=count desc"
+					},
+
+					"path": "/value"
+				},
+				"dimensions": [{
+					"label": "Product Segment",
+					"value": "{segment}"
+				}],
+				"measures": [{
+					"label": "Count",
+					"value": "{count}"
+				}]
+			}
+		}
+	},
+	"country": "./countrycard/manifest.json"
+
+}

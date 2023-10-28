@@ -1,0 +1,105 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:layout="sap.ui.layout" xmlns:semantic="sap.m.semantic" controllerName="country.controller.Master" class="sapUiSizeCompact">
+	<f:DynamicPage id="page" fitContent="true" headerExpanded="true" toggleHeaderOnTitleClick="true" class="sapUiNoContentPadding"
+		backgroundDesign="List">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="CountryHeader" text="Country Management"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed"
+						showRestoreButton="true" showClearButton="true">
+						<fb:filterItems>
+							<fb:FilterItem name="C" label="Search" visibleInFilterBar="true">
+								<fb:control>
+									<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="40%"></SearchField>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="D" label="Region" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput class="sapUiSmallMarginBottom" id="region" width="100%" showValueHelp="false" suggestionItems="{ path: '/Region' }">
+										<core:Item key="{id}" text="{id} -{description}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="E" label="Territory" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput class="sapUiSmallMarginBottom" id="territory" width="100%" showValueHelp="false" suggestionItems="{ path: '/Territory' }">
+										<core:Item key="{id}" text="{description}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="F" label="Sub Region" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput class="sapUiSmallMarginBottom" id="subregion" width="100%" showValueHelp="false" suggestionItems="{ path: '/SubRegion' }">
+										<core:Item key="{id}" text="{description}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="G" label="Market Economy" visibleInFilterBar="true">
+								<fb:control>
+									<MultiInput class="sapUiSmallMarginBottom" id="marketeconomy" width="100%" showValueHelp="false"
+										suggestionItems="{ path: '/MarketEconomy' }">
+										<core:Item key="{id}" text="{description}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="masterList" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto"
+				mode="SingleSelectMaster" sticky="ColumnHeaders,HeaderToolbar"
+				items="{ path: '/Country', parameters :{ $$operationMode : 'Server', $orderby : 'country_name asc' , $count : true} ,templateShareable: true }"
+				selectionChange=".navToDetailOf(${$parameters>/listItem})">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="CountryTitle" text="{$count} Countries"/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Country ID"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Region"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Sub Region"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Country Grouping"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Territory"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Market Economy"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".navToDetailOf(${$parameters>/listItem})">
+						<cells>
+							<StandardListItem icon="{ path: 'id', formatter: '.formatter.getFlag' }" iconDensityAware="false" iconInset="false" title="{country_name}"
+								description="{id}"/>
+							<Text text="{region/description} ({region/id})"/>
+							<Text text="{sub_region/description} ( {sub_region/id} )"/>
+							<Text text="{country_grouping/description}"/>
+							<Text text="{territory/description}"/>
+							<Text text="{market_economy/description}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,43 @@
+{
+	"sap.app": {
+		"id": "launchpad",
+		"applicationVersion": {
+			"version": "1.0.0"
+		}
+	},
+	"sap.ui5": {
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"rootView": {
+			"viewName": "launchpad.CardsLayout",
+			"type": "XML",
+			"async": true
+		},
+		"dependencies": {
+			"libs": {
+				"sap.ui.core": {},
+				"sap.ui.layout": {},
+				"sap.ui.integration": {},
+				"sap.f": {},
+				"sap.m": {}
+			}
+		},
+		"config": {
+			"sample": {
+				"files": [
+					"CardsLayout.view.xml",
+					"CardsLayout.controller.js",
+					"model/cardManifests.json",
+					"componentCard/Component.js",
+					"componentCard/manifest.json",
+					"componentCard/View.view.xml",
+					"componentCard/ComponentCard.controller.js",
+					"manifest.json"
+				]
+			}
+		}
+	}
+}

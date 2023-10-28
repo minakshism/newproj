@@ -1,0 +1,152 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	class="sapUiSizeCompact" displayBlock="true" xmlns:form="sap.ui.layout.form" controllerName="country.controller.Detail" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="{id} - {country_name} "/>
+				</expandedHeading>
+				<navigationActions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://sys-back-2" press="handleClose" tooltip="Close column"/>
+				</navigationActions>
+				<actions>
+					<m:ToggleButton text="Edit" type="Emphasized" pressed="{detailViewModel>/editing}" visible="{= !${detailViewModel>/editing}}"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<m:Label text="Country Name" design="Bold"/>
+									<m:Input value="{ path: 'country_name', type: 'sap.ui.model.odata.type.String', constraints: { nullable: false, maxLength: 256 } }"
+										placeholder="Country Name.." editable="{detailViewModel>/editing}"/>
+									<m:Label text="Country ISO" design="Bold"/>
+									<m:Input value="{ path: 'country_iso', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 3 } }"
+										editable="{detailViewModel>/editing}" placeholder="ISO Code.."/>
+									<m:Label text="Country Grouping" design="Bold"/>
+									<m:ComboBox id="countrygrouping" selectedKey="{country_grouping_id}" placeholder="Select Grouping..." required="true"
+										items="{ path: '/Grouping', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' }}"
+										editable="{detailViewModel>/editing}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="Territory" design="Bold"/>
+									<m:ComboBox id="territory" selectedKey="{territory_id}" placeholder="Select Territory..." required="true"
+										items="{ path: '/Territory', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' }}"
+										editable="{detailViewModel>/editing}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="Sub Region" design="Bold"/>
+									<m:ComboBox id="subregion" selectedKey="{sub_region_id}" placeholder="Select Sub Region..." required="true"
+										items="{ path: '/SubRegion', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' }}"
+										editable="{detailViewModel>/editing}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="Region" design="Bold"/>
+									<m:ComboBox id="region" selectedKey="{region_id}" placeholder="Select Region..." required="true"
+										items="{ path: '/Region', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' }}"
+										editable="{detailViewModel>/editing}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="Market Economy" design="Bold"/>
+									<m:ComboBox id="marketeconomy" selectedKey="{market_economy_id}" placeholder="Select Market Economy..." required="true"
+										items="{ path: '/MarketEconomy', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' }}"
+										editable="{detailViewModel>/editing}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Country VAT Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="vatList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto"
+								sticky="ColumnHeaders,HeaderToolbar"
+								items="{ path: 'vat', parameters :{ $$operationMode : 'Server' , $count : true} ,templateShareable: true }">
+								<m:headerToolbar>
+									<m:OverflowToolbar id="otbVatSubheader">
+										<m:Button id="addvatButton" icon="sap-icon://add" type="Transparent" press=".onVatAdd" visible="{detailViewModel>/editing}"/>
+										<!--	<m:Button id="deleteButton" icon="sap-icon://delete" type="Transparent" press=".onDelete" visible="{detailViewModel>/editing}"/>-->
+									</m:OverflowToolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true" width="12em">
+										<m:Text text="Standard VAT Rate"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Reduced VAT Rate"/>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem >
+										<m:cells>
+											<m:Input value="{ path: 'std_vat_rate', type: 'sap.ui.model.odata.type.decimal', constraints: { nullable: true, maxLength: 20 } }"
+												editable="{detailViewModel>/editing}" placeholder="Standard Vat%"/>
+											<m:Input value="{ path: 'reduced_vat_rate', type: 'sap.ui.model.odata.type.decimal', constraints: { nullable: true, maxLength: 20 } }"
+												editable="{detailViewModel>/editing}" placeholder="Reduced Vat%"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="States" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="stateList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto"
+								sticky="ColumnHeaders,HeaderToolbar"
+								items="{ path: 'state', parameters :{ $$operationMode : 'Server', $orderby : 'description asc' , $count : true} ,templateShareable: true }">
+								<m:headerToolbar>
+									<m:OverflowToolbar id="otbSubheader">
+										<m:Button id="addButton" icon="sap-icon://add" type="Transparent" press=".onAdd" visible="{detailViewModel>/editing}"/>
+										<!--	<m:Button id="deleteButton" icon="sap-icon://delete" type="Transparent" press=".onDelete" visible="{detailViewModel>/editing}"/>-->
+									</m:OverflowToolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true" width="12em">
+										<m:Text text="State ID"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="State Name"/>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem >
+										<m:cells>
+											<m:Input value="{ path: 'id', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 10 } }"
+												editable="{detailViewModel>/editing}" placeholder="State Unique iso:code:3166."/>
+											<m:Input value="{ path: 'description', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 255 } }"
+												editable="{detailViewModel>/editing}" placeholder="State Name.."/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar asyncMode="true">
+				<m:ToolbarSpacer/>
+				<m:Button id="submitBtn" text="Submit" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

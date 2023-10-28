@@ -1,0 +1,102 @@
+procedure "PRODUCT_AUTO_MAP"( in reporting_partner_id nvarchar(10), 
+                              in reported_product_id nvarchar(256),
+                              in reported_product_description NVARCHAR(1000),
+                             out mapping_id nvarchar(36)  )
+   language sqlscript
+   sql security definer
+   --default schema <default_schema_name>
+    as
+    query_string    			nvarchar(5500)	:= ''	;
+    lv_found        			integer     	:= 0	; 
+    lv_reporting_partner_id 	nvarchar(10); 
+    lv_reported_product_id			nvarchar(256);
+    lv_reported_product_description	nvarchar(1000);
+    lv_item_id nvarchar(36);
+     
+begin
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+    /* Trim leading and trailing spaces */
+   lv_reporting_partner_id			= rtrim(ltrim(ifnull(reporting_partner_id,' '), ' '), ' ');
+   lv_reported_product_id 			= rtrim(ltrim(ifnull(reported_product_id,' '), ' '), ' ');
+   lv_reported_product_description		= rtrim(ltrim(ifnull(reported_product_description, ' ' ), ' '), ' ');
+  
+   
+   /* query_string = lv_reported_name || ' ' ||  lv_reported_address_first 
+                 || ' ' || lv_reported_address_second  || ' ' || lv_reported_city   || ' ' || lv_reported_state 
+                 || ' ' || lv_reported_postal_code  || ' ' ||  lv_reported_country_id  ;
+                 
+                 
+    if ltrim(query_string, ' ') = '' then
+     return ;
+    end if;*/
+    
+   /* Look for Exact Match */
+     map_data = select id from PRODUCT_MAPPING_HEADER 
+					where      PARTNER_ID		= lv_REPORTING_PARTNER_ID
+						and    reported_product_id 			= lv_reported_product_id;
+						
+						
+     /* If exact match not, found search for fuzzy match with threshold 1 */
+     if is_empty(:map_data) then 
+   map_data = select id from PRODUCT_MAPPING_HEADER 
+					where contains 	 ( PARTNER_ID , lv_REPORTING_PARTNER_ID, FUZZY(1, 'similarCalculationMode=substringsearch,emptyMatchesNull=true'))
+						and   contains ( reported_product_id , lv_reported_product_id , FUZZY(1, 'similarCalculationMode=substringsearch,emptyMatchesNull=true'))
+						order by score() desc;
+									
+   
+    end if; 
+  if is_empty(:map_data) then 
+  /* If exact match not found, search for fuzzy match with threshold 0.9 */
+   map_data = select id from PRODUCT_MAPPING_HEADER 
+					where contains 	 ( PARTNER_ID , lv_REPORTING_PARTNER_ID, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyMatchesNull=true'))
+						and   contains ( reported_product_id , lv_reported_product_id , FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyMatchesNull=true'))
+						order by score() desc;
+  
+     
+  
+  end if;
+   /* If no record found insert a new mapping record */
+  if is_empty(:map_data) then 
+     mapping_id = replace_regexpr('(.{8})(.{4})(.{4})(.{4})(.*)' in newuid() with '\1-\2-\3-\4-\5') ;
+     lv_item_id = replace_regexpr('(.{8})(.{4})(.{4})(.{4})(.*)' in newuid() with '\1-\2-\3-\4-\5') ;
+     insert into PRODUCT_MAPPING_HEADER  ( id, 
+                                partner_id , 
+     	                        reported_product_id,
+     	                        reported_product_description,
+     	                        created_by,
+     	                        created_on,
+     	                        changed_by,
+     	                        changed_on
+     	                        )
+     	                values
+     	                        (  mapping_id ,
+     	                        lv_reporting_partner_id , 
+     	                        lv_reported_product_id,
+     	                        lv_reported_product_description,
+     	                        upper( session_context('APPLICATIONUSER')),
+     	                        current_timestamp,
+     	                        upper( session_context('APPLICATIONUSER')),
+     	                        current_timestamp
+     	                        );
+     	                        
+     	insert into  product_Mapping_Items(
+					     		id,
+					     		header_id,
+					     		quantity
+     								)  
+     						values
+     	                        ( lv_item_id,
+     	                         mapping_id ,
+     	                        1
+     	                        );
+     	    commit;
+     	
+     	
+     	
+     else
+     	   select id into mapping_id from :map_data limit 1;
+     end if;
+  
+end

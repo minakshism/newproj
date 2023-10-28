@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog id="selectDialog" title="Countries" items="{/Country}" search=".onValueHelpDialogCountrySearch"
+		confirm=".onValueHelpDialogCountryClose" cancel=".onValueHelpDialogCountrygClose">
+		<StandardListItem icon="{ path: 'id', formatter: '.formatter.getFlag' }" iconDensityAware="false" iconInset="false" title="{country_name}"
+			description="{id}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

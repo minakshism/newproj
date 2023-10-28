@@ -1,0 +1,128 @@
+VIEW PARTNER_MAPPING_SUMMARY as
+
+select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     g.REGION_ID as  "CATEGORY", 
+     case 
+       when LTRIM( IFNULL( M.END_CUSTOMER_ID,''), '') = ''  then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PARTNER_EC_MAPPING" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.REPORTING_PARTNER_ID = P.ID 
+     left outer join geo_country as g on p.country_id = g.id
+     
+	 )  where category is not null GROUP BY  "CATEGORY" 
+	 
+	 
+union 
+select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     'Consumer EC' as  "CATEGORY", 
+     case 
+       when  LTRIM( IFNULL( M.END_CUSTOMER_ID,''), '') = '' then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PARTNER_EC_MAPPING" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.REPORTING_PARTNER_ID = P.ID 
+     where  p.IS_consumer = true
+     
+	 )  GROUP BY  "CATEGORY" 
+	
+
+   
+   union
+   select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+   select
+     'Enterprise EC' as  "CATEGORY", 
+     case 
+       when  LTRIM( IFNULL( M.END_CUSTOMER_ID,''), '') = '' then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PARTNER_EC_MAPPING" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.REPORTING_PARTNER_ID = P.ID 
+      where  p.is_npn = true 
+     
+)  GROUP BY  "CATEGORY" 
+	
+
+      
+     union
+     select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+     select
+     'Consumer EC Persons' as  "CATEGORY", 
+     case 
+       when LTRIM( IFNULL( M.END_CUSTOMER_ID,''), '') = '' then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PARTNER_EC_MAPPING" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.REPORTING_PARTNER_ID = P.ID 
+     
+     where  p.is_consumer = true and m.is_person = true
+     
+		 )  GROUP BY  "CATEGORY" 
+	
+
+   
+   union
+   select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+   select
+     'Enterprise EC Persons' as  "CATEGORY", 
+     case 
+       when  LTRIM( IFNULL( M.END_CUSTOMER_ID,''), '') = '' then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PARTNER_EC_MAPPING" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.REPORTING_PARTNER_ID = P.ID 
+     
+      where p.is_npn = true and m.is_person = true
+     
+	
+	
+)
+      
+      GROUP BY  "CATEGORY" 
+      
+     
+      
+      
+      ;

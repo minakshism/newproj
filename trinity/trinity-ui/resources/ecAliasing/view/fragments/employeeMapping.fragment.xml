@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<SelectDialog class="clHideClear"  noDataText="No Employee Details Found" title="Select Employee ID" 
+	liveChange="onFuzzySearchEmployee"
+	confirm="handleClose"
+	cancel="handleClose" showClearButton="true" items="{ path : '/PartnerSalesrep' }">
+		<StandardListItem title="{empid}" description="{knownas}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

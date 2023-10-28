@@ -1,0 +1,35 @@
+{
+  "role": {
+    "name": "pos_admin_role#",
+    "object_privileges": [
+      {
+        "name": "CVD_PARTNER_MASTER",
+        "type": "VIEW",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "CVD_COUNTRY_MASTER",
+        "type": "VIEW",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "CVD_PARTNER_MAPPING",
+        "type": "VIEW",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "CVD_PRODUCT_MAPPING",
+        "type": "VIEW",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      }
+    ]
+  }
+}

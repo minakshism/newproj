@@ -1,0 +1,38 @@
+VIEW CUTLASS_PRODUCT_SEARCH (in QUERY NVARCHAR(5000) ) as
+
+SELECT 
+   SCORE() as "MATCH_SCORE",
+	p."ID",
+	"PRODUCT_NO",
+	"HWLONGGPUNAME",
+	"VENDOR",
+	"MEMORY_TYPE",
+	"MEMORY_SIZE",
+	"INTERFACE",
+	"BASE_CLOCK",
+	"BOOST_CLOCK",
+	p."CREATE_DT",
+	p."UPDATE_DT",
+	p."BRAND" AS "SYS_BRAND",
+	"LEVEL",
+	"COOLING",
+	"EDITION",
+	"ETAILER_ID",
+	"DESCRIPTION",
+	"DETAIL_URL",
+	p."USER_ID",
+	"BRAND_GROUP",
+	"ITX",
+	"LOW_PROFILE",
+	"SINGLE_SLOT",
+	"GPU_MAP_ID",
+	g.PRODUCTCODE,
+	g.PLATFORM,
+	G.BRAND AS "GPU_BRAND"
+FROM CUTLASS_PRODUCT as p left outer join CUTLASS_GPU_MAP as g on p.gpu_map_id = g.id
+
+where contains 
+   ( (	"PRODUCT_NO",
+		"HWLONGGPUNAME",
+		"VENDOR",
+		 DESCRIPTION ) ,:QUERY, FUZZY( 0.8, 'similarCalculationMode=symmetricsearch' )) ORDER BY SCORE() DESC;

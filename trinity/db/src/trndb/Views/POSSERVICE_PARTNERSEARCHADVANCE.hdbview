@@ -1,0 +1,42 @@
+
+VIEW POSSERVICE_PARTNERSEARCHADVANCE (in REPORTING_PARTNER_ID NVARCHAR(10) ,
+	                                  in PARTNER_NAME	NVARCHAR(256) , 
+                                      in ADDRESS_FIRST	NVARCHAR(256),
+                                      in ADDRESS_SECOND NVARCHAR(256),
+                                      in CITY			NVARCHAR(256),
+                                      in ZIP_CODE		NVARCHAR(256),
+                                      in STATE			NVARCHAR(256),
+                                      in COUNTRY_ID 	NVARCHAR(256),
+                                      in IS_PERSON       NVARCHAR(10),
+                                      in ACCURACY		DECIMAL(2,1)) as
+(
+	
+
+
+
+SELECT 
+	"MATCH_SCORE",
+	"PARTNER_ID",
+	"RP_FLAG",
+	"MAPPED_PARTNER_NAME",
+	"NAME",
+	"ADDRESS_FIRST",
+	"ADDRESS_SECOND",
+	"CITY",
+	"ZIP_CODE",
+	"STATE",
+	"COUNTRY_ID"
+FROM "PARTNER_FUZZY_RESULT"(  PLACEHOLDER."$$reporting_partner_id$$"=>		:REPORTING_PARTNER_ID, 
+	                          PLACEHOLDER."$$partner_name$$"=>		:PARTNER_NAME, 
+                              PLACEHOLDER."$$address_first$$"=> 	:ADDRESS_FIRST, 
+                              PLACEHOLDER."$$address_second$$"=>	:ADDRESS_SECOND, 
+                              PLACEHOLDER."$$city$$"=>				:CITY ,
+                              PLACEHOLDER."$$zip_code$$"=>			:ZIP_CODE	 ,
+                              PLACEHOLDER."$$state$$"=> 			:STATE ,
+                              PLACEHOLDER."$$country_id$$"=>		:COUNTRY_ID	 ,
+                              PLACEHOLDER."$$is_person$$"=>		     :IS_PERSON	 ,
+                              PLACEHOLDER."$$accuracy$$"=>			:ACCURACY ) 
+			
+	
+)
+

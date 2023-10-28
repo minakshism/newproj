@@ -1,0 +1,22 @@
+procedure "INVENTORY_PROCESSING_ALL_PARTNERS"(   )
+   language sqlscript
+   sql security definer
+   --DEFAULT SCHEMA <default_schema_name>
+    as
+  
+ reporting_partner_id nvarchar(10) ;
+begin
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+  
+ declare cursor cursorReporter for select  distinct reporterid from  pos_inventory_staging where processing_status = 'NEW'  ;
+  
+   for cursorRow as cursorReporter
+    do
+    
+     CALL "INVENTORY_PROCESSING_PARTNER"(REPORTING_PARTNER_ID => cursorRow.reporterid );
+    
+  end for;
+ 
+end

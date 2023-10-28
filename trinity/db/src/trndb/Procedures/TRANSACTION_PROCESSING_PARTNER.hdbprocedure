@@ -1,0 +1,309 @@
+procedure "TRANSACTION_PROCESSING_PARTNER"( in reporting_partner_id nvarchar(10)  )
+   language sqlscript
+   sql security definer
+   --DEFAULT SCHEMA <default_schema_name>
+    as
+  
+   lt_transaction   		pos_transaction;
+   lv_ship_guid     		NVARCHAR(36);
+   lv_sold_guid     		NVARCHAR(36);
+   lv_ec_guid       		NVARCHAR(36);
+   lv_product_guid      	NVARCHAR(36);
+   lv_cust4_guid    		NVARCHAR(36);
+   lv_cust5_guid    		NVARCHAR(36);
+begin
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+ 
+ declare cursor cursorStage for select  * from  pos_transaction_staging where processing_status = 'NEW' and reporterid = reporting_partner_id ;
+ 
+ for cursorRow as cursorStage
+   do
+   
+   lv_ship_guid = '';
+   call partner_auto_map(
+		reporting_partner_id		=> cursorRow.reporterid,
+		reported_name				=> cursorRow.shiptocompanyname,
+		reported_address_first		=> cursorRow.shiptostreetaddress_one,
+		reported_address_second 	=> cursorRow.shiptostreetaddress_two,
+		reported_city				=> cursorRow.shiptocity,
+		reported_state				=> cursorRow.shiptostateprov,
+		reported_postal_code		=> cursorRow.shiptopostalcode,
+		reported_country_id 		=> cursorRow.shiptocountrycode,
+		mapping_id					=> lv_ship_guid
+     );
+     
+     lv_sold_guid = '';
+     call partner_auto_map(
+		reporting_partner_id		=> cursorRow.reporterid,
+		reported_name				=> cursorRow.soldtocompanyname,
+		reported_address_first		=> cursorRow.soldtostreetaddress_one,
+		reported_address_second 	=> cursorRow.soldtostreetaddress_two,
+		reported_city				=> cursorRow.soldtocity,
+		reported_state				=> cursorRow.soldtostateprov,
+		reported_postal_code		=> cursorRow.soldtopostalcode,
+		reported_country_id 		=> cursorRow.soldtocountrycode,
+		mapping_id					=> lv_sold_guid
+     );
+     
+     lv_ec_guid = '';
+      call partner_auto_map(
+		reporting_partner_id		=> cursorRow.reporterid,
+		reported_name				=> cursorRow.endusername,
+		reported_address_first		=> cursorRow.enduseraddress_one,
+		reported_address_second 	=> cursorRow.enduseraddress_two,
+		reported_city				=> cursorRow.endusercity,
+		reported_state				=> cursorRow.enduserstateprov,
+		reported_postal_code		=> cursorRow.enduserpostalcode,
+		reported_country_id 		=> cursorRow.endusercountrycode,
+		mapping_id					=> lv_ec_guid
+     );
+     
+     lv_cust4_guid = '';
+     call partner_auto_map(
+		reporting_partner_id		=> cursorRow.reporterid,
+		reported_name				=> cursorRow.customer_four,
+		reported_address_first		=> cursorRow.customer_four_address_one,
+		reported_address_second 	=> cursorRow.customer_four_address_two,
+		reported_city				=> cursorRow.customer_four_city,
+		reported_state				=> cursorRow.customer_four_stateprov,
+		reported_postal_code		=> cursorRow.customer_four_postalcode,
+		reported_country_id 		=> cursorRow.customer_four_countrycode,
+		mapping_id					=> lv_cust4_guid
+     );
+     
+     lv_cust5_guid = '';
+      call partner_auto_map(
+		reporting_partner_id		=> cursorRow.reporterid,
+		reported_name				=> cursorRow.customer_five,
+		reported_address_first		=> cursorRow.customer_five_address_one,
+		reported_address_second 	=> cursorRow.customer_five_address_two,
+		reported_city				=> cursorRow.customer_five_city,
+		reported_state				=> cursorRow.customer_five_stateprov,
+		reported_postal_code		=> cursorRow.customer_five_postalcode,
+		reported_country_id 		=> cursorRow.customer_five_countrycode,
+		mapping_id					=> lv_cust5_guid
+     );
+     
+     lv_product_guid = '';
+     CALL PRODUCT_AUTO_MAP(
+			REPORTING_PARTNER_ID => cursorRow.reporterid,
+			REPORTED_PRODUCT_ID => cursorRow.PRODUCTNUMBER,
+			REPORTED_PRODUCT_DESCRIPTION => cursorRow.PRODUCTDESCRIPTION,
+			MAPPING_ID => lv_product_guid
+);
+     
+     
+     
+  :lt_transaction.(transaction_id,
+                    reporting_partner_id ,
+                    SHIP_TO_MAPPING_ID,
+   	                SOLD_TO_MAPPING_ID,
+   	                EC_MAPPING_ID,
+   	                CUST_FOUR_MAPPING_ID,
+   	                CUST_FIVE_MAPPING_ID,
+   	                PRODUCT_MAPPING_ID,
+   	                product_number,
+   	                PRODUCT_dESCRIPTION,
+   	                session_id,
+					xpk_posdata,
+					file_created_time,
+					filename,
+					xpk_pos_lineitem,
+					fk_posdata,
+					qty_sold,
+					qty_return,
+					invoice_number,
+					invoice_line_item,
+					unit_price_local,
+					currency_local_id,
+					sales_rep_name,
+					disti_product_no,
+					manu_product_no,
+					vertical_market,
+					subvertical_market,
+					deal_type,
+					supplier_name,
+					serial_number,
+					store_number,
+					dbc,
+					total_amt,
+					order_type,
+					cpn,
+					invoice_date,
+					disti_branch,
+					transcation_code,
+					adjusted_code,
+					debit_memo,
+					cancel_dpa_flag,
+					source,
+					partner_membership_level,
+					geo,
+					rebate_no,
+					active_flag
+   )
+                   .insert(
+                   (cursorRow.TRANSACTIONID ,
+                    cursorRow.reporterid,
+                    lv_ship_guid,
+                   	lv_sold_guid,
+                   	lv_ec_guid,
+                   	lv_cust4_guid,
+                   	lv_cust5_guid,
+                   	lv_product_guid,
+                   	cursorRow.PRODUCTNUMBER,
+                   	cursorRow.PRODUCTDESCRIPTION,
+                   	cursorRow.sessionid,
+                   	cursorRow.xpk_posdata,
+					cursorRow.createdatetime,
+					cursorRow.filename,
+					cursorRow.xpk_pos_lineitem,
+					cursorRow.fk_posdata,
+					cursorRow.quantitysoldorreturned,
+					cursorRow.quantitysoldreturned,
+					cursorRow.invoicenumber,
+					cursorRow.invoicelineitemnumber,
+					cursorRow.priceperunit,
+					cursorRow.currencyofsale,
+					cursorRow.salesrepname,
+					cursorRow.distributorproductnumber,
+					cursorRow.manufacturerproductnumber,
+					cursorRow.verticalmarket,
+					cursorRow.subverticalmarket,
+					cursorRow.dealtype,
+					cursorRow.suppliername,
+				    cursorRow.serialnumber,
+					cursorRow.storenumber,
+					cursorRow.dbc,
+					cursorRow.totalamount,
+					cursorRow.ordertype,
+					cursorRow.cpn,
+					cursorRow.invoicedate,
+					cursorRow.distibranch,
+					cursorRow.transactioncode,
+					cursorRow.adjustedcode,
+					cursorRow.debitmemo,
+					to_boolean(cursorRow.cancel_dpa_flag),
+					cursorRow.source,
+					cursorRow.partner_membership_level,
+					cursorRow.geo,
+					cursorRow.rebate_number,
+					true
+				
+/*					soldtotype,
+					productkey,
+					productcode,
+					deleteflag,
+					transactioncount,
+					etlinsertdate,
+					processing_status */
+                   ));
+ 
+ end for;
+
+ if is_empty(:lt_transaction) then
+    return;
+ else
+    upsert  pos_transaction  (
+			    	transaction_id,
+                    reporting_partner_id ,
+                    SHIP_TO_MAPPING_ID,
+   	                SOLD_TO_MAPPING_ID,
+   	                EC_MAPPING_ID,
+   	                CUST_FOUR_MAPPING_ID,
+   	                CUST_FIVE_MAPPING_ID,
+   	                PRODUCT_MAPPING_ID,
+   	                product_number,
+   	                PRODUCT_dESCRIPTION,
+   	                session_id,
+					xpk_posdata,
+					file_created_time,
+					filename,
+					xpk_pos_lineitem,
+					fk_posdata,
+					qty_sold,
+					qty_return,
+					invoice_number,
+					invoice_line_item,
+					unit_price_local,
+					currency_local_id,
+					sales_rep_name,
+					disti_product_no,
+					manu_product_no,
+					vertical_market,
+					subvertical_market,
+					deal_type,
+					supplier_name,
+					serial_number,
+					store_number,
+					dbc,
+					total_amt,
+					order_type,
+					cpn,
+					invoice_date,
+					disti_branch,
+					transcation_code,
+					adjusted_code,
+					debit_memo,
+					cancel_dpa_flag,
+					source,
+					partner_membership_level,
+					geo,
+					rebate_no,
+					active_flag
+    )
+    
+    select
+    				transaction_id,
+                    reporting_partner_id ,
+                    SHIP_TO_MAPPING_ID,
+   	                SOLD_TO_MAPPING_ID,
+   	                EC_MAPPING_ID,
+   	                CUST_FOUR_MAPPING_ID,
+   	                CUST_FIVE_MAPPING_ID,
+   	                PRODUCT_MAPPING_ID,
+   	                product_number,
+   	                PRODUCT_dESCRIPTION,
+   	                session_id,
+					xpk_posdata,
+					file_created_time,
+					filename,
+					xpk_pos_lineitem,
+					fk_posdata,
+					qty_sold,
+					qty_return,
+					invoice_number,
+					invoice_line_item,
+					unit_price_local,
+					currency_local_id,
+					sales_rep_name,
+					disti_product_no,
+					manu_product_no,
+					vertical_market,
+					subvertical_market,
+					deal_type,
+					supplier_name,
+					serial_number,
+					store_number,
+					dbc,
+					total_amt,
+					order_type,
+					cpn,
+					invoice_date,
+					disti_branch,
+					transcation_code,
+					adjusted_code,
+					debit_memo,
+					cancel_dpa_flag,
+					source,
+					partner_membership_level,
+					geo,
+					rebate_no,
+					active_flag
+    from  :lt_transaction ; 
+    update pos_transaction_staging set processing_status = 'COMPLETE' where  processing_status = 'NEW' and reporterid = reporting_partner_id ;
+ end if;
+
+   
+end

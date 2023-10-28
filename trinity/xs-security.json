@@ -1,0 +1,37 @@
+{
+	"xsappname": "trinity",
+	"scopes": [{
+		"name": "$XSAPPNAME.trinityadmin",
+		"description": "Trinity Admin Role"
+	},
+	{
+		"name": "$XSAPPNAME.trinityuser",
+		"description": "Trinity User Role"
+	}],
+	"attributes": [{
+		"name": "client",
+		"description": "Session Client",
+		"valueType": "int"
+	}
+	],
+	"role-templates": [{
+		"name": "trinityadmin",
+		"description": "Trinity Admin Role Template",
+		"scope-references": [
+			"$XSAPPNAME.trinityadmin"
+		],
+			"attribute-references": [
+			"client"
+		]
+	},
+	{
+		"name": "trinityuser",
+		"description": "Trinity User Role Template",
+		"scope-references": [
+			"$XSAPPNAME.trinityuser"
+		],
+			"attribute-references": [
+			"client"
+		]
+	}]
+}

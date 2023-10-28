@@ -1,0 +1,120 @@
+PROCEDURE "PARTNER_FUZZY_SEARCH"(in REPORTING_PARTNER_ID NVARCHAR(10) ,
+	                             in PARTNER_NAME	NVARCHAR(256) ,
+								 in ADDRESS_FIRST	NVARCHAR(256),
+                                 in ADDRESS_SECOND  NVARCHAR(256),
+                                 in CITY			NVARCHAR(256),
+                                 in ZIP_CODE		NVARCHAR(256),
+                                 in STATE			NVARCHAR(256),
+                                 in COUNTRY_ID 		NVARCHAR(256),
+                                 in ACCURACY		DECIMAL(2,1) ,
+                                 in IS_PERSON       NVARCHAR(10),
+                                 OUT OUTTAB        PARTNER_SEARCH_TT )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   --DEFAULT SCHEMA <default_schema_name>
+   READS SQL DATA 
+    with result view PARTNER_FUZZY_RESULT
+   
+   AS
+   
+  lv_rp_accuracy        	DECIMAL(2,1); 
+  lv_rp_config          	NVARCHAR(500);
+  lv_rp_weight          	DECIMAL(2,1); 
+   
+  lv_name_accuracy      	DECIMAL(2,1); 
+  lv_name_config        	NVARCHAR(500);
+  lv_name_weight        	DECIMAL(2,1); 
+  
+  lv_city_accuracy      	DECIMAL(2,1); 
+  lv_city_config        	NVARCHAR(500);
+  lv_city_weight        	DECIMAL(2,1); 
+  
+  lv_state_accuracy     	DECIMAL(2,1); 
+  lv_state_config       	NVARCHAR(500);
+  lv_state_weight       	DECIMAL(2,1); 
+  
+  lv_zip_accuracy       	DECIMAL(2,1); 
+  lv_zip_config         	NVARCHAR(500);
+  lv_zip_weight         	DECIMAL(2,1);
+  
+  lv_is_rp_accuracy       	DECIMAL(2,1); 
+  lv_is_rp_config         	NVARCHAR(500);
+  lv_is_rp_weight         	DECIMAL(2,1);
+  
+  
+  lv_person_accuracy       	DECIMAL(2,1); 
+  lv_person_config         	NVARCHAR(500);
+  lv_person_weight         	DECIMAL(2,1);
+  
+  lv_country_accuracy       DECIMAL(2,1); 
+  lv_country_config         NVARCHAR(500);
+  lv_country_weight         DECIMAL(2,1); 
+  lv_fuzzy_config_id        NVARCHAR(256);
+  lv_fuzzy_config           NVARCHAR(256);
+  lv_fuzzy_config_person    NVARCHAR(256);
+
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   
+   DECLARE EXIT HANDLER FOR    
+        SQL_ERROR_CODE 1299
+	BEGIN
+      lv_fuzzy_config = NULL;
+      lv_fuzzy_config_person = NULL;
+      
+	END;
+    select  EC_FUZZY_CONFIG,EC_FUZZY_CONFIG_PERSON  into lv_fuzzy_config ,lv_fuzzy_config_person from PARTNER_MASTER where id = REPORTING_PARTNER_ID;
+    lv_fuzzy_config = IFNULL(lv_fuzzy_config , 'DEFAULT');
+    lv_fuzzy_config_person = IFNULL(lv_fuzzy_config_person , 'DEFAULT_PERSON');
+    
+    if :is_person = 'true' then lv_fuzzy_config_id = lv_fuzzy_config_person;
+    else  lv_fuzzy_config_id = lv_fuzzy_config;
+    end if;
+    
+    
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_rp_accuracy, lv_rp_config, lv_rp_weight from PARTNER_EC_FUZZY_CONFIG
+    where FUZZY_FIELD = 'REPORTING_PARTNER_ID' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_name_accuracy, lv_name_config, lv_name_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'NAME' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_city_accuracy, lv_city_config, lv_city_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'CITY' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_state_accuracy, lv_state_config, lv_state_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'STATE' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+	select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_zip_accuracy, lv_zip_config, lv_zip_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'ZIP_CODE' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+	select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_country_accuracy, lv_country_config, lv_country_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'COUNTRY_ID' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+	select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_person_accuracy, lv_person_config, lv_person_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'IS_PERSON' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+	select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_is_rp_accuracy, lv_is_rp_config, lv_is_rp_weight from PARTNER_EC_FUZZY_CONFIG where FUZZY_FIELD = 'IS_RP' AND EC_FUZZY_CONFIG_ID = :lv_fuzzy_config_id;
+  
+   
+   
+   
+   
+   
+   
+  OUTTAB =  select 
+	    	SCORE() AS "MATCH_SCORE",
+			"PARTNER_ID",
+			"RP_FLAG",
+			"MAPPED_PARTNER_NAME",
+			"NAME",
+			"ADDRESS_FIRST",
+			"ADDRESS_SECOND",
+			"CITY",
+			"ZIP_CODE",
+			"STATE",
+			"COUNTRY_ID"
+	from	"PARTNER_SEARCH_VIEW"
+	where                   	   	    contains ( REPORTING_PARTNER_ID			, :REPORTING_PARTNER_ID 	, FUZZY(:lv_rp_accuracy, :lv_rp_config),WEIGHT(:lv_rp_weight))
+	                            and		contains ( NAME							, :PARTNER_NAME 			, FUZZY(:lv_name_accuracy, :lv_name_config),WEIGHT(:lv_name_weight))
+								and 	contains ( CITY							, :CITY						, FUZZY(:lv_city_accuracy, :lv_city_config),WEIGHT(:lv_city_weight))            
+								and 	contains ( STATE						, :STATE					, FUZZY(:lv_state_accuracy, :lv_state_config),WEIGHT(:lv_state_weight))        
+								and 	contains ( ZIP_CODE						, :ZIP_CODE					, FUZZY(:lv_zip_accuracy, :lv_zip_config),WEIGHT(:lv_zip_weight))
+								and 	contains ( IS_PERSON					, :IS_PERSON				, FUZZY(:lv_person_accuracy, :lv_person_config),WEIGHT(:lv_person_weight))
+								and 	contains ( COUNTRY_ID 					, :COUNTRY_ID				, FUZZY(:lv_country_accuracy, :lv_country_config),WEIGHT(:lv_country_weight))
+								and 	contains ( IS_RP 					    , 'true'	        		, FUZZY(:lv_is_rp_accuracy, :lv_is_rp_config),WEIGHT(:lv_is_rp_weight)) 
+		
+	order by score() desc, CHANGED_ON DESC;
+   
+   
+   
+   
+END

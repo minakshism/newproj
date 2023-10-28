@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+xmlns:core="sap.ui.core"
+xmlns="sap.m">
+  <ResponsivePopover title="Options"
+  placement= "Bottom"
+  afterOpen= "onOpen">
+    <content>
+        <List>
+          <items>
+            <CustomListItem type="Active" press="onAscending">
+              <HBox alignItems="Center"
+                  justifyContent="Center"
+                  class="HBoxStyle">
+            
+              <Button text="Sort - Ascending" icon="sap-icon://sort-ascending" type="Emphasized" press="onAscending"></Button> 
+              </HBox>
+            </CustomListItem>
+            <CustomListItem type="Active" press="onDescending">
+            <HBox alignItems="Center"
+                  justifyContent="Center"
+                  class="HBoxStyle">
+           
+            <Button text="Sort - Descending" icon="sap-icon://sort-descending" type="Emphasized" press="onDescending"></Button> 
+              </HBox>
+            </CustomListItem>
+            <CustomListItem>
+            <HBox alignItems="Center"
+                  justifyContent="Center"
+                  class="HBoxStyle sapUiSmallMarginBeginEnd">
+            <Label text="Filter : " />
+            <Input width="90%" value="{LocalDataModel>/inputVal}"
+                  change="onChange" />
+            </HBox>
+            </CustomListItem>
+          </items>
+        </List>
+    </content>
+  </ResponsivePopover>
+</core:FragmentDefinition>

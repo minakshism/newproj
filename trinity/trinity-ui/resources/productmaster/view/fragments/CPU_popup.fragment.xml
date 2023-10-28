@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:plugins="sap.m.plugins"
+	class="sapUiSizeCompact">
+	<Dialog resizable="true" draggable="true" title="CPU Search/Create for {sys_model_no}" class="sapUiSizeCompact" titleAlignment="Start">
+		<content>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<Label labelFor="CPUSelect" text="Select Options"/>
+				<RadioButtonGroup columns="3" width="90%" select="onRBSelect">
+					<RadioButton text="Search"/>
+					<RadioButton text="Create New CPU" enabled="{oUserModel>/is_trinityadmin}"/>
+				</RadioButtonGroup>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{LocalDataModel>/visible}">
+				<Table id="idCpuList" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" noDataText="No Matching Partner Found" busyIndicatorDelay="0"
+					fixedLayout="false"
+					items="{ path: '/ProductCpu', parameters :{ $$operationMode : 'Server',$orderby : 'cpu_model_no asc', $count : true} ,templateShareable: true }"
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridLarge" growingThreshold="100" growing="true" growingScrollToLoad="true"
+					mode="SingleSelectMaster" selectionChange=".cpuSelect(${$parameters>/listItem})">
+					<headerToolbar>
+						<Toolbar>
+							<SearchField id="idCPUSearchField" liveChange=".onSearchCPU"/>
+							<ToolbarSpacer/>
+							<Button id="cpuPopup" icon="sap-icon://action-settings" press="onPersoButtonPressed">
+								<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow"/>
+								</layoutData>
+							</Button>
+						</Toolbar>
+					</headerToolbar>
+					<dependents>
+						<plugins:ColumnResizer/>
+					</dependents>
+					<ColumnListItem>
+						<cells>
+							<Text text="{cpu_model_no}"/>
+							<Text text="{cpu_brand/description}"/>
+							<Text text="{cpu_brand/brand_group}"/>
+							<!--<Text text="{cpu_brand_generation}"/>-->
+							<!--<Text text="{cpu_brand_group_generation}"/>-->
+							<Text text="{cpu_core_frequency/description}"/>
+							<Text text="{cpu_core/description}"/>
+							<Text text="{cpu_manufacturer/name}"/>
+							<Text text="{cpu_architecture/description}"/>
+							<Text text="{cpu_class/description}"/>
+						</cells>
+					</ColumnListItem>
+					<columns>
+						<Column id="idCpuModelNo">
+							<Text text="CPU Model Number"/>
+						</Column>
+						<Column id="idCpuBrand">
+							<Text text="CPU Brand"/>
+						</Column>
+						<Column id="idCpuBrandGrp">
+							<Text text="CPU Brand Group"/>
+						</Column>
+						<!--<Column>-->
+						<!--	<Text text="CPU Brand Generation"/>-->
+						<!--</Column>-->
+						<!--<Column>-->
+						<!--	<Text text="CPU Brand Group Generation"/>-->
+						<!--</Column>-->
+						<Column id="idCpuCoreFreq">
+							<Text text="CPU Core Frequency"/>
+						</Column>
+						<Column id="idCpuCore">
+							<Text text="CPU Core"/>
+						</Column>
+						<Column id="idCpuManfctr">
+							<Text text="CPU Manufacturer"/>
+						</Column>
+						<Column id="idCpuArchGrp">
+							<Text text="CPU Architecture Group"/>
+						</Column>
+						<Column id="idCpuClass">
+							<Text text="CPU Class"/>
+						</Column>
+					</columns>
+				</Table>
+			</VBox>
+			<VBox visible="{= ${LocalDataModel>/visible} === true ? false : true }">
+				<core:Fragment fragmentName="nv.productMaster.view.fragments.CPU_create" type="XML"/>
+			</VBox>
+		</content>
+		<buttons>
+			<Button text="Save" press=".confirmCPU" type="Accept" visible="{= ${LocalDataModel>/visible} === true ? false : true }"/>
+			<Button text="Close" press="onCloseCPU"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

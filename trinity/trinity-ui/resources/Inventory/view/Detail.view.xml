@@ -1,0 +1,78 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	class="sapUiSizeCompact" displayBlock="true" xmlns:form="sap.ui.layout.form" controllerName="nv.Inventory.controller.Detail" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="Inventory Details"/>
+				</expandedHeading>
+				<navigationActions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://sys-back-2" press="handleClose" tooltip="Close column"/>
+				</navigationActions>
+				<actions>
+					<m:ToggleButton text="Edit" type="Emphasized" pressed="{detailViewModel>/editing}" visible="{= !${detailViewModel>/editing}}"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text="Details"/>
+									<m:Label text="Transaction ID" design="Bold"/>
+									<m:Input id="transaction_id" text="{transaction_id}"/>
+									
+									<m:Label text="Session ID" design="Bold"/>
+									<m:Input id="session_id" text="{session_id}"/>
+									
+									<m:Label text="Creation Date" design="Bold"/>
+									<m:Input id="create_datetime" text="{create_datetime}"/>
+									
+									<m:Label text="Inventory Date" design="Bold"/>
+									<m:Input id="inventory_date" text="{inventory_date}"/>
+									
+									<m:Label text="Product No" design="Bold"/>
+									<m:Input id="product_number" text="{product_number}"/>
+									
+									<m:Label text="Product Description" design="Bold"/>
+									<m:Input id="product_description" text="{product_description}"/>
+									
+									<m:Label text="Quantity Onhand" design="Bold"/>
+									<m:Input id="quantity_onhand" text="{quantity_onhand}"/>
+									
+									<m:Label text="Current Cost" design="Bold"/>
+									<m:Input id="current_cost" text="{current_cost}"/>
+									
+									<m:Label text="Average Cost" design="Bold"/>
+									<m:Input id="average_cost" text="{average_cost}"/>
+									
+									<m:Label text="Customer Backlog" design="Bold"/>
+									<m:Input id="customer_backlog" text="{customer_backlog}"/>
+									
+									<m:Label text="PO Backlog" design="Bold"/>
+									<m:Input id="po_backlog" text="{po_backlog}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		
+		</sections>
+		<footer>
+			<m:OverflowToolbar asyncMode="true">
+				<m:ToolbarSpacer/>
+				<m:Button id="submitBtn" text="Submit" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog contentHeight="600px" contentWidth="80%" title="Partner Merge" class="sapUiSizeCompact" titleAlignment="Center">
+		<content>
+			<!--<MessageStrip id="idErr" text="Please fillup the required fields" visible="false" type="Error" showIcon="true" showCloseButton="false"-->
+			<!--	class="sapUiMediumMarginBottom"/>-->
+			<HBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+					<HBox>
+						<Label text="Date"/>
+						<Text text="{Date}"/>
+					</HBox>
+					<HBox>
+						<Label text="User"/>
+						<Text text="{User}"/>
+					</HBox>
+				</VBox>
+				<VBox>
+					<HBox alignContent="End" justifyContent="End" class="Zhbox7">
+						<Button text="New Merge Request" press="onNewMergeReq"/>
+					</HBox>
+					<HBox alignContent="End" justifyContent="End" class="Zhbox8">
+						<VBox id="idNewMerge" visible="false">
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" id="form0">
+								<form:content>
+									<core:Title text="Request Details:"/>
+									<Label text="Description" required="true"/>
+									<Input width="100%" id="input0" placeholder="Enter Descrition" required="true" liveChange="descInput"/>
+									<Label text="New End Customer Number"/>
+									<Input width="100%" id="input1" placeholder="Enter Customer Number" required="true" liveChange="newCust"/>
+									<Label text="Old End Customer Number"/>
+									<Input width="100%" id="input2" placeholder="Enter Customer Number" required="true" liveChange="oldCust"/></form:content>
+							</form:SimpleForm>
+							<items/>
+						</VBox>
+						<items/>
+					</HBox>
+				</VBox>
+			</HBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{oSelectRBVisibleModel>/visible}" id="meargeContainer">
+				<Table id="idPartnerMerge" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" noDataText="No Matching Partner Found" busyIndicatorDelay="0"
+					fixedLayout="false"
+					items="{ path: '/MergeRequestHdr', parameters :{ $$operationMode : 'Server', $orderby : 'creation_date' , $count : true} ,templateShareable: true }"
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridLarge" growingThreshold="100" growing="true" growingScrollToLoad="true"
+					mode="SingleSelectMaster">
+					<!--<headerToolbar>-->
+					<!--	<OverflowToolbar>-->
+					<!--		<ToolbarSpacer/>-->
+					<!--		<Button id="popupMerge" icon="sap-icon://action-settings" press="onPersoButtonPressed">-->
+					<!--			<layoutData>-->
+					<!--				<OverflowToolbarLayoutData priority="NeverOverflow"/>-->
+					<!--			</layoutData>-->
+					<!--		</Button>-->
+					<!--	</OverflowToolbar>-->
+					<!--</headerToolbar>-->
+					<ColumnListItem>
+						<cells>
+							<Text text="{CREATION_DATE}"/>
+							<Text text="{CREATION_BY}"/>
+							<Text text="{DESCRIPTION}"/>
+							<Text text="{UNDO_FLAG}"/>
+							<Switch state="{ path: 'Undo' }" customTextOn="Yes" customTextOff="No" enabled="false"/>
+						</cells>
+					</ColumnListItem>
+					<columns>
+						<Column id="idDate">
+							<Text text="Created On"/>
+						</Column>
+						<Column id="idUser">
+							<Text text="Created By"/>
+						</Column>
+						<Column id="idDescription">
+							<Text text="Description"/>
+						</Column>
+						<Column id="idDeletionFlag">
+							<Text text="Deletion Flag"/>
+						</Column>
+						<Column id="idaction">
+							<Text text="Action"/>
+						</Column>
+					</columns>
+				</Table>
+			</VBox>
+		</content>
+		<buttons>
+			<Button id="idmergesave" text="Save" press="onPMergeSave" visible="false"/>
+			<Button text="Close" press="onExit"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,113 @@
+ VIEW PRODUCT_MAPPING_SUMMARY as
+select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     'Consumer Partner - Prod' as  "CATEGORY", 
+     case 
+       when ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''  ) then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PRODUCT_MAPPING_HEADER" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.PARTNER_ID = P.ID          
+      LEFT OUTER JOIN 
+      "PRODUCT_MAPPING_ITEMS" AS I ON M.ID = I.HEADER_ID 
+      where ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''   or m.on_hold = true )
+      and  P.ID not in ( select reporter_id FROM "PARTNER_SFDC_ACCOUNT" ) 
+      and  P.RP_flag = TRUE 
+      and  P.production_date is not null 
+	
+	
+)
+      
+      GROUP BY  "CATEGORY"
+   
+   union
+   select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     'Enterprise Partner - Prod' as  "CATEGORY", 
+     case 
+       when ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''  ) then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PRODUCT_MAPPING_HEADER" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.PARTNER_ID = P.ID         
+        LEFT OUTER JOIN     "PRODUCT_MAPPING_ITEMS" AS I ON M.ID = I.HEADER_ID 
+       where ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''   or m.on_hold = true )
+      and  P.ID  in ( select reporter_id FROM "PARTNER_SFDC_ACCOUNT" ) 
+      and  P.RP_flag = TRUE 
+      and  P.production_date is not null  )
+      
+      GROUP BY  "CATEGORY"
+      
+      union
+      
+      select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     'Consumer Partner - UAT' as  "CATEGORY", 
+     case 
+       when ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''  ) then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PRODUCT_MAPPING_HEADER" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.PARTNER_ID = P.ID         
+        LEFT OUTER JOIN 
+      "PRODUCT_MAPPING_ITEMS" AS I ON M.ID = I.HEADER_ID 
+      where ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''   or m.on_hold = true )
+      and  P.ID not in ( select reporter_id FROM "PARTNER_SFDC_ACCOUNT" ) 
+      and  P.RP_flag = TRUE 
+      and  P.production_date is  null 
+	
+	
+)
+      
+      GROUP BY  "CATEGORY"
+   
+   union
+   select 
+"CATEGORY", SUM("NEW" ) AS "NEW" , SUM("ON_HOLD") AS "ON_HOLD"
+FROM (
+select
+     'Enterprise Partner - UAT' as  "CATEGORY", 
+     case 
+       when ( ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''  ) then 1
+       else 0
+      end as "NEW" ,
+      CASE
+       when on_hold = true then 1
+       else 0
+      end as "ON_HOLD" 
+      
+      
+      FROM "PRODUCT_MAPPING_HEADER" AS M LEFT OUTER JOIN 
+     "PARTNER_MASTER" AS P ON M.PARTNER_ID = P.ID          LEFT OUTER JOIN        "PRODUCT_MAPPING_ITEMS" AS I ON M.ID = I.HEADER_ID 
+       where ( (ltrim( ifnull( i.sys_model_id, '' ), '' ) = ''  )  or m.on_hold = true )
+      and  P.ID  in ( select reporter_id FROM "PARTNER_SFDC_ACCOUNT" ) 
+      and  P.RP_flag = TRUE 
+      and  P.production_date is  null  )
+      
+      GROUP BY  "CATEGORY"
+      
+      ;

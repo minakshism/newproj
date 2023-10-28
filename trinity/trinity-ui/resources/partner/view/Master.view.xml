@@ -1,0 +1,242 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:layout="sap.ui.layout" xmlns:semantic="sap.m.semantic" controllerName="partner.controller.Master" class="sapUiSizeCompact">
+	<f:DynamicPage id="page" fitContent="true" headerExpanded="true" xmlns:plugins="sap.m.plugins" toggleHeaderOnTitleClick="true"
+		class="sapUiNoContentPadding" backgroundDesign="List">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="PartnerManagementHeader" text="Partner Management"/>
+				</f:heading>
+				<f:navigationActions>
+					<Link text="Logout" press="onPressLogout"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+				
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed"
+						showRestoreButton="true" showClearButton="true">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="Partner ID" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<!--<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="40%"></SearchField>-->
+									<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeRpId" class="sapUiSmallMarginBottom" id="idReporter"
+										showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/PartnerMaster'}">
+										<core:Item key="{id}" text="{id} - {name}"/>
+									</MultiInput>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="Reporting Partner" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="rp" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="End Customer" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="ec" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="G" label="Enterprise Partner" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="npn" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="H" label="Consumer Partner" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="consumer" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="Active" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="active" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							
+							
+							<fb:FilterGroupItem  name="W"  label="Partner Country" groupName="__$INTERNAL$"  partOfCurrentVariant="true" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="country" change="onSearch"
+									items="{ path: '/Country', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'country_name', templateShareable: true }}">
+									<core:Item key="{id}" text="{country_name}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						
+						<fb:FilterGroupItem name="X" label="Region" groupName="__$INTERNAL$"  partOfCurrentVariant="true" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox change="onSearch" id="region"
+									items="{ path: '/Region', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+									<core:Item key="{id}" text="{description}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="Y" label="Sub-Region" groupName="__$INTERNAL$"  partOfCurrentVariant="true" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox change="onSearch" id="subregion"
+									items="{ path: '/SubRegion', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+									<core:Item key="{id}" text="{description}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						
+						<fb:FilterGroupItem name="Z" groupName="__$INTERNAL$"  label="Prod. Status" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="prodstatus" forceSelection="false" change=".onSearch">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="Yes"/>
+											<core:Item text="No" key="No"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							
+							
+							
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="E" label="Create Date Range" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="cdate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="F" label="Production Date Range" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="pdate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+					
+						
+						<fb:FilterGroupItem groupName="__$INTERNAL$" name="V" label="Onboard Date Range" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="odate" showFooter="false" change=".onSearch"/>
+								</fb:control>
+						</fb:FilterGroupItem>
+						
+					</fb:filterGroupItems>
+					
+						
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="masterList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto" mode="SingleSelectMaster"
+				sticky="ColumnHeaders,HeaderToolbar" showSeparators="All" showUnread="true"
+				items="{ path: '/PartnerMaster', parameters :{ $$operationMode : 'Server', $orderby : 'name asc' , $count : true}, filters : [{ path : 'rp_flag', operator : 'EQ', value1 : 'true' }] ,templateShareable: true }"
+				selectionChange=".navToDetailOf(${$parameters>/listItem})">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="PartnerTitle" text="{$count} Partners"/>
+						</content>
+						<ToolbarSpacer/>
+						<ToolbarSpacer/>
+						<Button id="idrefresh" text="Reset Filter" type="Accept" press="onPressClear"/>
+						<Button id="idBtnNewPartner" press=".newPartner" text="New Partner" type="Emphasized"/>
+						<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+					</OverflowToolbar>
+				</headerToolbar>
+				<dependents>
+					<plugins:ColumnResizer/>
+				</dependents>
+				<columns>
+					<Column id="idprnr" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Partner ID"/>
+					</Column>
+					<Column id="idptname" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Partner Name"/>
+					</Column>
+					<Column id="idcity" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="City"/>
+					</Column>
+					<Column id="idcountry" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Partner Country"/>
+					</Column>
+					<Column id="idregion" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Region"/>
+					</Column>
+					<Column id="idsubreg" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Sub Region"/>
+					</Column>
+					<Column id="idprodDate" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Production Date"/>
+					</Column>
+					<Column id="idonbrdDate" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="RP Onboard Date"/>
+					</Column>
+					<Column id="idconsumer" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Consumer"/>
+					</Column>
+					<Column id="identrprise" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Enterprise"/>
+					</Column>
+					<Column id="idconsnvsales" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Consumer NV Sales"/>
+					</Column>
+					<Column id="identnvsales" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Enterprise NV Sales"/>
+					</Column>
+					<Column id="idstatus" hAlign="End" width="80px" demandPopin="true">
+						<Text text="Status"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".navToDetailOf(${$parameters>/listItem})">
+						<cells>
+							<Text text="{id}"/>
+							<Text text="{name}"/>
+							<Text text="{city}"/>
+							<Text text="{country/country_name}"/>
+							<Text text="{country/region/id} - {country/region/description}"/>
+							<Text text="{country/sub_region/description}"/>
+							<Text text="{production_date}"/>
+							<Text text="{rp_onboarding_date}"/>
+							<Text text="{is_consumer}"/>
+							<Text text="{is_npn}"/>
+							<Text text="{nv_sales_rep/knownas}"/>
+							<Text text="{npn/npn_pbm}"/>
+							<Text text="{= ${active} === 'Yes' ? 'Active' : 'Deactive' }"/>
+							<!--<Switch state="{ path: 'active' }" customTextOn="Active" customTextOff="Deactive" enabled="false"/>-->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

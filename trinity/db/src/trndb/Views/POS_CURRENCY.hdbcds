@@ -1,0 +1,10 @@
+using VT_BW_TCURT as CURRENCY;
+
+define view POS_CURRENCY as
+    select from CURRENCY
+    {
+        key CURRENCY.WAERS as "ID",
+            CURRENCY.LTEXT as "DESCRIPTION"
+    }
+    where
+        CURRENCY.SPRAS = 'E';

@@ -1,0 +1,8 @@
+SEQUENCE "PARTNER_ID" START WITH 4000000 MAXVALUE 9000000
+reset BY SELECT 
+
+case
+when max(to_integer(id)) > 4000000 then
+ max(to_integer(id)) + 1 else 4000001 end
+FROM partner_master;
+ 

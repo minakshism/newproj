@@ -1,0 +1,15 @@
+TYPE "PARTNER_SEARCH_TT" AS TABLE (
+        MATCH_SCORE 			REAL,
+        PARTNER_ID  			NVARCHAR(10),
+        RP_FLAG 				BOOLEAN,
+        MAPPED_PARTNER_NAME     NVARCHAR(256),
+        NAME					NVARCHAR(256),
+        ADDRESS_FIRST			NVARCHAR(256),
+        ADDRESS_SECOND			NVARCHAR(256),
+        CITY    				NVARCHAR(256),
+        ZIP_CODE				NVARCHAR(50),
+        STATE   				NVARCHAR(256),
+        COUNTRY_ID				NVARCHAR(3)
+        
+
+)

@@ -1,0 +1,115 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:layout="sap.ui.layout" xmlns:semantic="sap.m.semantic" controllerName="nv.Transaction.controller.Master" class="sapUiSizeCompact">
+	<f:DynamicPage id="page" fitContent="true" headerExpanded="true" xmlns:plugins="sap.m.plugins" toggleHeaderOnTitleClick="true"
+		class="sapUiNoContentPadding" backgroundDesign="List">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="TransactionHeader" text="Transactions"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed"
+						showRestoreButton="true" showClearButton="true">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="Search" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="40%"></SearchField>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="Reporting Partner" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="rp" forceSelection="false">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="End Customer Mapping" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="ec" forceSelection="false">
+										<items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</items>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="__$INTERNAL$" name="E" label="File Creation Time" partOfCurrentVariant="true" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="cdate" showFooter="false"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="masterList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto" mode="SingleSelectMaster"
+				sticky="ColumnHeaders,HeaderToolbar" showSeparators="All" showUnread="true"
+				items="{ path: '/PosTransactions', parameters :{ $$operationMode : 'Server', $orderby : 'session_id asc' , $count : true} ,templateShareable: true }"
+				selectionChange=".navToDetailOf(${$parameters>/listItem})">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title id="Transaction" text="{$count} Transactions"/>
+						</content>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+					</OverflowToolbar>
+				</headerToolbar>
+				<dependents>
+					<plugins:ColumnResizer/>
+				</dependents>
+				<columns>
+					<Column id="idprnr" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Reporting Partner"/>
+					</Column>
+					<Column id="idSesion" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Session ID"/>
+					</Column>
+					<Column id="idFilename" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="File Name"/>
+					</Column>
+					<Column id="idFileCreationTime" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="File Creation Time"/>
+					</Column>
+					<Column id="idInvoiceno" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Invoice No"/>
+					</Column>
+					<Column id="idInvoiceLineItm" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Invoice Line Item"/>
+					</Column>
+					<Column id="idActiveFlg" hAlign="End" width="80px">
+						<Text text="Active Flag"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".navToDetailOf(${$parameters>/listItem})">
+						<cells>
+							<ObjectIdentifier title="{transaction_id} - {reporting_partner}"/>
+							<Text text="{session_id}"/>
+							<Text text="{filename}"/>
+							<Text text="{file_created_time}"/>
+							<Text text="{invoice_number}"/>
+							<Text text="{invoice_line_item}"/>
+							<Switch state="{ path: 'active_flag' }" customTextOn="Active" customTextOff="Deactive" enabled="false"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

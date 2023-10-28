@@ -1,0 +1,127 @@
+{
+	"DFLDB": {
+		"object_owner": {
+			"container_roles": ["super_user_access_grant#"]
+		},
+		"application_user": {
+			"container_roles": ["mart_access"]
+		}
+	},
+	"TNT": {
+		"object_owner": {
+			"system_privileges": ["CREATE STRUCTURED PRIVILEGE",
+				"STRUCTUREDPRIVILEGE ADMIN"
+			],
+			"schema_privileges": [{
+				"reference": "MNADKAR",
+				"privileges_with_grant_option": ["SELECT", "SELECT METADATA"]
+			}],
+			"global_object_privileges": [{
+					"name": "SAPBW",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "SAPCRM",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "ECC",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "BWADAPTER",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}
+
+			]
+		},
+		"application_user": {
+			"schema_privileges": ["CREATE ANY",
+				"CREATE TEMPORARY TABLE",
+				"ALTER",
+				"SELECT",
+				"EXECUTE",
+				"INSERT",
+				"UPDATE",
+				"DELETE"
+			],
+			"global_object_privileges": [{
+					"name": "SAPBW",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "SAPCRM",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "ECC",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}, {
+					"name": "BWADAPTER",
+					"type": "REMOTE SOURCE",
+					"privileges": ["CREATE VIRTUAL TABLE",
+						"CREATE VIRTUAL PROCEDURE",
+						"CREATE VIRTUAL FUNCTION",
+						"REMOTE EXECUTE",
+						"ALTER",
+						"CREATE REMOTE SUBSCRIPTION"
+					]
+
+				}
+
+			]
+		}
+	}
+
+}

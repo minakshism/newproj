@@ -1,0 +1,79 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog resizable="true" draggable="true" title="GPU Create/Edit" class="sapUiSizeCompact" titleAlignment="Center">
+		<content>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<Label labelFor="GPUSelect" text="Select Options"/>
+				<RadioButtonGroup columns="3" width="90%" select="onRBSelect">
+					<RadioButton text="Edit GPU"/>
+					<RadioButton text="Create New GPU" enabled = "{oUserModel>/is_trinityadmin}"/>
+				</RadioButtonGroup>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{LocalDataModel>/visible}">
+				<Label text="Search GPU" design="Bold"/>
+				<!--<ComboBox width="49%" items="{ path: '/ProductGpu', parameters :{ $$operationMode : 'Server',$orderby : 'gpu_model_no asc', $count : true}}" -->
+				<!--change="onSearchForEditGpu">-->
+				<!--	<core:Item text="{gpu_model_no}" key="{id}"/>-->
+				<!--</ComboBox>-->
+				
+				<Input width="90%"
+					suggestionItems="{ path: '/ProductGpu', parameters :{ $$operationMode : 'Server', length:1000}}"
+					showSuggestion="true" change="onSearchForEditGpu">
+					<core:ListItem text="{gpu_model_no}" key="{id}"/>
+				</Input>
+				
+				<form:SimpleForm class="sapUiSmallMarginTop" id="idEditGpu" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+					singleContainerFullSize="false">
+					<form:content>
+						<Label text="GPU Model Number" design="Bold" enabled = "{oUserModel>/is_trinityadmin}"/>
+						<Input id="idGPUModelNo" value="{gpu_model_no}" placeholder="GPU Model No"  required="true"/>
+						<Label text="GPU Model Description" design="Bold"/>
+						<Input value="{gpu_model_description}" placeholder="GPU Model Description"/>
+						<Label text="GPU Current Model No." design="Bold"/>
+						<Input value="{gpu_model_no_current}" placeholder="GPU Current Model No."/>
+						<Label text="GPU Model No. 2" design="Bold"/>
+						<Input value="{gpu_model_no2}" placeholder="GPU Model No. 2"/>
+						<Label text="GPU Architecture" design="Bold"/>
+						<ComboBox selectedKey="{gpu_architecture_id}"
+							items="{ path: '/GpuArchitecture', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+							<core:ListItem key="{id}" text="{description}"/>
+						</ComboBox>
+						<!--<Label text="GPU Architecture Group" design="Bold"/>-->
+						<!--<ComboBox  selectedKey="{gpu_architecture_id}"-->
+						<!--	items="{ path: '/GpuArchitecture', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">-->
+						<!--	<core:ListItem key="{id}" text="{architecture_group}"/>-->
+						<!--</ComboBox>-->
+						<Label text="GPU DX Type" design="Bold"/>
+						<ComboBox selectedKey="{gpu_dx_type_id}"
+							items="{ path: '/GpuDxType',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+							<core:ListItem key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="GPU GF Segment" design="Bold"/>
+						<ComboBox selectedKey="{gpu_gf_segment_id}"
+							items="{ path: '/GpuGfSegment',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+							<core:ListItem key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="GPU GF Sub-Segment" design="Bold"/>
+						<ComboBox selectedKey="{gpu_gf_sub_segment_id}"
+							items="{ path: '/GpuGfSubSegment',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+							<core:ListItem key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="GPU Class" design="Bold"/>
+						<ComboBox selectedKey="{gpu_class_id}"
+							items="{ path: '/GpuClass',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+							<core:ListItem key="{id}" text="{description}"/>
+						</ComboBox>
+					</form:content>
+				</form:SimpleForm>
+			</VBox>
+			<VBox visible="{= ${LocalDataModel>/visible} === true ? false : true }">
+				<core:Fragment fragmentName="nv.productMaster.view.fragments.GPU_create" type="XML"/>
+			</VBox>
+		</content>
+		<buttons>
+			<Button text="Save" press=".confirmGPU" type="Accept" visible="{= ${LocalDataModel>/visible} === true ? false : true }"/>
+			<Button text="Update GPU" press=".onUpdateGPU" type="Accept" visible="{LocalDataModel>/visible}"/>
+			<Button text="Close" press="onCloseGPU"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

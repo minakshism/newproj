@@ -1,0 +1,109 @@
+PROCEDURE "PRODUCT_FUZZY_SEARCH"(in REPORTING_PARTNER_ID			NVARCHAR(10) ,
+	                             in REPORTED_PRODUCT_ID 			NVARCHAR(256),
+								 in REPORTED_PRODUCT_DESCRIPTION	NVARCHAR(1000),
+								 in REPORTED_MANUFACTURER           NVARCHAR(256),
+                                 in SYS_PLATFORM_ID					NVARCHAR(256),
+                                 OUT OUTTAB        PRODUCT_SEARCH_TT )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   --DEFAULT SCHEMA <default_schema_name>
+   READS SQL DATA 
+    with result view PRODUCT_FUZZY_RESULT
+   
+   AS
+   
+  lv_rp_accuracy        							DECIMAL(2,1); 
+  lv_rp_config          							NVARCHAR(500);
+  lv_rp_weight          							DECIMAL(2,1); 
+   
+  lv_reported_product_accuracy      				DECIMAL(2,1); 
+  lv_reported_product_config        				NVARCHAR(500);
+  lv_reported_product_weight        				DECIMAL(2,1); 
+  
+  lv_reported_product_description_accuracy      	DECIMAL(2,1); 
+  lv_reported_product_description_config        	NVARCHAR(500);
+  lv_reported_product_description_weight        	DECIMAL(2,1); 
+  
+  lv_reported_manufacturer_accuracy      			DECIMAL(2,1); 
+  lv_reported_manufacturer_config        			NVARCHAR(500);
+  lv_reported_manufacturer_weight        			DECIMAL(2,1); 
+  
+  lv_fuzzy_config_id        						NVARCHAR(256);
+  lv_fuzzy_config           						NVARCHAR(256);
+  lv_fuzzy_config_person    						NVARCHAR(256);
+
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   
+   DECLARE EXIT HANDLER FOR    
+        SQL_ERROR_CODE 1299
+	
+     BEGIN
+      lv_fuzzy_config = NULL;
+	END;
+	
+    select  PRODUCT_FUZZY_CONFIG  into lv_fuzzy_config  from PARTNER_MASTER where id = REPORTING_PARTNER_ID;
+    lv_fuzzy_config = IFNULL(lv_fuzzy_config , 'DEFAULT');
+    
+    
+    
+    
+    
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_rp_accuracy, lv_rp_config, lv_rp_weight from PRODUCT_FUZZY_CONFIG  where FUZZY_FIELD = 'REPORTING_PARTNER_ID' AND PRODUCT_FUZZY_CONFIG_ID = :lv_fuzzy_config;
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_reported_product_accuracy, lv_reported_product_config, lv_reported_product_weight from PRODUCT_FUZZY_CONFIG where FUZZY_FIELD = 'REPORTED_PRODUCT_ID' AND PRODUCT_FUZZY_CONFIG_ID = :lv_fuzzy_config;
+    select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_reported_product_description_accuracy, lv_reported_product_description_config, lv_reported_product_description_weight 
+      from PRODUCT_FUZZY_CONFIG  where FUZZY_FIELD = 'REPORTED_PRODUCT_DESCRIPTION' AND PRODUCT_FUZZY_CONFIG_ID = :lv_fuzzy_config;
+   select  FUZZY_ACCURACY,FUZZY_CONFIG,FUZZY_WEIGHT into lv_reported_manufacturer_accuracy, lv_reported_manufacturer_config, lv_reported_manufacturer_weight from PRODUCT_FUZZY_CONFIG  where FUZZY_FIELD = 'REPORTED_MANUFACTURER' AND PRODUCT_FUZZY_CONFIG_ID = :lv_fuzzy_config;
+   
+   if lv_rp_weight = 0 then 
+    lv_rp_config = lv_rp_config || ',returnAll=on';
+   end if;
+   
+   if lv_reported_product_weight = 0 then 
+    lv_reported_product_config = lv_reported_product_config || ',returnAll=on';
+   end if;
+   
+   if lv_reported_product_description_weight = 0 then 
+    lv_reported_product_description_config = lv_reported_product_description_config || ',returnAll=on';
+   end if;
+   
+   if lv_reported_product_description_weight = 0 then 
+    lv_reported_product_description_config = lv_reported_product_description_config || ',returnAll=on';
+   end if;
+   
+   if lv_reported_manufacturer_weight = 0 then 
+    lv_reported_manufacturer_config = lv_reported_manufacturer_config || ',returnAll=on';
+   end if;
+   
+   
+   
+  OUTTAB =  select 
+	 score() AS "MATCH_SCORE",
+	"RP",
+	"REGION",
+	"RP_TYPE",
+	"SYS_MODEL_NO",
+	"PRODUCT_CODE",
+	"SYS_PLATFORM_ID",
+	"REPORTED_PRODUCT_ID",
+	"REPORTED_PRODUCT_DESCRIPTION",
+	"REPORTED_MANUFACTURER"         ,
+	"SYS_MODEL_ID"
+	 FROM "PRODUCT_SEARCH_VIEW"
+	where                   	   	    contains ( RP			                , :REPORTING_PARTNER_ID 			, FUZZY(:lv_rp_accuracy, :lv_rp_config)														,WEIGHT(:lv_rp_weight))
+	                            and		contains ( REPORTED_PRODUCT_ID		    , :REPORTED_PRODUCT_ID				, FUZZY(:lv_reported_product_accuracy, :lv_reported_product_config)							,WEIGHT(:lv_reported_product_weight))
+							    and		contains ( REPORTED_PRODUCT_DESCRIPTION	, :REPORTED_PRODUCT_DESCRIPTION		, FUZZY(:lv_reported_product_description_accuracy, :lv_reported_product_description_config)	,WEIGHT(:lv_reported_product_description_weight))
+							    and		contains ( REPORTED_MANUFACTURER		, :REPORTED_MANUFACTURER			, FUZZY(:lv_reported_manufacturer_accuracy, :lv_reported_manufacturer_config)				,WEIGHT(:lv_reported_manufacturer_weight))
+		
+	order by score() desc;
+	
+	
+	
+	
+   
+   
+   
+   
+END

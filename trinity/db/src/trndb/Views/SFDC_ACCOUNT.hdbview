@@ -1,0 +1,22 @@
+VIEW PARTNER_SFDC_ACCOUNT  as select 
+ a.ID 											as "ID",
+ a.NAME                   						as "NPN_ACCOUNT_NAME",
+ a.POS_REPORTER_ID__C 							as "REPORTER_ID",
+ TO_boolean (a.POS_PORTAL_SUBMISSION__C)		AS "PORTAL_ACCESS",
+ a.BILLINGSTREET								as "ADDRESS",
+ a.BILLINGCITY									as "CITY",
+ a.BILLINGSTATE									as "STATE",
+ a.BILLINGPOSTALCODE							AS "POSTAL_CODE",
+ a.BILLINGCOUNTRY 								AS "COUNTRY",
+ u.name                                         as "NPN_PBM",
+ a.NPN_PROGRAM_SIGNED_DATE__C                   as "NPN_AGREEMENT_DATE",
+ A.NPN_ACTIVE_PROGRAM_COMPETENCY__C             as "NPN_PARTNER_COMPETENCY"
+ 
+from 
+SYN_CVD_SALESOPS_ACCOUNT as A left outer join SYN_CVD_SALESOPS_USER u on a.ownerid = u.id
+
+
+where a.ISDELETED = false AND a.POS_REPORTER_ID__C  is not null;
+
+
+  

@@ -1,0 +1,30 @@
+VIEW POSSERVICE_PARTNERSEARCH (in QUERY NVARCHAR(5000) , in ACCURACY DECIMAL(2,1)) as
+(
+	
+SELECT 
+    SCORE() AS "MATCH_SCORE",
+	"PARTNER_ID",
+	"RP_FLAG",
+	"MAPPED_PARTNER_NAME",
+	"NAME",
+	"ADDRESS_FIRST",
+	"ADDRESS_SECOND",
+	"CITY",
+	"ZIP_CODE",
+	"STATE",
+	"COUNTRY_ID"
+FROM "PARTNER_SEARCH_VIEW"
+where contains 
+			( (		
+			 "NAME",
+			"ADDRESS_FIRST",
+			"ADDRESS_SECOND",
+			"CITY",
+			"ZIP_CODE",
+			"STATE",
+			"COUNTRY_ID"
+			) ,:QUERY, FUZZY( :ACCURACY , 'scm=substringsearch'  )) order by score() desc , CHANGED_ON DESC
+			
+	
+)
+

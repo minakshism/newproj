@@ -1,0 +1,37 @@
+{
+  "CVD_PARTNER_MAPPING_SHIP_TO": {
+    "target": {
+      "object": "CVD_PARTNER_MAPPING"
+    }
+  },
+  "CVD_PARTNER_MAPPING_SOLD_TO": {
+    "target": {
+      "object": "CVD_PARTNER_MAPPING"
+    }
+  },
+  "CVD_PARTNER_RP": {
+    "target": {
+      "object": "CVD_PARTNER_MASTER"
+    }
+  },
+  "SYN_PARTNER_CHANNEL_TYPE_MAIN": {
+    "target": {
+      "object": "PARTNER_CHANNEL_TYPE"
+    }
+  },
+  "SYN_PARTNER_CHANNEL_TYPE_SECONDARY": {
+    "target": {
+      "object": "PARTNER_CHANNEL_TYPE"
+    }
+  },
+  "SYN_PARTNER_CHANNEL_PROGRAM_MAIN": {
+    "target": {
+      "object": "PARTNER_CHANNEL_PROGRAM"
+    }
+  },
+  "SYN_PARTNER_CHANNEL_PROGRAM_SECONDARY": {
+    "target": {
+      "object": "PARTNER_CHANNEL_PROGRAM"
+    }
+  }
+}

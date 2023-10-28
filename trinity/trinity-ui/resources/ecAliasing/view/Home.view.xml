@@ -1,0 +1,321 @@
+<mvc:View controllerName="nv.ecAliasing.controller.Home" displayBlock="true" xmlns="sap.m" xmlns:layout="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:plugins="sap.m.plugins" xmlns:core="sap.ui.core" height="100%" xmlns:f="sap.f" xmlns:table="sap.ui.table"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" class="sapUiSizeCompact"
+	xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="page" stickySubheaderProvider="FilterBar" class="sapUiNoContentPadding">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>title}"/>
+				</f:heading>
+				<f:navigationActions>
+					<Link text="Logout" press="onPressLogout"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<fb:FilterBar id="filterBar" class="clFilterBar" reset="onReset" search="onSearch" clear="onClear" cancel="onCancel"
+					filtersDialogClosed="onFiltersDialogClosed" showRestoreButton="true" showClearButton="true">
+					<fb:filterItems>
+						<!--<fb:FilterItem name="S" label="Search" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<SearchField id="searchField" showRefreshButton="true" liveChange="onFuzzySearch" search="onFuzzySearch">-->
+						<!--			<layoutData>-->
+						<!--				<OverflowToolbarLayoutData minWidth="150px" maxWidth="240px" shrinkable="true"/>-->
+						<!--			</layoutData>-->
+						<!--		</SearchField>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterItem>-->
+						<fb:FilterItem name="H" label="RP ID / Name" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeRpId" class="sapUiSmallMarginBottom" id="idReporter"
+									showSuggestion="true" showValueHelp="false"
+									suggestionItems="{ path: '/PartnerMaster', filters:[{path : 'rp_flag', operator : 'EQ', value1 : true }]}">
+									<core:Item key="{id}" text="{id} - {name}"/>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="M" label="Mapped EC ID / Name" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeECId" class="sapUiSmallMarginBottom" id="idMappedEc"
+									showSuggestion="true" showValueHelp="false"
+									suggestionItems="{ path: '/PartnerMaster', filters:[{path : 'ec_flag', operator : 'EQ', value1 : true }]}">
+									<core:Item key="{id}" text="{id} - {name}"/>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="I" label="Mapped EC Records" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idecMapped" change="onSearch">
+									<items>
+										<core:Item text="" key=""/>
+										<core:Item text="Yes" key="Yes"/>
+										<core:Item text="No" key="No"/>
+									</items>
+								</Select>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="A" label="Reported EC Country" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="country" change="onSearch"
+									items="{ path: '/Country', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'country_name', templateShareable: true }}">
+									<core:Item key="{id}" text="{country_name}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterItem>
+						<!--<fb:FilterItem name="B" label="Reported Zip Code" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<Input id="zipcode" type="Text" value=""/>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterItem>-->
+						<fb:FilterItem name="C" label="Is Person" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="isPerson" change="onSearch" forceSelection="false">
+									<items>
+										<core:Item text="" key=""/>
+										<core:Item text="Yes" key="true"/>
+										<core:Item text="No" key="false"/>
+									</items>
+								</Select>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="L" label="Is Enterprise Partner" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="isEnterprise" change="onSearch" forceSelection="false">
+									<items>
+										<core:Item text="" key=""/>
+										<core:Item text="Yes" key="true"/>
+										<core:Item text="No" key="false"/>
+									</items>
+								</Select>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="D" label="On Hold" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="onHold" change="onSearch" forceSelection="false">
+									<items>
+										<core:Item text="" key=""/>
+										<core:Item text="Yes" key="true"/>
+										<core:Item text="No" key="false"/>
+									</items>
+								</Select>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="E" label="RP Region" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox change="onSearch" id="region"
+									items="{ path: '/Region', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+									<core:Item key="{id}" text="{description}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="N" label="RP Sub-Region" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox change="onSearch" id="subregion"
+									items="{ path: '/SubRegion', sorter: { path: 'id' }, parameters :{ $$operationMode : 'Server', templateShareable: true } }">
+									<core:Item key="{id}" text="{description}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="F" label="Created On" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection id="cdate" showFooter="false" change=".onSearch"/>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="G" label="Changed On" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection id="chdate" showFooter="false" change=".onSearch"/>
+							</fb:control>
+						</fb:FilterItem>
+						<fb:FilterItem name="O" label="Assign To" visibleInFilterBar="true" visible="{LocalDataModel>/bvisible}">
+							<fb:control>
+								<MultiInput width="100%" tokenChange="onSearch" liveChange="onChangeAssignTo" class="sapUiSmallMarginBottom" id="idKnownas"
+									showSuggestion="true" showValueHelp="false" suggestionItems="{ path: '/PartnerSalesrep'}">
+									<core:Item key="{empid}" text="{knownas}"/>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterItem>
+					</fb:filterItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Table id="list" sticky="HeaderToolbar,ColumnHeaders" mode="MultiSelect" selectionChange="onSelectionChange"
+				items="{ path: '/PartnerMapping', parameters :{ $$operationMode : 'Server', $count : true, $orderby :'assigned_to_empid desc,reporting_partner/name asc,reported_name asc'}}"
+				growing="true" growingThreshold="100" growingScrollToLoad="true">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="idHeader" text="{$count} Total Count" level="H2"/>
+						<ToolbarSpacer/>
+						<MenuButton type="Emphasized" text="Assign To" icon="sap-icon://account" enabled="{editViewModel>/editing}">
+							<menu>
+								<Menu itemSelected="onSelectUser">
+									<MenuItem text="Self" id="self"/>
+									<MenuItem text="Unassign" id="unassign"/>
+									<MenuItem text="Others" visible="{LocalDataModel>/bvisible}" id="others"/>
+								</Menu>
+							</menu>
+						</MenuButton>
+						<Button id="pMerge" type="Emphasized" text="Partner Merge" press="onMerge"
+						icon="sap-icon://account" enabled="{editViewModel>/editing}"/>
+						<Button id="download" text="" icon="sap-icon://excel-attachment" type="Accept" press="onDownload"/>
+						<Button id="idrefresh" text="Reset Filter" type="Accept" press="onPressClear"/>
+						<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+					</OverflowToolbar>
+				</headerToolbar>
+				<dependents>
+					<plugins:ColumnResizer/>
+				</dependents>
+				<columns>
+					<Column id="rpPrIdCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reporting_partner_id", "filterProperty": "reporting_partner_id", "sortProperty": "reporting_partner_id", "type": "string"}'/>
+						</customData>
+						<Text id="col0" text="RP ID"/>
+					</Column>
+					<Column id="rpPrNmCol" hAlign="Begin" minScreenWidth="Desktop" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reporting_partner/name", "filterProperty": "reporting_partner/name", "sortProperty": "reporting_partner/name", "type": "string"}'/>
+						</customData>
+						<Text id="col1" text="RP Name"/>
+					</Column>
+					<Column id="rpRegCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col_region" text="RP Region"/>
+					</Column>
+					<Column id="rpSubRegCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col_Subregion" text="RP Sub-region"/>
+					</Column>
+					<Column id="rpEcNmCol" hAlign="Begin" minScreenWidth="Desktop" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_name", "filterProperty": "reported_name", "sortProperty": "reported_name", "type": "string"}'/>
+						</customData>
+						<Text id="col2" text="Reported EC Name"/>
+					</Column>
+					<Column id="rpAdFstCol" hAlign="Begin" visible="{LocalDataModel>/visibleAddress}" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_address_first", "leadingProperty": "reported_address_first", "filterProperty": "reported_address_first", "sortProperty": "reported_address_first", "type": "string"}'/>
+						</customData>
+						<Text id="col5" text="Reported EC Address 1"/>
+					</Column>
+					<Column id="rpAdSecCol" hAlign="Begin" visible="{LocalDataModel>/visibleAddress}" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_address_second", "filterProperty": "reported_address_second", "sortProperty": "reported_address_second", "type": "string"}'/>
+						</customData>
+						<Text id="col6" text="Reported EC Address 2"/>
+					</Column>
+					<Column id="rpCityCol" hAlign="Begin" minScreenWidth="Desktop" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_city", "filterProperty": "reported_city", "sortProperty": "reported_city", "type": "string"}'/>
+						</customData>
+						<Text id="col3" text="Reported EC City"/>
+					</Column>
+					<Column id="rpStateCol" hAlign="Begin" visible="true" width="90px" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_state", "leadingProperty": "reported_state", "filterProperty": "reported_state", "sortProperty": "reported_state", "type": "string"}'/>
+						</customData>
+						<Text id="col4" text="Reported EC State"/>
+					</Column>
+					<Column id="rpCountryCol" hAlign="Begin" minScreenWidth="Desktop" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_country_id", "leadingProperty": "reported_country_id", "filterProperty": "reported_country_id", "sortProperty": "reported_country_id", "type": "string"}'/>
+						</customData>
+						<Text id="col7" text="Reported EC Country"/>
+					</Column>
+					<Column id="rpPsCodCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "reported_postal_code", "leadingProperty": "reported_postal_code", "filterProperty": "reported_postal_code", "sortProperty": "reported_postal_code", "type": "string"}'/>
+						</customData>
+						<Text id="col8" text="Reported EC Zip Code"/>
+					</Column>
+					<Column id="rpIsPerCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "is_person", "filterProperty": "is_person", "sortProperty": "is_person", "type": "string"}'/>
+						</customData>
+						<Text id="col15" text="Person"/>
+					</Column>
+					<Column id="rpEndCustCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData"
+								value='\{"columnKey": "end_customer_id", "filterProperty": "end_customer_id", "sortProperty": "end_customer_id", "type": "string"}'/>
+						</customData>
+						<Text id="col12" text="Mapped EC ID"/>
+					</Column>
+					<Column id="mappedEcNameCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true" visible="{LocalDataModel>/bMappedEcName}">
+						<Text text="Mapped EC Name"/>
+					</Column>
+					<Column id="mappedEcCountryCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true" visible="{LocalDataModel>/bMappedEcCountry}">
+						<Text text="Mapped EC Country"/>
+					</Column>
+					<Column id="rpOnHoldCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<customData>
+							<core:CustomData key="p13nData" value='\{"columnKey": "onhold", "filterProperty": "on_hold", "sortProperty": "on_hold", "type": "string"}'/>
+						</customData>
+						<Text id="col14" text="On Hold"/>
+					</Column>
+					<Column id="rpAssignedtoCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col16" text="Assigned To"/>
+					</Column>
+					<Column id="createdOntCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col17" text="Created On"/>
+					</Column>
+					<Column id="changedOntCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col18" text="Changed On"/>
+					</Column>
+					<Column id="changedbytCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col19" text="Changed By"/>
+					</Column>
+					<Column id="isEnterpriseCol" hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+						<Text id="col20" text="Is Enterprise"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem id="idTemplate">
+						<cells>
+							<Text text="{reporting_partner_id}"/>
+							<Text text="{reporting_partner/name}"/>
+							<Text text="{reporting_partner/country/region/description}"/>
+							<Text text="{reporting_partner/country/sub_region/description}"/>
+							<Text text="{reported_name}"/>
+							<Text text="{reported_address_first}" visible="{LocalDataModel>/visibleAddress}"/>
+							<Text text="{reported_address_second}" visible="{LocalDataModel>/visibleAddress}"/>
+							<Text text="{reported_city}"/>
+							<Text text="{reported_state}"/>
+							<Text text="{reported_country/country_name} ({reported_country_id})"/>
+							<Text text="{reported_postal_code}"/>
+							<Switch state="{ path: 'is_person'}" customTextOn="Yes" customTextOff="No" change="onUpdateIsPerson"/>
+							<Input change="onChangeEndCustomer" id="end_customer_id" type="Text" value="{path:'end_customer_id'}" placeholder="Map End Customer"
+								showValueHelp="true" valueHelpOnly="false" valueHelpRequest="onAddMapping" class="sapUiSmallMarginBottom" enabled="true"/>
+							<Text text="{end_customer/name}"/>
+							<Text text="{end_customer/country/country_name}"/>
+							<Switch state="{ path: 'on_hold'}" customTextOn="Yes" customTextOff="No" change="onUpdateOnHold"/>
+							<HBox>
+								<Input id="empid" type="Text" placeholder="Enter Employee Id" editable="false" value="{path:'assigned_to_empid'}" showValueHelp="true"
+									valueHelpOnly="true" class="sapUiSmallMarginBottom" valueHelpRequest="onAddEmployee" visible="false"></Input>
+								<Text text="{path:'assigned_to/knownas', formatter:'nv.ecAliasing.utils.formatter.fmEnabledCondition'}"/>
+							</HBox>
+							<Text text="{path:'created_on'}"/>
+							<Text text="{path:'changed_on'}"/>
+							<Text text="{changed_by}"/>
+							<Text text="{reporting_partner/is_npn}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

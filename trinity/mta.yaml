@@ -1,0 +1,106 @@
+ID: trinity
+_schema-version: '2.1'
+version: 0.0.16
+modules:
+  - name: trinity-db
+    type: hdb
+    path: db
+    requires:
+      - name: trinity-db-hdi-container
+        properties:
+          TARGET_CONTAINER: '~{hdi-container-name}'
+      - name: TNT
+        group: SERVICE_REPLACEMENTS
+        properties:
+          key: ServiceName_1
+          service: '~{the-service-name}'
+      - name: cross-container-service-1
+        group: SERVICE_REPLACEMENTS
+        properties:
+          key: DFLDB
+          service: '~{the-service-name}'
+    properties:
+      memory: 256M
+      HDI_DEPLOY_OPTIONS:
+        auto_undeploy: true
+  - name: trinity-srv
+    type: nodejs
+    path: srv
+    properties:
+      CORS:
+        - uriPattern: .
+          allowedMethods:
+            - GET
+            - POST
+          allowedOrigin:
+            - host: '*'
+      SAP_JWT_TRUST_ACL:
+        - clientid: '*'
+          identityzone: '*'
+    build-parameters:
+      ignore:
+        - node_modules/
+    parameters:
+      memory: 512M
+      disk-quota: 512M
+    provides:
+      - name: srv_api
+        public: true
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: trinity-db-hdi-container
+      - name: trinity-db
+      - name: trinity-uaa
+  - name: trinity-ui
+    type: html5
+    path: trinity-ui
+    requires:
+      - name: srv_api
+        group: destinations
+        properties:
+          name: srv_dest
+          url: '~{url}'
+          timeout: 120000
+          forwardAuthToken: true
+      - name: trinity-uaa
+    properties:
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+      CORS:
+        - uriPattern: .
+          allowedMethods:
+            - GET
+            - POST
+          allowedOrigin:
+            - host: '*'
+      SAP_JWT_TRUST_ACL:
+        - clientid: '*'
+          identityzone: '*'
+    parameters:
+      memory: 512M
+resources:
+  - name: trinity-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: '${service-name}'
+    parameters:
+      config:
+        schema: TRNDB
+  - name: TNT
+    parameters:
+      service-name: TNT
+    properties:
+      the-service-name: '${service-name}'
+    type: org.cloudfoundry.existing-service
+  - name: cross-container-service-1
+    parameters:
+      service-name: datafoundation_layer-container
+    properties:
+      the-service-name: '${service-name}'
+    type: org.cloudfoundry.existing-service
+  - name: trinity-uaa
+    type: com.sap.xs.uaa-space
+    parameters:
+      path: xs-security.json
+      service: xsuaa
+description: Product Search Build

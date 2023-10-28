@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog id="selectStateDialog" title="States"
+		items="{path: '/States' , parameters :{ $$operationMode : 'Server', $orderby : 'description asc' }}" search=".onValueHelpDialogStateSearch"
+		confirm=".onValueHelpDialogStateClose" cancel=".onValueHelpDialogStateClose">
+		<StandardListItem icon="{ path: 'country_id', formatter: '.formatter.getFlag' }" iconDensityAware="false" iconInset="false"
+			title="{description}" description="{id}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

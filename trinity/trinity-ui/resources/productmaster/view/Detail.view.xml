@@ -1,0 +1,615 @@
+<mvc:View controllerName="nv.productMaster.controller.Detail" xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" class="sapUiSizeCompact" displayBlock="true"
+	xmlns:form="sap.ui.layout.form" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="{sys_model_no} - {sys_model_description} "/>
+				</expandedHeading>
+				<actions>
+					<m:ToggleButton text="Edit" type="Emphasized" pressed="{detailViewModel>/editing}" visible="{= !${detailViewModel>/editing}}"/>
+					<m:ToggleButton type="Emphasized" icon="sap-icon://decline" press="onBack"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="System Properties" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label id="l_sys_model_no" text="System Model Number" design="Bold" required="true"/>
+									<m:Input id="sys_model_no" value="{sys_model_no}" editable="{= ${detailViewModel>/editing} &amp;&amp; ${oUserModel>/is_trinityadmin}}"/>
+									<!--<m:Label text="Description" design="Bold"/>-->
+									<m:Input id="sys_model_description" value="{sys_model_description}" tooltip="Enter System Model Description.."
+										editable="{detailViewModel>/editing}"/>
+									<m:Label text="System Model Group" design="Bold"/>
+									<m:Input value="{sys_model_group}" editable="{detailViewModel>/editing}" tooltip="Enter Model Group.."/>
+									<m:Label text="System Platform" design="Bold"/>
+									<m:ComboBox change="selectPlatform" selectedKey="{sys_platform_id}" 
+									editable="{detailViewModel>/editing}" tooltip="Select System Platform.."
+										items="{ path: '/ProductPlatform', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_competitor" text="SYS Competitor" design="Bold"/>
+									<m:Select id="sys_competitor" selectedKey="{sys_competitor}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<!--<m:Input id="sys_competitor" value="{sys_competitor}" editable="{detailViewModel>/editing}"/>-->
+									<m:Label id="l_sys_type" text="System Type" design="Bold"/>
+									<m:ComboBox id="sys_type" selectedKey="{sys_type_id}" editable="{detailViewModel>/editing}" tooltip="Select System Type.."
+										items="{ path: '/SysType', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Input id="sys_type" value="{sys_type}" editable="{detailViewModel>/editing}"/>-->
+									<m:Label id="l_sys_screen_size" text="System Screen Size / Group" design="Bold"/>
+									<m:ComboBox id="sys_screen_size" selectedKey="{sys_screen_size_id}" tooltip="Select System Screen Size.."
+										selectionChange="onChangeSysScrnSize" editable="{detailViewModel>/editing}"
+										items="{ path: '/SysScreensize', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:ListItem key="{id}" text="{description}" additionalText="{screen_size_group}"/>
+									</m:ComboBox>
+									<m:ComboBox selectedKey="{sys_screen_size_id}" editable="false"
+										items="{ path: '/SysScreensize', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:ListItem key="{id}" text="{screen_size_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_screen_refresh_rate" text="System Screen Refresh Rate" design="Bold"/>
+									<m:ComboBox id="sys_screen_refresh_rate" selectedKey="{sys_screen_refresh_rate_id}" editable="{detailViewModel>/editing}" tooltip="Select System Screen Refresh.."
+										items="{ path: '/SysScreenRefreshRate', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_screen_resolution" text="System Screen Resolution / Group" design="Bold"/>
+									<m:ComboBox id="sys_screen_resolution" selectedKey="{sys_screen_resolution_id}" editable="{detailViewModel>/editing}" tooltip="Select System Screen Resolution.."
+										items="{ path: '/SysScreenResolution', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Screen Resolution Group" design="Bold"/>-->
+									<m:ComboBox selectedKey="{sys_screen_resolution_id}" editable="false"
+										items="{ path: '/SysScreenResolution', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{resolution_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_panel_type" text="System Panel Type" design="Bold"/>
+									<m:ComboBox id="sys_panel_type" selectedKey="{sys_panel_type_id}" editable="{detailViewModel>/editing}" tooltip="Select System Panel Type.."
+										items="{ path: '/SysPanelType', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_manufacturer" text="System Manufacturer" design="Bold"/>
+									<m:ComboBox id="sys_manufacturer" editable="{detailViewModel>/editing}" selectedKey="{sys_manufacturer_id}" tooltip="Select System Manufacturer.."
+										items="{ path: '/ProductManufacturer', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{name}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_memory_size" text="System Memory Size / Group" design="Bold"/>
+									<m:ComboBox id="sys_memory_size" editable="{detailViewModel>/editing}" selectedKey="{sys_memory_size_id}" tooltip="Select Memory Size.."
+										items="{ path: '/MemorySize', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Memory Size Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_memory_size_id}"
+										items="{ path: '/MemorySize', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{mem_size_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_memory_type" text="System Memory Type" design="Bold"/>
+									<m:ComboBox id="sys_memory_type" editable="{detailViewModel>/editing}" selectedKey="{sys_memory_type_id}" tooltip="Select Memory Type.."
+										items="{ path: '/MemoryType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_dimensions" text="System Dimensions" design="Bold"/>
+									<m:ComboBox id="sys_dimensions" editable="{detailViewModel>/editing}" selectedKey="{sys_dimensions_id}" tooltip="Select System Dimensions.."
+										items="{ path: '/SysDimensions', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_z_height" text="System Height / Group" design="Bold"/>
+									<m:ComboBox id="sys_z_height" editable="{detailViewModel>/editing}" selectedKey="{sys_z_height_id}" tooltip="Select System Height.."
+										items="{ path: '/SysZHeight', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Height Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_z_height_id}"
+										items="{ path: '/SysZHeight', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{height_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_weight"  text="System Weight / Group" design="Bold"/>
+									<m:ComboBox id="sys_weight" editable="{detailViewModel>/editing}" selectedKey="{sys_weight_id}" tooltip="Select System Weight.."
+										items="{ path: '/SysWeight', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Weight Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_weight_id}"
+										items="{ path: '/SysWeight', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{weight_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_brand" text="System Brand / Group1 / Group 2" design="Bold"/>
+									<m:ComboBox id="sys_brand" editable="{detailViewModel>/editing}" selectedKey="{sys_brand_id}" tooltip="Select System Brand.."
+										items="{ path: '/SysBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Brand Group 1" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_brand_id}"
+										items="{ path: '/SysBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{brand_group}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Brand Group 2" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_brand_id}"
+										items="{ path: '/SysBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{brand_group2}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_brand_is_apple" text="System Brand Is Apple" design="Bold"/>
+									<m:Select id="sys_brand_is_apple" selectedKey="{sys_brand_is_apple}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label id="l_sys_brand_series" text="System Brand Series" design="Bold"/>
+									<m:ComboBox id="sys_brand_series" editable="{detailViewModel>/editing}" selectedKey="{sys_brand_series_id}" tooltip="Select System Brand Series.."
+										items="{ path: '/SysBrandSeries', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_brand_consumer_commercial" text="System Brand Consumer-Commercial" design="Bold"/>
+									<m:ComboBox id="sys_brand_consumer_commercial" editable="{detailViewModel>/editing}" selectedKey="{sys_brand_consumer_commercial_id}"
+										tooltip="Select System Brand Consumer-Commercial.."
+										items="{ path: '/SysBrandConsumerCommercial', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_os" text="System OS / Group" design="Bold"/>
+									<m:ComboBox id="sys_os" editable="{detailViewModel>/editing}" selectedKey="{sys_os_id}" tooltip="Select System OS.."
+										items="{ path: '/SysOs', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}" additionalText="{os_group}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System OS Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_os_id}"
+										items="{ path: '/SysOs', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{os_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_storage_type_one" text="System Storage Type 1" design="Bold"/>
+									<m:ComboBox id="sys_storage_type_one" editable="{detailViewModel>/editing}" selectedKey="{sys_storage_type_one_id}" tooltip="Select System Storage Type 1.."
+										items="{ path: '/SysStorageType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_storage_type_two" text="System Storage Type 2" design="Bold"/>
+									<m:ComboBox id="sys_storage_type_two" editable="{detailViewModel>/editing}" selectedKey="{sys_storage_type_two_id}" tooltip="Select System Storage Type 2.."
+										items="{ path: '/SysStorageType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_storage_capacity_one" text="System Storage Capacity 1 / Group" design="Bold"/>
+									<m:ComboBox id="sys_storage_capacity_one" editable="{detailViewModel>/editing}" selectedKey="{sys_storage_capacity_one_id}" tooltip="Select System Storage Capacity 1.."
+										items="{ path: '/SysStorageCapacity', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Storage Capacity Group1" design="Bold"/>-->
+									<m:ComboBox  editable="false" selectedKey="{sys_storage_capacity_one_id}"
+										items="{ path: '/SysStorageCapacity', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{capacity_group}"/>
+									</m:ComboBox>
+									<m:Label id="l_sys_storage_capacity_two" text="System Storage Capacity 2 / Group" design="Bold"/>
+									<m:ComboBox id="sys_storage_capacity_two" editable="{detailViewModel>/editing}" selectedKey="{sys_storage_capacity_two_id}" tooltip="Select System Storage Capacity 2.."
+										items="{ path: '/SysStorageCapacity', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Storage Capacity Group1" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_storage_capacity_two_id}"
+										items="{ path: '/SysStorageCapacity', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{capacity_group}"/>
+									</m:ComboBox>
+									<m:Label text="CPU / GPU" design="Bold"/>
+									<m:Input value="{cpu_gpu}" editable="{detailViewModel>/editing}" tooltip="Enter CPU / GPU.."/>
+									<core:Title text=""/>
+									<m:Label text="Completion Status" design="Bold"/>
+									<m:Switch id="status" state="{ path: 'complete' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									
+									<m:Label text="EOL" design="Bold"/>
+									<m:Switch id="eol" state="{ path: 'eol' }" customTextOn="Yes" customTextOff="No" enabled="{= ${detailViewModel>/editing} &amp;&amp; ${oUserModel>/is_trinityadmin}}"/>
+									
+									<m:Label text="Product Key Flag" design="Bold"/>
+									<m:Switch id="attributes" state="{ path: 'attribute_key' }" customTextOn="Yes" customTextOff="No" enabled="{= ${detailViewModel>/editing} &amp;&amp; ${oUserModel>/is_trinityadmin}}"/>
+									
+									<m:Label text="System ODD / Group" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{sys_odd_id}" tooltip="Select System ODD.."
+										items="{ path: '/SysOdd', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System ODD Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{sys_odd_id}"
+										items="{ path: '/SysOdd',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{odd_group}"/>
+									</m:ComboBox>
+									<m:Label text="System Form Factor" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{sys_form_factor_id}" tooltip="Select System Form Factor.."
+										items="{ path: '/SysFormFactor', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="System Studio" design="Bold"/>-->
+									<!--<m:Input value="{sys_studio}" editable="{detailViewModel>/editing}"/>-->
+									<m:Label text="System Output Display Port" design="Bold"/>
+									<m:Select selectedKey="{sys_output_display_port}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System Output HDMI" design="Bold"/>
+									<m:Select selectedKey="{sys_output_hdmi}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System Output Thunderbolt" design="Bold"/>
+									<m:Select selectedKey="{sys_output_thunderbolt}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System Output VGA" design="Bold"/>
+									<m:Select selectedKey="{sys_output_vga}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System Output GSync" design="Bold"/>
+									<m:Select selectedKey="{sys_output_gsync}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System Studio" design="Bold"/>
+									<m:Select selectedKey="{sys_studio}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU Discrete" design="Bold"/>
+									<m:Select selectedKey="{gpu_discrete}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU ITX" design="Bold"/>
+									<m:Select selectedKey="{gpu_itx}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU Low Profile" design="Bold"/>
+									<m:Select selectedKey="{gpu_low_profile}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU Single Slot" design="Bold"/>
+									<m:Select selectedKey="{gpu_single_slot}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU MaxQ" design="Bold"/>
+									<m:Select selectedKey="{gpu_max_q}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="System GPU Ops Supported" design="Bold"/>
+									<m:Select selectedKey="{gpu_ops_supported}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<!--<m:Label text="System GPU Performance" design="Bold"/>-->
+									<m:Label text="System GPU Shadow Play" design="Bold"/>
+									<m:Select selectedKey="{gpu_shadow_play}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="GPU Base Clock (MHz)" design="Bold"/>
+									<m:Input value="{gpu_base_clock}" editable="{detailViewModel>/editing}" tooltip="Enter GPU Base Clock( Numeric ).."/>
+									<m:Label text="GPU Boost Clock (MHz)" design="Bold"/>
+									<m:Input value="{gpu_boost_clock}" editable="{detailViewModel>/editing}" tooltip="Enter GPU Boost Clock( Numeric ).."/>
+									<m:Label text="System GPU Brand / Group" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_brand_id}" tooltip="Select System GPU Brand.."
+										items="{ path: '/GpuBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="GPU Brand Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{gpu_brand_id}"
+										items="{ path: '/GpuBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{brand_group}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Level" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_level_id}" tooltip="Select GPU Level.."
+										items="{ path: '/GpuLevel', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="GPU Discrete vs Integrated" design="Bold"/>-->
+									<!--<m:Input value="{gpu_discrete}" editable="{detailViewModel>/editing}"/>-->
+									<m:Label text="GPU Edition" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_edition_id}" tooltip="Select GPU Edition.."
+										items="{ path: '/GpuEdition', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Cooling" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_cooling_id}" tooltip="Select GPU Cooling.."
+										items="{ path: '/GpuCooling', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Perf" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_perf_id}" tooltip="Select GPU Perf.."
+										items="{ path: '/GpuPerf', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									
+										<m:Label text="Bus Type" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{bus_type_id}" tooltip="Select Bus Type.."
+										items="{ path: '/BusType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="GPU Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="2" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="GPU Model No" design="Bold"/>
+									<m:Input type="Text" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="OnGpuMdelPress" id="gpu_model_no"
+										tooltip="Search / Create GPU Model.." value="{gpu/gpu_model_no}" editable="{detailViewModel>/editing}"/>
+									<m:Button icon="sap-icon://decline" type="Transparent" press="onPressCancelGPU" tooltip="Remove GPU Model.." enabled="{detailViewModel>/editing}">
+										<m:layoutData>
+										<l:GridData span="L1 M1 S5" />
+										</m:layoutData>
+									</m:Button>
+									<m:Label text="GPU Model No 2" design="Bold"/>
+									<m:Input id="gpu_gpu_model_no2" value="{gpu/gpu_model_no2}" enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										editable="{detailViewModel>/editing}" tooltip="Enter GPU Model No 2.."/>
+									<!--<m:Text id="gpu_id" text="{gpu/id}"/>-->
+									<m:Label text="GPU Current Model" design="Bold"/>
+									<m:Input id="gpu_gpu_model_no_current" value="{gpu/gpu_model_no_current}" enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										editable="{detailViewModel>/editing}" tooltip="Enter GPU Model Current Model.."/>
+									<m:Label text="GPU Model Group" design="Bold"/>
+									<m:Input id="gpu_gpu_model_group" value="{gpu/gpu_model_group}" enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										editable="{detailViewModel>/editing}" tooltip="Enter GPU Model Group.."/>
+									
+									
+									<m:Label text="GPU Architecture / Group" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										selectedKey="{gpu/gpu_architecture_id}" tooltip="Select GPU Architecture.."
+										items="{ path: '/GpuArchitecture', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="GPU Architecture Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{gpu/gpu_architecture_id}" enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuArchitecture', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{architecture_group}"/>
+									</m:ComboBox>
+									<m:Label text="GPU DX Type" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu/gpu_dx_type_id}" tooltip="Select GPU DX Type.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuDxType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Segment" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu/gpu_segment_id}" tooltip="Select GPU Segment.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuSegment', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									
+									<core:Title text=""/>
+									
+									<m:Label text="GPU GF Segment" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu/gpu_gf_segment_id}" tooltip="Select GPU GF Segment.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuGfSegment', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU GF Sub-Segment" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu/gpu_gf_sub_segment_id}" tooltip="Select GPU GF Segment.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuGfSubSegment', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Class" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu/gpu_class_id}" tooltip="Select GPU Class.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/GpuClass', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Memory Size" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_memory_size_id}" tooltip="Select GPU Memory Size.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/MemorySize', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Memory Type" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_memory_type_id}" tooltip="Select GPU Memory Size.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/MemoryType', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Manufacturer" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{gpu_manufacturer_id}" tooltip="Select GPU Manufacturer.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/ProductManufacturer',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{name}"/>
+									</m:ComboBox>
+									<m:Label text="GPU Manufacturer Type" design="Bold"/>
+									<m:ComboBox editable="false" selectedKey="{gpu_manufacturer_id}" tooltip="Select GPU Manufacturer Type.."
+										enabled="{=!! ${path:'gpu/gpu_model_no', targetType : 'any'}}"
+										items="{ path: '/ProductManufacturer',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:Item key="{id}" text="{type}"/>
+									</m:ComboBox>
+									<!--<m:Label text="GPU Created On" design="Bold"/>-->
+									<!--<m:DatePicker id="gpu_created_on" value="{gpu/created_on}" editable="false"/>-->
+									<!--<m:Label text="GPU Created By" design="Bold"/>-->
+									<!--<m:Input id="gpu_created_by" value="{gpu/created_by}" editable="false"/>-->
+									<!--<m:Label text="GPU Changed On" design="Bold"/>-->
+									<!--<m:DatePicker id="gpu_changed_on" value="{gpu/changed_on}" editable="false"/>-->
+									<!--<m:Label text="GPU Changed By" design="Bold"/>-->
+									<!--<m:Input id="gpu_changed_by" value="{gpu/changed_by}" editable="false"/>-->
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="CPU Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="2" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="CPU Model No" design="Bold"/>
+									<m:Input id="cpu_model_no" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="OnCpuMdelPress"  value="{path:'cpu/cpu_model_no'}"
+										editable="{detailViewModel>/editing}" tooltip="Search / Create CPU Model.."/>
+									<m:Button icon="sap-icon://decline" type="Transparent" press="onPressCancelCPU" tooltip="Remove CPU Model.." enabled="{detailViewModel>/editing}">
+										<m:layoutData>
+										<l:GridData span="L1 M1 S5" />
+										</m:layoutData>
+									</m:Button>	
+									<!--<m:Text id="cpu_id" text="{path:'cpu/id'}"/>-->
+									<m:Label text="CPU Brand / Group" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_brand_id}" tooltip="Select CPU Brand.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<!--<m:Label text="CPU Brand Group" design="Bold"/>-->
+									<m:ComboBox editable="false" selectedKey="{cpu/cpu_brand_id}" enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuBrand', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{brand_group}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Core Frequency" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_core_frequency_id}" tooltip="Select CPU Core Frequency.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuCoreFrequency', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Core" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_core_id}" tooltip="Select CPU Core.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuCore', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Manufacturer" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_manufacturer_id}" tooltip="Select CPU Manufacturer.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/ProductManufacturer',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{name}"/>
+									</m:ComboBox>
+									
+									<core:Title text=""/>
+									
+									<m:Label text="CPU Architecture" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_architecture_id}" tooltip="Select CPU Architecture.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuArchitecture', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Class" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_class_id}" tooltip="Select CPU Class.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuClass', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Generation" design="Bold"/>
+									<m:ComboBox editable="{detailViewModel>/editing}" selectedKey="{cpu/cpu_generation_id}" tooltip="Select CPU Generation.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuBrandGeneration', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{description}"/>
+									</m:ComboBox>
+									<m:Label text="CPU Brand Group-Generation" design="Bold"/>
+									<m:ComboBox editable="false" selectedKey="{cpu/cpu_generation_id}" tooltip="Select CPU Generation.."
+										enabled="{=!! ${path:'cpu/cpu_model_no', targetType : 'any'}}"
+										items="{ path: '/CpuBrandGeneration', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+										<core:ListItem key="{id}" text="{generation_group}"/>
+									</m:ComboBox>
+									<!--<m:Label text="CPU Created On" design="Bold"/>-->
+									<!--<m:Input id="cpu_created_on" value="{cpu/created_on}" editable="false"/>-->
+									<!--<m:Label text="CPU Created By" design="Bold"/>-->
+									<!--<m:Input id="cpu_created_by" value="{cpu/created_by}" editable="false"/>-->
+									<!--<m:Label text="CPU Changed On" design="Bold"/>-->
+									<!--<m:Input id="cpu_changed_on" value="{cpu/changed_on}" editable="false"/>-->
+									<!--<m:Label text="CPU Changed By" design="Bold"/>-->
+									<!--<m:Input id="cpu_changed_by" value="{cpu/changed_by}" editable="false"/>-->
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			
+			<ObjectPageSection title="Comments" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<l:VerticalLayout class="sapUiContentPadding" width="100%">
+								<m:FeedInput post=".onPost" growing="true" showIcon="false"/>
+								<m:List id="idCommentsList" noDataText="No Comments" growing="true" growingScrollToLoad="false" showSeparators="Inner"
+									items="{ path: 'comments', length: 400 , parameters :{ $$operationMode : 'Server', $orderby : 'inserttime desc' }}">
+									<m:FeedListItem info="Commented On" icon="{ path: 'user', formatter: '.formatter.getOutlookPic' }" iconDensityAware="false" text="{comment}"
+										timestamp="{inserttime}" sender="{commentby}"/>
+								</m:List>
+							</l:VerticalLayout>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			
+		</sections>
+		<footer>
+			<m:OverflowToolbar asyncMode="true">
+				<m:ToolbarSpacer/>
+				<m:Button id="saveBtn" text="Save" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

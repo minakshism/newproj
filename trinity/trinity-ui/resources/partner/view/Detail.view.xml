@@ -1,0 +1,366 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	class="sapUiSizeCompact" displayBlock="true" xmlns:form="sap.ui.layout.form" controllerName="partner.controller.Detail" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="{id} - {name} "/>
+				</expandedHeading>
+				<actions>
+					<m:ToggleButton text="Edit" type="Emphasized" pressed="{detailViewModel>/editing}" visible="{= !${detailViewModel>/editing}}"/>
+					<!--	<m:ToggleButton type="Emphasized" icon="sap-icon://full-screen" press=".toggleFullScreen"/> -->
+					<m:ToggleButton type="Emphasized" icon="sap-icon://decline" press="handleClose"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="Location" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text="Address"/>
+									<m:Label text="Name" design="Bold"/>
+									<m:Input value="{ path: 'name', type: 'sap.ui.model.odata.type.String', constraints: { nullable: false, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}"/>
+									<m:Label text="Address" design="Bold"/>
+									<m:Input value="{ path: 'address_first', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}" placeholder="Address Line 1.."/>
+									<m:Input value="{ path: 'address_second', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}" placeholder="Address Line 2.."/>
+									<m:Label text="City /Zip Code" design="Bold"/>
+									<m:Input value="{ path: 'city', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}" placeholder="City.."/>
+									<m:Input value="{ path: 'postal_code', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}" placeholder="ZIP Code.." id="postalCode"/>
+									<m:Label text="Country/ State(Province)" design="Bold"/>
+									<m:Input selectedKey="{ path: 'country_id', type: 'sap.ui.model.odata.type.String', constraints: { nullable: false, maxLength:3 } }"
+										id="country" placeholder="Country.." showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpCountryRequest"
+										suggestionItemSelected=".onSuggestionCountrySelected" editable="{detailViewModel>/editing}"
+										suggestionItems="{ path: '/Country', length: 400 , $orderby : 'country_name' }">
+										<m:suggestionItems>
+											<core:Item key="{id}" text="{country_name}"/>
+										</m:suggestionItems>
+									</m:Input>
+									<m:Input selectedKey="{ path: 'state_id', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength:10 } }"
+										id="state" placeholder="State.." showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpStateRequest"
+										editable="{detailViewModel>/editing}" suggestionItems="{ path: 'country/state', length: 4000 , $orderby : 'description' }">
+										<m:suggestionItems>
+											<core:Item key="{id}" text="{description}"/>
+										</m:suggestionItems>
+									</m:Input>
+								</form:content>
+							</form:SimpleForm>
+							<form:SimpleForm id="Geography" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false" binding="{country}">
+								<form:content>
+									<core:Title text="Geographical Regions"/>
+									<m:Label text="Region" design="Bold"/>
+									<m:Text id="region" text="{region/id} - {region/description}"/>
+									<m:Label text="Sub Region / Grouping" design="Bold"/>
+									<m:Text id="subregion" text="{sub_region/description}"/>
+									<m:Text id="grouping" text="{country_grouping/description}"/>
+									<m:Label text="Terriroty" design="Bold"/>
+									<m:Text id="territory" text="{territory/description}"/>
+									<m:Label text="Market Economy" design="Bold"/>
+									<m:Text id="marketeconomy" text="{market_economy/description}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="4" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="Reporting Partner" design="Bold"/>
+									<m:Switch id="rp" state="{ path: 'rp_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="End Customer" design="Bold"/>
+									<m:Switch id="ec" state="{ path: 'ec_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Enterprise Partner" design="Bold"/>
+									<m:Switch id="npnp" state="{ path: 'is_npn' }" customTextOn="Yes" customTextOff="No" enabled="false"/>
+									<m:Label text="Consumer Partner" design="Bold"/>
+									<m:Switch id="consumer" state="{ path: 'is_consumer' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Reporting Partner Active" design="Bold"/>
+									<m:Switch id="active" state="{ path: 'active' }" change="onChangeActivePrtnr" customTextOn="Yes" customTextOff="No"
+										enabled="{detailViewModel>/editing}"/>
+									<core:Title text=""/>
+									<m:Label text="Authorization Flag" design="Bold"/>
+									<m:Switch id="authflag" state="{ path: 'authorized_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Quarantine Flag" design="Bold"/>
+									<m:Switch id="quarantineflag" state="{ path: 'quarantine_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Inventory Adjustment Flag" design="Bold"/>
+									<m:Switch id="invadjustflag" state="{ path: 'inv_adjust_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="On Hold Flag" design="Bold"/>
+									<m:Switch id="onholdflag" state="{ path: 'on_hold_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Enabled For Manual Data Input" design="Bold"/>
+									<m:Switch id="posflag" state="{ path: 'pos_data_flag' }" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Classification" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="classification" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto"
+								sticky="ColumnHeaders,HeaderToolbar" mode="MultiSelect"
+								items="{ path: 'classifications', parameters :{ $$operationMode : 'Server', $orderby : 'sys_platform_id asc' , $count : true} ,templateShareable: true }">
+								<m:headerToolbar>
+									<m:OverflowToolbar id="otbSubheader">
+										<m:Button id="addButton" icon="sap-icon://add" type="Transparent" press=".onAddClassification" visible="{detailViewModel>/editing}"/>
+										<m:Button id="deleteButton" icon="sap-icon://delete" type="Transparent" press=".onDeleteClassification" visible="{detailViewModel>/editing}"/>
+									</m:OverflowToolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Platform"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Main Partner Type"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Main Partner Program"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Main Partner Tier Level"/>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem >
+										<m:cells>
+											<m:ComboBox placeholder="Select Platform..." required="true" selectedKey="{sys_platform_id}" editable="{detailViewModel>/editing}"
+												items="{ path: '/ProductPlatform', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' } }">
+												<core:Item key="{id}" text="{description}"/>
+											</m:ComboBox>
+											<m:ComboBox placeholder="Select Partner Type..." required="true" selectedKey="{channel_type_main_id}" editable="{detailViewModel>/editing}"
+												items="{ path: '/PartnerChanneltype', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' } }">
+												<core:Item key="{id}" text="{description}"/>
+											</m:ComboBox>
+											<m:ComboBox placeholder="Select Partner Program..." required="true" selectedKey="{channel_program_main_id}"
+												editable="{detailViewModel>/editing}"
+												items="{ path: '/PartnerChannelProgram', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'description' } }">
+												<core:Item key="{id}" text="{description}"/>
+											</m:ComboBox>
+											<m:Input placeholder="Enter Tier Level..." value="{channel_level_main}" editable="{detailViewModel>/editing}"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Contacts" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="4" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="Consumer Contact Name" design="Bold"/>
+									<m:Input value="{ path: 'contact_name_main', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										placeholder="Name.." editable="{detailViewModel>/editing}"/>
+									<m:Label text="Consumer Contact Email" design="Bold"/>
+									<m:Input value="{ path: 'contact_email_main', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										type="Email" placeholder="user@somemail.com" editable="{detailViewModel>/editing}"/>
+									<m:Label text="Consumer Contact Phone" design="Bold"/>
+									<m:Input value="{ path: 'contact_phone_main', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										type="Tel" placeholder="Telephone.." editable="{detailViewModel>/editing}"/>
+									<m:Label text="Consumer Sales Rep" design="Bold"/>
+									<m:Input value="{ path: 'nv_sales_rep_empid', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength:256 } }"
+										id="nv_sales_rep_empid" placeholder="Select Sales Rep Id.." showValueHelp="true" valueHelpRequest=".onValueHelpEmpRequest"
+										editable="{detailViewModel>/editing}"></m:Input>
+									<m:Input value="{ path: 'nv_sales_rep/knownas' }" id="nv_sales_rep_knownas" editable="false"></m:Input>
+									<core:Title text=""/>
+									<m:Label text="Enterprise Contact Name" design="Bold"/>
+									<m:Input value="{ path: 'contact_name_secondary', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										placeholder="Name.." editable="{detailViewModel>/editing}"/>
+									<m:Label text="Enterprise Contact Email" design="Bold"/>
+									<m:Input
+										value="{ path: 'contact_email_secondary', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										type="Email" placeholder="user@somemail.com" editable="{detailViewModel>/editing}"/>
+									<m:Label text="Enterprise Contact Phone" design="Bold"/>
+									<m:Input
+										value="{ path: 'contact_phone_secondary', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										type="Tel" placeholder="Telephone.." editable="{detailViewModel>/editing}"/>
+									<m:Label text="Enterprise Sales Rep" design="Bold"/>
+									<m:Input value="{ path: 'npn/npn_pbm', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength:256 } }"
+										id="ent_sales_rep_empid" editable="false"></m:Input>
+									<core:Title text=""/>
+									<m:Label text="Other Information" design="Bold"/>
+									<m:TextArea placeholder="Other Info..."
+										value="{ path: 'other_info', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 500 } }" growing="true"
+										editable="{detailViewModel>/editing}" growingMaxLines="10" width="100%"/>
+									<core:Title text=""/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Status" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="4" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="Production Date" labelFor="PD" design="Bold"/>
+									<m:DatePicker id="PD" value="{ path: 'production_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true} }"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="Signed LOA Date" labelFor="SD" design="Bold"/>
+									<m:DatePicker id="SD" value="{path: 'signed_loa_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="POS Test File Date" labelFor="TD" design="Bold"/>
+									<m:DatePicker id="TD" value="{ path: 'pos_test_file_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="Historical Date Requested" labelFor="HD" design="Bold"/>
+									<m:DatePicker id="HD" value="{ path: 'hist_date_req', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<core:Title text=""/>
+									<m:Label text="RP Onboard Date" labelFor="CD" design="Bold"/>
+									<m:DatePicker id="CD" value="{ path: 'rp_onboarding_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="RP Deactivation Date" labelFor="DD" design="Bold"/>
+									<m:DatePicker id="DD" value="{ path: 'deactivation_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="Test File Date Requested" labelFor="TF" design="Bold"/>
+									<m:DatePicker id="TF" value="{ path: 'test_file_date_req', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="Inventory Test File Date" labelFor="ID" design="Bold"/>
+									<m:DatePicker id="ID" value="{ path: 'inv_test_file_date', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+									<m:Label text="Historical Date Recieved" labelFor="HR" design="Bold"/>
+									<m:DatePicker id="HR" value="{ path: 'hist_date_recv', type: 'sap.ui.model.odata.type.Date', constraints: { nullable: true}}"
+										valueFormat="yyyy-MM-dd" displayFormat="short" editable="{detailViewModel>/editing}" class="sapUiSmallMarginBottom"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Product / Partner Mapping Config" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm maxContainerCols="4" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4"
+								labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+								singleContainerFullSize="false">
+								<form:content>
+									<core:Title text=""/>
+									<m:Label text="EC Fuzzy Config Id" design="Bold"/>
+									<m:Input value="{ path: 'ec_fuzzy_config', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}"/>
+									<m:Label text="Product Mapping Fuzzy Config Id)" design="Bold"/>
+									<m:Input value="{ path: 'product_fuzzy_config', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}"/>
+									<core:Title text=""/>
+									<m:Label text="EC Fuzzy Config Person Id)" design="Bold"/>
+									<m:Input value="{ path: 'ec_fuzzy_config_person', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}"/>
+									<m:Label text="Product Mapping Message)" design="Bold"/>
+									<m:Input
+										value="{ path: 'product_mapping_message', type: 'sap.ui.model.odata.type.String', constraints: { nullable: true, maxLength: 256 } }"
+										editable="{detailViewModel>/editing}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Enterpise Partner Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="sfdc_account" items="{sfdc_account}">
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Enterprise Account Id"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Enterprise Account Name"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Address"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="City"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="State"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="ZIP Code"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Country"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Text text="Portal Access"/>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem>
+										<m:cells>
+											<m:Text text="{id}"/>
+											<m:Text text="{npn_account_name}"/>
+											<m:Text text="{address}"/>
+											<m:Text text="{city}"/>
+											<m:Text text="{state}"/>
+											<m:Text text="{postal_code}"/>
+											<m:Text text="{country}"/>
+											<m:Switch id="portalaccess" state="{ path: 'portal_access' }" customTextOn="Yes" customTextOff="No" enabled="false"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="Comments" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<l:VerticalLayout class="sapUiContentPadding" width="100%">
+								<m:FeedInput post=".onPost" growing="true" showIcon="false"/>
+								<m:List id="idCommentsList" noDataText="No Comments" growing="true" growingScrollToLoad="false" showSeparators="Inner"
+									items="{ path: 'comments', length: 400 , parameters :{ $$operationMode : 'Server', $orderby : 'inserttime desc' }}">
+									<m:FeedListItem info="Commented On" icon="{ path: 'user', formatter: '.formatter.getOutlookPic' }" iconDensityAware="false" text="{comment}"
+										timestamp="{inserttime}" sender="{commentby}"/>
+								</m:List>
+							</l:VerticalLayout>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar asyncMode="true">
+				<m:ToolbarSpacer/>
+				<m:Button id="submitBtn" text="Submit" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

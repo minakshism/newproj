@@ -1,0 +1,132 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f"
+	class="sapUiSizeCompact" displayBlock="true" xmlns:form="sap.ui.layout.form" controllerName="productmapping.controller.Detail" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="{reported_product_id} - {reported_product_description} "/>
+				</expandedHeading>
+				<!--<navigationActions>-->
+				<!--	<m:OverflowToolbarButton type="Transparent" icon="sap-icon://sys-back-2" press="onPressBack" tooltip="Close column"/>-->
+				<!--</navigationActions>-->
+				<actions>
+					<m:ToggleButton text="Edit" press="onPressEdit" type="Emphasized" pressed="{detailViewModel>/editing}"
+						visible="{= !${detailViewModel>/editing}}"/>
+					<m:ToggleButton type="Emphasized" icon="sap-icon://decline" press="onPressBack" id="decline"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="Reported Product Information" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<!--<HBox>-->
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<m:Label text="RP ID / RP Name" design="Bold"/>
+									<m:Text id="partnerid" text="{partner_id}"/>
+									<m:Text id="partnername" text="{partner/name}"/>
+									<m:Label text="Reported Product ID" design="Bold"/>
+									<m:Text id="reportedproduct" text="{reported_product_id}"/>
+									<m:Label text="Reported Manufacturer" design="Bold"/>
+									<m:Text id="reportedmanufacturer" text="{reported_manufacturer}"/>
+									<m:Label text="Reported Product Description" design="Bold"/>
+									<m:Text id="reportedproductdescription" text="{reported_product_description}"/>
+									<m:Label text="Reported Product Type" design="Bold" required="true"/>
+									<m:ComboBox id="reportedproducttype" selectedKey="{reported_product_type}" editable="{detailViewModel>/editing}"
+										placeholder="Bundle or Un Bundle.." selectionChange="onSelectReportedType">
+										<m:items>
+											<core:Item text="Unbundled" key="Unbundled"/>
+											<core:Item text="Bundled" key="Bundled"/>
+										</m:items>
+									</m:ComboBox>
+									<m:Label text="On Hold" design="Bold"/>
+									<m:Switch state="{ path: 'on_hold'}" customTextOn="Yes" customTextOff="No" enabled="{detailViewModel>/editing}"/>
+									<m:Label text="Assigned to empid" design="Bold"/>
+									<m:Input id="empid" enabled="{detailViewModel>/editing}" type="Text" placeholder="Enter Employee Id" value="{path:'assigned_to_empid'}"
+										showValueHelp="true" valueHelpOnly="true" class="sapUiSmallMarginBottom" valueHelpRequest="onAddEmployee"/>
+									<m:Input id="knownas" value="{assigned_to/knownas}" editable="false"/>
+									<m:Label text="Comment type" design="Bold"/>
+									<m:Select selectedKey="{comment_type}" editable="{detailViewModel>/editing}">
+										<m:items>
+											<core:Item text="" key=""/>
+											<core:Item text="Yes" key="true"/>
+											<core:Item text="No" key="false"/>
+										</m:items>
+									</m:Select>
+									<m:Label text="Comment" design="Bold"/>
+									<m:TextArea value="{comment}" placeholder="Enter Comment" enabled="{detailViewModel>/editing}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection title="System Model Mapping" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="DetailList" growing="true" growingScrollToLoad="true" class="sapFDynamicPageAlignContent" width="auto" mode="MultiSelect"
+								sticky="ColumnHeaders,HeaderToolbar"
+								items="{ path: 'mapping_items', parameters :{ $$operationMode : 'Server', $count : true}, templateShareable: true }">
+								<m:headerToolbar>
+									<m:OverflowToolbar>
+										<m:content>
+											<m:Title id="productmappingTitle" text=""/>
+										</m:content>
+										<m:ToolbarSpacer/>
+										<m:ToolbarSpacer/>
+										<m:Button id="addItem" icon="sap-icon://add" type="Transparent" press=".addNewItem" enabled="{detailViewModel>/editing}"/>
+										<m:Button class="cldelete" id="deleteItem" icon="sap-icon://delete" type="Transparent" press=".onDeleteItem"
+											enabled="{detailViewModel>/editing}"/>
+									</m:OverflowToolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+										<m:Label required="true" text="System Model ID"/>
+									</m:Column>
+									<m:Column width="10rem" minScreenWidth="Tablet" demandPopin="true">
+										<m:Label text="Entity Type"/>
+									</m:Column>
+									<m:Column width="9rem" minScreenWidth="Tablet" demandPopin="true">
+										<m:Label text="Quantity"/>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem>
+										<m:cells>
+											<m:VBox>
+												<m:Input width="100%" value="{sys_model/sys_model_no}" showValueHelp="true" editable="{LocalDataModel>/edited}"
+													enabled="{detailViewModel>/editing}" valueHelpRequest="onAddMapping" valueHelpOnly="true"/>
+												<m:Text text="{sys_model_id}" visible="false"/>
+											</m:VBox>
+											<m:ComboBox editable="{LocalDataModel>/edited}" selectedKey="{entity_type}" enabled="{detailViewModel>/editing}">
+												<m:items>
+													<core:Item text="POS/INV" key="POS/INV"/>
+													<core:Item text="INV" key="INV"/>
+												</m:items>
+											</m:ComboBox>
+											<m:Input type="Number" value="{quantity}" editable="{LocalDataModel>/edited}" enabled="{detailViewModel>/editing}"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar asyncMode="true">
+				<m:ToolbarSpacer/>
+				<m:Button id="submitBtn" text="Submit" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,32 @@
+
+VIEW POSSERVICE_PRODUCTSEARCHADVANCE (	in REPORTING_PARTNER_ID				NVARCHAR(10) ,
+	                            		in REPORTED_PRODUCT_ID 				NVARCHAR(256),
+										in REPORTED_PRODUCT_DESCRIPTION		NVARCHAR(1000),
+										in REPORTED_MANUFACTURER            NVARCHAR(256),
+                                		in SYS_PLATFORM_ID					NVARCHAR(256) ) as
+(
+	
+
+
+
+SELECT 
+	"MATCH_SCORE",
+	"RP",
+	"REGION",
+	"RP_TYPE",
+	"SYS_MODEL_NO",
+	"PRODUCT_CODE",
+	"SYS_PLATFORM_ID",
+	"REPORTED_PRODUCT_ID",
+	"REPORTED_PRODUCT_DESCRIPTION",
+	"REPORTED_MANUFACTURER",
+	"SYS_MODEL_ID"
+FROM "PRODUCT_FUZZY_RESULT"(  PLACEHOLDER."$$reporting_partner_id$$"=>		:REPORTING_PARTNER_ID, 
+	                          PLACEHOLDER."$$reported_product_id$$"=>		:REPORTED_PRODUCT_ID, 
+                              PLACEHOLDER."$$reported_product_description$$"=> 	:REPORTED_PRODUCT_DESCRIPTION,
+                              PLACEHOLDER."$$reported_manufacturer$$"=> 	:REPORTED_MANUFACTURER, 
+                              PLACEHOLDER."$$sys_platform_id$$"=>	:SYS_PLATFORM_ID ) 
+			
+	
+)
+

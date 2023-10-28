@@ -1,0 +1,136 @@
+procedure "PARTNER_AUTO_MAP"( in reporting_partner_id nvarchar(10), 
+                              in reported_name nvarchar(256),
+                              in reported_address_first nvarchar(256),
+                              in reported_address_second nvarchar(256),
+                              in reported_city nvarchar(256),
+                              in reported_state nvarchar(256) ,
+                              in reported_postal_code nvarchar(50),
+                              in reported_country_id nvarchar(3),
+                             out mapping_id nvarchar(36)  )
+   language sqlscript
+   sql security definer
+   --default schema <default_schema_name>
+    as
+    query_string    			nvarchar(5500)	:= ''	;
+    lv_found        			integer     	:= 0	; 
+    lv_reporting_partner_id 	nvarchar(10); 
+    lv_reported_name			nvarchar(256);
+    lv_reported_address_first	nvarchar(256);
+    lv_reported_address_second	nvarchar(256);
+    lv_reported_city			nvarchar(256);
+    lv_reported_state			nvarchar(256) ;
+    lv_reported_postal_code 	nvarchar(50);
+    lv_reported_country_id		nvarchar(3);
+     
+begin
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+    /* Trim leading and trailing spaces */
+   lv_reporting_partner_id			= rtrim(ltrim(ifnull(reporting_partner_id,' '), ' '), ' ');
+   lv_reported_name 				= rtrim(ltrim(ifnull(reported_name,' '), ' '), ' ');
+   lv_reported_address_first		= rtrim(ltrim(ifnull(reported_address_first, ' ' ), ' '), ' ');
+   lv_reported_address_second		= rtrim(ltrim(ifnull(reported_address_second, ' '), ' '), ' ');
+   lv_reported_city 				= rtrim(ltrim(ifnull(reported_city, ' '), ' '),' ');
+   lv_reported_state				= rtrim(ltrim(ifnull(reported_state , ' ' ), ' '), ' ');
+   lv_reported_postal_code			= rtrim(ltrim(ifnull(reported_postal_code, ' '), ' '),' ');
+   lv_reported_country_id			= rtrim(ltrim(ifnull(reported_country_id , ' '), ' '),' ');
+ 
+   
+   /* query_string = lv_reported_name || ' ' ||  lv_reported_address_first 
+                 || ' ' || lv_reported_address_second  || ' ' || lv_reported_city   || ' ' || lv_reported_state 
+                 || ' ' || lv_reported_postal_code  || ' ' ||  lv_reported_country_id  ;
+                 
+                 
+    if ltrim(query_string, ' ') = '' then
+     return ;
+    end if;*/
+    
+   /* Look for Exact Match */
+     map_data = select id from PARTNER_EC_MAPPING 
+					where      REPORTING_PARTNER_ID		= lv_REPORTING_PARTNER_ID
+						and    REPORTED_NAME 			= lv_REPORTED_NAME
+						and    REPORTED_ADDRESS_FIRST	= lv_REPORTED_ADDRESS_FIRST
+						and    REPORTED_ADDRESS_SECOND	= lv_REPORTED_ADDRESS_SECOND
+						and    REPORTED_CITY			= lv_REPORTED_CITY           
+						and    REPORTED_STATE			= lv_REPORTED_STATE
+						and    REPORTED_POSTAL_CODE 	= lv_REPORTED_POSTAL_CODE
+						and    REPORTED_COUNTRY_ID		= lv_REPORTED_COUNTRY_ID;
+						
+     /* If exact match not, found search for fuzzy match with threshold 1 */
+     if is_empty(:map_data) then 
+   map_data = select id from PARTNER_EC_MAPPING 
+					where contains 	 ( REPORTING_PARTNER_ID , lv_REPORTING_PARTNER_ID, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_NAME , lv_REPORTED_NAME , FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_ADDRESS_FIRST , lv_REPORTED_ADDRESS_FIRST, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_ADDRESS_SECOND , lv_REPORTED_ADDRESS_SECOND, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_CITY , lv_REPORTED_CITY, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))             
+						and   contains ( REPORTED_STATE , lv_REPORTED_STATE, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))  
+						and   contains ( REPORTED_POSTAL_CODE , lv_REPORTED_POSTAL_CODE, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))  
+						and   contains ( REPORTED_COUNTRY_ID , lv_REPORTED_COUNTRY_ID, FUZZY(1, 'similarCalculationMode=substringsearch,emptyScore=0.5'))             
+						order by score() desc;
+									
+   
+    end if; 
+  if is_empty(:map_data) then 
+  /* If exact match not found, search for fuzzy match with threshold 0.9 */
+  map_data = select id from PARTNER_EC_MAPPING 
+					where contains 	 ( REPORTING_PARTNER_ID , lv_REPORTING_PARTNER_ID, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_NAME , lv_REPORTED_NAME , FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_ADDRESS_FIRST , lv_REPORTED_ADDRESS_FIRST, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_ADDRESS_SECOND , lv_REPORTED_ADDRESS_SECOND, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))
+						and   contains ( REPORTED_CITY , lv_REPORTED_CITY, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))             
+						and   contains ( REPORTED_STATE , lv_REPORTED_STATE, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))  
+						and   contains ( REPORTED_POSTAL_CODE , lv_REPORTED_POSTAL_CODE, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))  
+						and   contains ( REPORTED_COUNTRY_ID , lv_REPORTED_COUNTRY_ID, FUZZY(0.9, 'similarCalculationMode=substringsearch,emptyScore=0.5'))             
+						order by score() desc;
+  
+     
+  
+  end if;
+   /* If no record found insert a new mapping record */
+  if is_empty(:map_data) then 
+     mapping_id = replace_regexpr('(.{8})(.{4})(.{4})(.{4})(.*)' in newuid() with '\1-\2-\3-\4-\5') ;
+     insert into partner_ec_mapping ( id, 
+                                reporting_partner_id , 
+     	                        reported_name,
+     	                        reported_city,
+     	                        reported_postal_code,
+     	                        created_by,
+     	                        created_on,
+     	                        changed_by,
+     	                        changed_on,
+     	                        reported_country_id,
+     	                        reported_state,
+     	                        reported_address_first,
+     	                        reported_address_second )
+     	                values
+     	                        (
+     	                         mapping_id ,
+     	                        lv_reporting_partner_id , 
+     	                        lv_reported_name,
+     	                        lv_reported_city,
+     	                        lv_reported_postal_code,
+     	                        upper( session_context('APPLICATIONUSER')),
+     	                        current_timestamp,
+     	                        upper( session_context('APPLICATIONUSER')),
+     	                        current_timestamp,
+     	                        lv_reported_country_id,
+     	                        lv_reported_state,
+     	                        lv_reported_address_first,
+     	                        lv_reported_address_second
+     	                        	
+     	                        	
+     	                        	
+     	                        	
+     	                        );
+     	                        
+     	                        commit;
+     	
+     	
+     	
+     else
+     	   select id into mapping_id from :map_data limit 1;
+     end if;
+  
+end

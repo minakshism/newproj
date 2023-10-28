@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CVD_COUNTRY_MASTER" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Partner Master"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="GEO_COUNTRY">
+    <resourceUri>GEO_COUNTRY</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_GROUPING">
+    <resourceUri>GEO_GROUPING</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_TERRITORY">
+    <resourceUri>GEO_TERRITORY</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_SUB_REGION">
+    <resourceUri>GEO_SUB_REGION</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_REGION">
+    <resourceUri>GEO_REGION</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_MARKET_ECONOMY">
+    <resourceUri>GEO_MARKET_ECONOMY</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_COUNTRY_VAT">
+    <resourceUri>GEO_COUNTRY_VAT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_1" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="GEO_COUNTRY">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="COUNTRY_ISO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="COUNTRY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="COUNTRY_GROUPING_ID"/>
+    </input>
+    <input node="GEO_GROUPING">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="ID"/>
+    </input>
+    <joinAttribute name="GROUPING_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_2" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="COUNTRY_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+    </input>
+    <input node="GEO_TERRITORY">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="ID"/>
+    </input>
+    <joinAttribute name="TERRITORY_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_3" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="COUNTRY_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+    </input>
+    <input node="GEO_SUB_REGION">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="ID"/>
+    </input>
+    <joinAttribute name="SUB_REGION_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_4" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+      <viewAttribute id="REGION_DESCRIPTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="COUNTRY_3">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="SUB_REGION_DESCRIPTION"/>
+    </input>
+    <input node="GEO_REGION">
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="ID"/>
+    </input>
+    <joinAttribute name="REGION_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_5" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+      <viewAttribute id="REGION_DESCRIPTION"/>
+      <viewAttribute id="MARKET_ECONOMY_DESCRIPTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="COUNTRY_4">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="SUB_REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_DESCRIPTION" source="REGION_DESCRIPTION"/>
+    </input>
+    <input node="GEO_MARKET_ECONOMY">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="ID"/>
+    </input>
+    <joinAttribute name="MARKET_ECONOMY_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="COUNTRY_6" cardinality="CN_N" joinType="leftOuter" multiJoinNode="COUNTRY" multiJoinCentralTable="GEO_COUNTRY" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+      <viewAttribute id="REGION_DESCRIPTION"/>
+      <viewAttribute id="MARKET_ECONOMY_DESCRIPTION"/>
+      <viewAttribute id="STD_VAT_RATE"/>
+      <viewAttribute id="REDUCED_VAT_RATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="COUNTRY_5">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="SUB_REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_DESCRIPTION" source="REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_DESCRIPTION" source="MARKET_ECONOMY_DESCRIPTION"/>
+    </input>
+    <input node="GEO_COUNTRY_VAT">
+      <mapping xsi:type="Calculation:AttributeMapping" target="STD_VAT_RATE" source="STD_VAT_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REDUCED_VAT_RATE" source="REDUCED_VAT_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="COUNTRY_ID"/>
+    </input>
+    <joinAttribute name="ID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="COUNTRY_6">
+  <attributes>
+    <attribute id="ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="ID"/>
+    </attribute>
+    <attribute id="NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Name"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="NAME"/>
+    </attribute>
+    <attribute id="ISO_CODE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country ISO Code"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="ISO_CODE"/>
+    </attribute>
+    <attribute id="GROUPING_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Grouping ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="GROUPING_ID"/>
+    </attribute>
+    <attribute id="GROUPING_DESCRIPTION" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Grouping Description"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="GROUPING_DESCRIPTION"/>
+    </attribute>
+    <attribute id="SUB_REGION_ID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Sub Region ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="SUB_REGION_ID"/>
+    </attribute>
+    <attribute id="SUB_REGION_DESCRIPTION" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Sub Region Description"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="SUB_REGION_DESCRIPTION"/>
+    </attribute>
+    <attribute id="REGION_ID" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Region ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="REGION_ID"/>
+    </attribute>
+    <attribute id="REGION_DESCRIPTION" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Region Description"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="REGION_DESCRIPTION"/>
+    </attribute>
+    <attribute id="TERRITORY_ID" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Territory ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="TERRITORY_ID"/>
+    </attribute>
+    <attribute id="TERRITORY_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Territory Description"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="TERRITORY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="MARKET_ECONOMY_ID" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Market Economy ID"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="MARKET_ECONOMY_ID"/>
+    </attribute>
+    <attribute id="MARKET_ECONOMY_DESCRIPTION" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Market Economy Description"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="MARKET_ECONOMY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="STD_VAT_RATE" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Standard VAT Rate"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="STD_VAT_RATE"/>
+    </attribute>
+    <attribute id="REDUCED_VAT_RATE" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Reduced VAT Rate"/>
+      <keyMapping columnObjectName="COUNTRY_6" columnName="REDUCED_VAT_RATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="COUNTRY" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="GEO_COUNTRY_VAT" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="905" y="302"/>
+      <rectangleSize width="200"/>
+    </shape>
+    <shape modelObjectName="GEO_MARKET_ECONOMY" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="913" y="51"/>
+      <rectangleSize width="217"/>
+    </shape>
+    <shape modelObjectName="GEO_REGION" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="67" y="202"/>
+      <rectangleSize width="161"/>
+    </shape>
+    <shape modelObjectName="GEO_SUB_REGION" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="67" y="65"/>
+      <rectangleSize width="176"/>
+    </shape>
+    <shape modelObjectName="GEO_TERRITORY" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="83" y="339"/>
+      <rectangleSize width="166"/>
+    </shape>
+    <shape modelObjectName="GEO_COUNTRY" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="611" y="225"/>
+      <rectangleSize width="223"/>
+    </shape>
+  
+    <shape modelObjectName="GEO_GROUPING" modelObjectNameSpace="COUNTRY" modelObjectType="JoinNodeInput" multiJoinViewNodeName="COUNTRY">
+      <upperLeftCorner x="913" y="177"/>
+      <rectangleSize width="162"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

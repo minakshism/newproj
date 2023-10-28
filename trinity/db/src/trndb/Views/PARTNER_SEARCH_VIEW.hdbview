@@ -1,0 +1,41 @@
+VIEW PARTNER_SEARCH_VIEW  as
+(
+(SELECT 
+     "REPORTING_PARTNER_ID",
+     "END_CUSTOMER_ID" AS "PARTNER_ID",
+     P."RP_FLAG" AS "RP_FLAG",
+     p."IS_RP"   AS "IS_RP",
+     p."NAME" AS  "MAPPED_PARTNER_NAME",
+     m."IS_PERSON_CHAR" AS "IS_PERSON",
+	"REPORTED_NAME"  AS "NAME",
+	"REPORTED_ADDRESS_FIRST" AS "ADDRESS_FIRST",
+	"REPORTED_ADDRESS_SECOND" AS "ADDRESS_SECOND",
+	"REPORTED_CITY"  AS "CITY",
+	"REPORTED_POSTAL_CODE" AS "ZIP_CODE",
+	"REPORTED_STATE" AS "STATE",
+	"REPORTED_COUNTRY_ID" AS "COUNTRY_ID",
+	to_timestamp(CHANGED_ON) as "CHANGED_ON"
+	
+
+
+FROM "PARTNER_EC_MAPPING" as m inner join partner_master as p on m.END_CUSTOMER_ID = p.id
+where   LTRIM( IFNULL(END_CUSTOMER_ID,''), '') != '') 
+UNION 
+(SELECT 
+			    p.dummy as "REPORTING_PARTNER_ID",
+				p."ID",
+				p."RP_FLAG" AS "RP_FLAG",
+				p."IS_RP"   AS "IS_RP",
+				p."NAME" AS "MAPPED_PARTNER_NAME",
+				 P."IS_PERSON" AS "IS_PERSON",
+				p."NAME",
+				p."ADDRESS_FIRST",
+				p."ADDRESS_SECOND",
+				p."CITY",
+				p."POSTAL_CODE" ,
+	            s.description AS "STATE",
+	           p."COUNTRY_ID",
+	           	to_timestamp(P.CREATION_DATE) as "CHANGED_ON"
+
+FROM "PARTNER_MASTER" as p left outer join geo_states s on p.state_id = s.id and p.country_id = s.country_id
+) )

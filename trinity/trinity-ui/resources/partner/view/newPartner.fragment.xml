@@ -1,0 +1,30 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog id="createPartnerDialog" title="Create New Partner" class="sapUiSizeCompact">
+		<buttons>
+			<Button id="confirmCreatePartner" text="OK" press=".onConfirmPartnerDialog" type="Accept"/>
+			<Button id="rejectCreatePartner" text="Cancel" press=".onRejectPartnerDialog" type="Reject"/>
+		</buttons>
+		<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+			adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+			singleContainerFullSize="false">
+			<form:content>
+				<Label text="Name" design="Bold"/>
+				<Input id="name" placeholder="Name.." required="true"/>
+				<Label text="Address" design="Bold"/>
+				<Input id="address_first" placeholder="Address Line 1.."/>
+				<Input id="address_second" placeholder="Address Line 2.."/>
+				<Label text="City /Zip Code" design="Bold"/>
+				<Input id="city" placeholder="City.."/>
+				<Input id="postal_code" placeholder="ZIP Code.."/>
+				<Label text="Country/ State(Province)" design="Bold"/>
+				<ComboBox id="country_id" placeholder="Select Country..." required="true" selectionChange=".onSuggestionCountrySelected"
+					items="{ path: '/Country', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'country_name' }}">
+					<core:Item key="{id}" text="{country_name}"/>
+				</ComboBox>
+				<ComboBox id="state_id" placeholder="Select State...">
+					<core:Item key="{id}" text="{description}"/>
+				</ComboBox>
+			</form:content>
+		</form:SimpleForm>
+	</Dialog>
+</core:FragmentDefinition>

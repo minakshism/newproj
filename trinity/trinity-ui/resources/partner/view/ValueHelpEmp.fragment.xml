@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog id="selectEmpDialog" title="Employees"
+		items="{path: '/PartnerSalesrep' , parameters :{ $$operationMode : 'Server', $orderby : 'knownas asc' }}" growing="true"
+		search=".onValueHelpDialogEmpSearch" confirm=".onValueHelpDialogEmpClose" cancel=".onValueHelpDialogEmpClose">
+		<StandardListItem icon="{ path: 'employee_nt_id', formatter: '.formatter.getOutlookPic' }" iconDensityAware="false" iconInset="false"
+			title="{knownas}" description="{empid}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

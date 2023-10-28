@@ -1,0 +1,175 @@
+VIEW PRODUCT_SEARCH_VIEW  as
+
+( SELECT 
+    h.PARTNER_ID as "RP",
+    c.region_id as "REGION",
+    ct.description as "RP_TYPE",
+	s.sys_model_no,
+	s.sys_model_no as "PRODUCT_CODE",
+	s.SYS_PLATFORM_ID,
+	reported_product_id,
+	reported_product_description,
+	reported_manufacturer,
+	i.sys_model_id
+FROM 
+	product_mapping_header AS h
+	INNER JOIN
+	product_mapping_items AS i
+	ON i.header_id = h.id
+	INNER JOIN
+	product_master_sys AS s
+	ON s.id = i.sys_model_id
+  INNER JOIN
+	partner_master AS p
+	on p.id = h.PARTNER_ID
+	LEFT OUTER JOIN geo_country as c on c.id = p.country_id
+	left outer join PARTNER_CLASSIFICATION as pc on pc.partner_id = h.partner_id
+	and pc.SYS_PLATFORM_ID = s.SYS_PLATFORM_ID
+	left outer join  partner_channel_type as ct on ct.id = pc.CHANNEL_TYPE_MAIN_ID
+WHERE ltrim( ifnull( i.sys_model_id, '' ), '' ) != ''
+and s.SYS_PLATFORM_ID not in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') )
+
+
+union
+
+( SELECT distinct
+    h.PARTNER_ID as "RP",
+      c.region_id as "REGION",
+      ct.description as "RP_TYPE",
+	s.sys_model_no,
+	g.gpu_model_no as "PRODUCT_CODE",
+	s.SYS_PLATFORM_ID,
+	reported_product_id,
+	reported_product_description,
+	reported_manufacturer,
+	i.sys_model_id
+FROM 
+	product_mapping_header AS h
+  
+	INNER JOIN
+	product_mapping_items AS i
+	ON i.header_id = h.id
+	INNER JOIN
+	product_master_sys AS s
+	ON s.id = i.sys_model_id
+	 INNER JOIN
+	partner_master AS p
+	on p.id = h.PARTNER_ID
+	LEFT OUTER JOIN geo_country as c on c.id = p.country_id
+	left outer join product_master_gpu as g on g.id = s.gpu_id
+	left outer join PARTNER_CLASSIFICATION as pc on pc.partner_id = h.partner_id
+	and pc.SYS_PLATFORM_ID = s.SYS_PLATFORM_ID
+	left outer join  partner_channel_type as ct on ct.id = pc.CHANNEL_TYPE_MAIN_ID
+WHERE ltrim( ifnull( i.sys_model_id, '' ), '' ) != ''
+and s.SYS_PLATFORM_ID  in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') )
+
+union
+
+
+( SELECT 
+    h.PARTNER_ID as "RP",
+      c.region_id as "REGION",
+      ct.description as "RP_TYPE",
+	s.sys_model_no,
+	s.sys_model_no as "PRODUCT_CODE",
+	s.SYS_PLATFORM_ID,
+	reported_product_id,
+	reported_product_description,
+	reported_manufacturer,
+	i.sys_model_id
+FROM 
+	product_mapping_header_history AS h
+	
+	INNER JOIN
+	product_mapping_items AS i
+	ON i.header_id = h.id
+	INNER JOIN
+	product_master_sys AS s
+	ON s.id = i.sys_model_id
+		 INNER JOIN
+	partner_master AS p
+	on p.id = h.PARTNER_ID
+	LEFT OUTER JOIN geo_country as c on c.id = p.country_id
+	left outer join PARTNER_CLASSIFICATION as pc on pc.partner_id = h.partner_id
+	and pc.SYS_PLATFORM_ID = s.SYS_PLATFORM_ID
+	left outer join  partner_channel_type as ct on ct.id = pc.CHANNEL_TYPE_MAIN_ID
+WHERE ltrim( ifnull( i.sys_model_id, '' ), '' ) != ''
+and s.SYS_PLATFORM_ID not in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') )
+
+
+union
+
+( SELECT 
+   h.PARTNER_ID as "RP",
+    c.region_id as "REGION",
+    ct.description as "RP_TYPE",
+	s.sys_model_no,
+	g.gpu_model_no as "PRODUCT_CODE",
+	s.SYS_PLATFORM_ID,
+	reported_product_id,
+	reported_product_description,
+	reported_manufacturer,
+	i.sys_model_id
+FROM 
+	product_mapping_header_history AS h
+	
+	INNER JOIN
+	product_mapping_items AS i
+	ON i.header_id = h.id
+	INNER JOIN
+	product_master_sys AS s
+	ON s.id = i.sys_model_id
+		 INNER JOIN
+	partner_master AS p
+	on p.id = h.PARTNER_ID
+	LEFT OUTER JOIN geo_country as c on c.id = p.country_id
+	left outer join product_master_gpu as g on g.id = s.gpu_id
+	left outer join PARTNER_CLASSIFICATION as pc on pc.partner_id = h.partner_id
+	and pc.SYS_PLATFORM_ID = s.SYS_PLATFORM_ID
+	left outer join  partner_channel_type as ct on ct.id = pc.CHANNEL_TYPE_MAIN_ID
+WHERE ltrim( ifnull( i.sys_model_id, '' ), '' ) != ''
+and s.SYS_PLATFORM_ID  in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') )
+
+
+
+
+
+    
+
+
+
+UNION
+
+( SELECT 
+  dummy_rp as "RP",
+   null as "REGION",
+   NULL as "RP_TYPE",
+sys_model_no,
+sys_model_no as "PRODUCT_CODE",
+SYS_PLATFORM_ID,
+sys_model_no,
+sys_model_description,
+m.name as "REPORTED_MANUFACTURER",
+s.id
+FROM product_master_sys as s left outer join lov_manufacturer as m on m.id = s.sys_manufacturer_id 
+
+WHERE 
+S.SYS_PLATFORM_ID  not in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') )
+
+union 
+( SELECT 
+ dummy_rp as "RP",
+  null as "REGION",
+  NULL as "RP_TYPE",
+sys_model_no,
+g.gpu_model_no as "PRODUCT_CODE",
+SYS_PLATFORM_ID,
+sys_model_no,
+sys_model_description,
+m.name as "REPORTED_MANUFACTURER",
+s.id
+FROM product_master_sys as s  left outer join product_master_gpu as g on g.id = s.gpu_id
+left outer join lov_manufacturer as m on m.id = s.sys_manufacturer_id 
+
+WHERE 
+S.SYS_PLATFORM_ID  in ('DESKTOP' , 'NOTEBOOK' ,'WORKSTATION') );

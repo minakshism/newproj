@@ -1,0 +1,135 @@
+{
+	"_version": "1.5.0",
+	"sap.app": {
+		"id": "nv.Transaction",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "hanatemplates.basicSAPUI5ApplicationProject",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"TrinityDataSource": {
+				"uri": "/trinity/api/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "4.0"
+				}
+			}
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal"
+		]
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "nv.Transaction.view.Home",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {},
+				"sap.f": {},
+				"sap.ushell": {},
+				"sap.collaboration": {},
+				"sap.ui.comp": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+				"": {
+				"dataSource": "TrinityDataSource",
+				"settings": {
+					"autoExpandSelect": true,
+					"operationMode": "Server",
+					"synchronizationMode": "None"
+				}
+			},
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "nv.Transaction.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.f.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "nv.Transaction.view",
+				"controlId": "flexibleColumnLayout"
+			},
+				"routes": {
+				"master": {
+					"pattern": "",
+					"target": [
+						"master"
+					],
+					"layout": "OneColumn"
+				},
+
+				"masterDetail": {
+					"pattern": "PartnerMaster/{transaction_id}",
+					"target": [
+						"master",
+						"detail"
+					],
+					"layout": "TwoColumnsMidExpanded"
+				}
+			},
+			"targets": {
+				"master": {
+					"viewId": "masterView",
+					"viewName": "Master",
+					"viewLevel": 1,
+					"controlAggregation": "beginColumnPages"
+				},
+
+				"detail": {
+					"viewId": "detailView",
+					"viewName": "Detail",
+					"controlAggregation": "midColumnPages",
+					"viewLevel": 2,
+					"transition": "show"
+				}
+			}
+		}
+	}
+}

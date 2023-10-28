@@ -1,0 +1,83 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:f="sap.f"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	class="sapUiSizeCompact" displayBlock="true" xmlns:form="sap.ui.layout.form" controllerName="nv.Transaction.controller.Detail" height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="false"
+		showFooter="{detailViewModel>/editing}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:Title text="{transaction_id} "/>
+				</expandedHeading>
+				<navigationActions>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://sys-back-2" press="handleClose" tooltip="Close column"/>
+				</navigationActions>
+				<actions>
+					<m:ToggleButton text="Edit" type="Emphasized" pressed="{detailViewModel>/editing}" visible="{= !${detailViewModel>/editing}}"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<sections>
+			<ObjectPageSection title="Transaction Details" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false">
+								<form:content>
+									<m:Label text="Transaction ID" design="Bold"/>
+									<m:Input id="transaction_id" text="{transaction_id}"/>
+									<m:Label text="Session ID" design="Bold"/>
+									<m:Input id="session_id" text="{session_id}"/>
+									<m:Label text="XPK POS Data" design="Bold"/>
+									<m:Input id="xpk_posdata" text="{xpk_posdata}"/>
+									<m:Label text="File Creation Date" design="Bold"/>
+									<m:Input id="file_created_time" text="{file_created_time}"/>
+									<m:Label text="Product N0" design="Bold"/>
+									<m:Input id="product_number" text="{product_number}"/>
+									<m:Label text="Product Desc." design="Bold"/>
+									<m:Input id="product_description" text="{product_description}"/>
+									<m:Label text="Quantity Sold" design="Bold"/>
+									<m:Input id="qty_sold" text="{qty_sold}"/>
+									<m:Label text="Quantity Return" design="Bold"/>
+									<m:Input id="qty_return" text="{qty_return}"/>
+									<m:Label text="Invoice No" design="Bold"/>
+									<m:Input id="invoice_number" text="{invoice_number}"/>
+									<m:Label text="Sales Rep Name" design="Bold"/>
+									<m:Input id="sales_rep_name" text="{sales_rep_name}"/>
+									<m:Label text="Disti Product No" design="Bold"/>
+									<m:Input id="disti_product_no" text="{disti_product_no}"/>
+									<m:Label text="Supplier Name" design="Bold"/>
+									<m:Input id="supplier_name" text="{supplier_name}"/>
+								</form:content>
+							</form:SimpleForm>
+							<!--		<form:SimpleForm id="Geography" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+								singleContainerFullSize="false" binding="{country}">
+								<form:content>
+									<m:Label text="Invoice No" design="Bold"/>
+									<m:Input id="invoice_number" text="{invoice_number}"/>
+									<m:Label text="Sales Rep Name" design="Bold"/>
+									<m:Input id="sales_rep_name" text="{sales_rep_name}"/>
+									<m:Label text="Disti Product No" design="Bold"/>
+									<m:Input id="disti_product_no" text="{disti_product_no}"/>
+									<m:Label text="Supplier Name" design="Bold"/>
+									<m:Input id="supplier_name" text="{supplier_name}"/>
+								</form:content>
+							</form:SimpleForm>
+							-->
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer/>
+				<m:Button id="submitBtn" text="Submit" type="Emphasized" press=".onSubmitPress"/>
+				<m:Button id="cancelBtn" text="Cancel" press=".reset"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

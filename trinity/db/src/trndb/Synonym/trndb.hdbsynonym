@@ -1,0 +1,26 @@
+{
+  "SYN_TABLES": {
+    "target": {
+      "object": "TABLES",
+      "schema": "SYS"
+    }
+  },
+  "DUMMY": {
+    "target": {
+      "object": "DUMMY",
+      "schema": "SYS"
+    }
+  },
+  "SYN_CVD_SALESOPS_ACCOUNT": {
+    "target": {
+      "object": "cvd_salesops_account",
+      "schema": "DFLDB"
+    }
+  },
+  "SYN_CVD_SALESOPS_USER": {
+    "target": {
+      "object": "cvd_salesops_user",
+      "schema": "DFLDB"
+    }
+  }
+}

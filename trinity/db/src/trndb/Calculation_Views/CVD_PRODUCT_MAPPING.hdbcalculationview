@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CVD_PRODUCT_MAPPING" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Product Mapping"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="PRODUCT_MAPPING_VW">
+    <resourceUri>PRODUCT_MAPPING_VW</resourceUri>
+  </DataSource>
+  <DataSource id="PARTNER_SALESREP">
+    <resourceUri>PARTNER_SALESREP</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="MAPPING_ID"/>
+      <viewAttribute id="REPORTING_PARTNER_ID"/>
+      <viewAttribute id="REPORTING_PARTNER_NAME"/>
+      <viewAttribute id="REPORTED_PRODUCT_ID"/>
+      <viewAttribute id="REPORTED_PRODUCT_TYPE"/>
+      <viewAttribute id="REPORTED_PRODUCT_DESCRIPTION"/>
+      <viewAttribute id="ON_HOLD"/>
+      <viewAttribute id="COMMENT_TYPE"/>
+      <viewAttribute id="COMMENT"/>
+      <viewAttribute id="MAPPING_FLAG"/>
+      <viewAttribute id="SYS_MODEL_ID"/>
+      <viewAttribute id="SYS_MODEL_NO"/>
+      <viewAttribute id="PRODUCT_CODE"/>
+      <viewAttribute id="BUNDLE_QUANTITY"/>
+      <viewAttribute id="SYS_MODEL_DESCRIPTION"/>
+      <viewAttribute id="SYS_MODEL_GROUP"/>
+      <viewAttribute id="SYS_MODEL_PLATFORM"/>
+      <viewAttribute id="SYS_COMPETITOR"/>
+      <viewAttribute id="SYS_TYPE"/>
+      <viewAttribute id="SYS_SCREEN_SIZE"/>
+      <viewAttribute id="SYS_SCREEN_GROUP"/>
+      <viewAttribute id="SYS_SCREEN_REFRESH_RATE"/>
+      <viewAttribute id="SYS_SCREEN_RESOLUTION"/>
+      <viewAttribute id="SYS_SCREEN_RESOLUTION_GROUP"/>
+      <viewAttribute id="SYS_PANEL_TYPE"/>
+      <viewAttribute id="SYS_MANUFACTURER"/>
+      <viewAttribute id="SYS_MEMORY_SIZE"/>
+      <viewAttribute id="SYS_MEMORY_SIZE_GROUP"/>
+      <viewAttribute id="SYS_MEMORY_TYPE"/>
+      <viewAttribute id="SYS_DIMENSIONS"/>
+      <viewAttribute id="SYS_Z_HEIGHT"/>
+      <viewAttribute id="SYS_Z_HEIGHT_GROUP"/>
+      <viewAttribute id="SYS_WEIGHT"/>
+      <viewAttribute id="SYS_WEIGHT_GROUP"/>
+      <viewAttribute id="SYS_BRAND"/>
+      <viewAttribute id="SYS_BRAND_BRAND_GROUP_ONE"/>
+      <viewAttribute id="SYS_BRAND_BRAND_GROUP_TWO"/>
+      <viewAttribute id="ASSIGNED_TO_EMPID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PRODUCT_MAPPING_VW"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+    <viewAttributes>
+      <viewAttribute id="EMPID"/>
+      <viewAttribute id="EMPLOYEE_NT_ID"/>
+      <viewAttribute id="KNOWNAS"/>
+      <viewAttribute id="FIRST_NAME"/>
+      <viewAttribute id="LAST_NAME"/>
+      <viewAttribute id="DEPARTMENT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PARTNER_SALESREP"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="MAPPING_ID"/>
+      <viewAttribute id="REPORTING_PARTNER_ID"/>
+      <viewAttribute id="REPORTING_PARTNER_NAME"/>
+      <viewAttribute id="REPORTED_PRODUCT_ID"/>
+      <viewAttribute id="REPORTED_PRODUCT_TYPE"/>
+      <viewAttribute id="REPORTED_PRODUCT_DESCRIPTION"/>
+      <viewAttribute id="ON_HOLD"/>
+      <viewAttribute id="COMMENT_TYPE"/>
+      <viewAttribute id="COMMENT"/>
+      <viewAttribute id="MAPPING_FLAG"/>
+      <viewAttribute id="SYS_MODEL_ID"/>
+      <viewAttribute id="SYS_MODEL_NO"/>
+      <viewAttribute id="PRODUCT_CODE"/>
+      <viewAttribute id="BUNDLE_QUANTITY"/>
+      <viewAttribute id="SYS_MODEL_DESCRIPTION"/>
+      <viewAttribute id="SYS_MODEL_GROUP"/>
+      <viewAttribute id="SYS_MODEL_PLATFORM"/>
+      <viewAttribute id="SYS_COMPETITOR"/>
+      <viewAttribute id="SYS_TYPE"/>
+      <viewAttribute id="SYS_SCREEN_SIZE"/>
+      <viewAttribute id="SYS_SCREEN_GROUP"/>
+      <viewAttribute id="SYS_SCREEN_REFRESH_RATE"/>
+      <viewAttribute id="SYS_SCREEN_RESOLUTION"/>
+      <viewAttribute id="SYS_SCREEN_RESOLUTION_GROUP"/>
+      <viewAttribute id="SYS_PANEL_TYPE"/>
+      <viewAttribute id="SYS_MANUFACTURER"/>
+      <viewAttribute id="SYS_MEMORY_SIZE"/>
+      <viewAttribute id="SYS_MEMORY_SIZE_GROUP"/>
+      <viewAttribute id="SYS_MEMORY_TYPE"/>
+      <viewAttribute id="SYS_DIMENSIONS"/>
+      <viewAttribute id="SYS_Z_HEIGHT"/>
+      <viewAttribute id="SYS_Z_HEIGHT_GROUP"/>
+      <viewAttribute id="SYS_WEIGHT"/>
+      <viewAttribute id="SYS_WEIGHT_GROUP"/>
+      <viewAttribute id="SYS_BRAND"/>
+      <viewAttribute id="SYS_BRAND_BRAND_GROUP_ONE"/>
+      <viewAttribute id="SYS_BRAND_BRAND_GROUP_TWO"/>
+      <viewAttribute id="ASSIGNED_TO_EMPID"/>
+      <viewAttribute id="EMPLOYEE_NT_ID"/>
+      <viewAttribute id="KNOWNAS"/>
+      <viewAttribute id="FIRST_NAME"/>
+      <viewAttribute id="LAST_NAME"/>
+      <viewAttribute id="DEPARTMENT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MAPPING_ID" source="MAPPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REPORTING_PARTNER_ID" source="REPORTING_PARTNER_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REPORTING_PARTNER_NAME" source="REPORTING_PARTNER_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REPORTED_PRODUCT_ID" source="REPORTED_PRODUCT_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REPORTED_PRODUCT_TYPE" source="REPORTED_PRODUCT_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REPORTED_PRODUCT_DESCRIPTION" source="REPORTED_PRODUCT_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ON_HOLD" source="ON_HOLD"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_TYPE" source="COMMENT_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT" source="COMMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MAPPING_FLAG" source="MAPPING_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MODEL_ID" source="SYS_MODEL_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MODEL_NO" source="SYS_MODEL_NO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_CODE" source="PRODUCT_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BUNDLE_QUANTITY" source="BUNDLE_QUANTITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MODEL_DESCRIPTION" source="SYS_MODEL_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MODEL_GROUP" source="SYS_MODEL_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MODEL_PLATFORM" source="SYS_MODEL_PLATFORM"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_COMPETITOR" source="SYS_COMPETITOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_TYPE" source="SYS_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_SCREEN_SIZE" source="SYS_SCREEN_SIZE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_SCREEN_GROUP" source="SYS_SCREEN_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_SCREEN_REFRESH_RATE" source="SYS_SCREEN_REFRESH_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_SCREEN_RESOLUTION" source="SYS_SCREEN_RESOLUTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_SCREEN_RESOLUTION_GROUP" source="SYS_SCREEN_RESOLUTION_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_PANEL_TYPE" source="SYS_PANEL_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MANUFACTURER" source="SYS_MANUFACTURER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MEMORY_SIZE" source="SYS_MEMORY_SIZE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MEMORY_SIZE_GROUP" source="SYS_MEMORY_SIZE_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_MEMORY_TYPE" source="SYS_MEMORY_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_DIMENSIONS" source="SYS_DIMENSIONS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_Z_HEIGHT" source="SYS_Z_HEIGHT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_Z_HEIGHT_GROUP" source="SYS_Z_HEIGHT_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_WEIGHT" source="SYS_WEIGHT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_WEIGHT_GROUP" source="SYS_WEIGHT_GROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_BRAND" source="SYS_BRAND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_BRAND_BRAND_GROUP_ONE" source="SYS_BRAND_BRAND_GROUP_ONE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SYS_BRAND_BRAND_GROUP_TWO" source="SYS_BRAND_BRAND_GROUP_TWO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNED_TO_EMPID" source="ASSIGNED_TO_EMPID"/>
+    </input>
+    <input node="Projection_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEE_NT_ID" source="EMPLOYEE_NT_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KNOWNAS" source="KNOWNAS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIRST_NAME" source="FIRST_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_NAME" source="LAST_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEPARTMENT" source="DEPARTMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNED_TO_EMPID" source="EMPID"/>
+    </input>
+    <joinAttribute name="ASSIGNED_TO_EMPID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="MAPPING_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MAPPING_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="MAPPING_ID"/>
+    </attribute>
+    <attribute id="REPORTING_PARTNER_ID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REPORTING_PARTNER_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="REPORTING_PARTNER_ID"/>
+    </attribute>
+    <attribute id="REPORTING_PARTNER_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REPORTING_PARTNER_NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="REPORTING_PARTNER_NAME"/>
+    </attribute>
+    <attribute id="REPORTED_PRODUCT_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REPORTED_PRODUCT_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="REPORTED_PRODUCT_ID"/>
+    </attribute>
+    <attribute id="REPORTED_PRODUCT_TYPE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REPORTED_PRODUCT_TYPE"/>
+      <keyMapping columnObjectName="Join_1" columnName="REPORTED_PRODUCT_TYPE"/>
+    </attribute>
+    <attribute id="REPORTED_PRODUCT_DESCRIPTION" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REPORTED_PRODUCT_DESCRIPTION"/>
+      <keyMapping columnObjectName="Join_1" columnName="REPORTED_PRODUCT_DESCRIPTION"/>
+    </attribute>
+    <attribute id="ON_HOLD" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ON_HOLD"/>
+      <keyMapping columnObjectName="Join_1" columnName="ON_HOLD"/>
+    </attribute>
+    <attribute id="COMMENT_TYPE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMMENT_TYPE"/>
+      <keyMapping columnObjectName="Join_1" columnName="COMMENT_TYPE"/>
+    </attribute>
+    <attribute id="COMMENT" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMMENT"/>
+      <keyMapping columnObjectName="Join_1" columnName="COMMENT"/>
+    </attribute>
+    <attribute id="MAPPING_FLAG" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MAPPING_FLAG"/>
+      <keyMapping columnObjectName="Join_1" columnName="MAPPING_FLAG"/>
+    </attribute>
+    <attribute id="SYS_MODEL_ID" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MODEL_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MODEL_ID"/>
+    </attribute>
+    <attribute id="SYS_MODEL_NO" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MODEL_NO"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MODEL_NO"/>
+    </attribute>
+    <attribute id="PRODUCT_CODE" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_CODE"/>
+      <keyMapping columnObjectName="Join_1" columnName="PRODUCT_CODE"/>
+    </attribute>
+    <attribute id="BUNDLE_QUANTITY" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BUNDLE_QUANTITY"/>
+      <keyMapping columnObjectName="Join_1" columnName="BUNDLE_QUANTITY"/>
+    </attribute>
+    <attribute id="SYS_MODEL_DESCRIPTION" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MODEL_DESCRIPTION"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MODEL_DESCRIPTION"/>
+    </attribute>
+    <attribute id="SYS_MODEL_GROUP" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MODEL_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MODEL_GROUP"/>
+    </attribute>
+    <attribute id="SYS_MODEL_PLATFORM" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MODEL_PLATFORM"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MODEL_PLATFORM"/>
+    </attribute>
+    <attribute id="SYS_COMPETITOR" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_COMPETITOR"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_COMPETITOR"/>
+    </attribute>
+    <attribute id="SYS_TYPE" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_TYPE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_TYPE"/>
+    </attribute>
+    <attribute id="SYS_SCREEN_SIZE" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_SCREEN_SIZE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_SCREEN_SIZE"/>
+    </attribute>
+    <attribute id="SYS_SCREEN_GROUP" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_SCREEN_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_SCREEN_GROUP"/>
+    </attribute>
+    <attribute id="SYS_SCREEN_REFRESH_RATE" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_SCREEN_REFRESH_RATE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_SCREEN_REFRESH_RATE"/>
+    </attribute>
+    <attribute id="SYS_SCREEN_RESOLUTION" order="23" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_SCREEN_RESOLUTION"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_SCREEN_RESOLUTION"/>
+    </attribute>
+    <attribute id="SYS_SCREEN_RESOLUTION_GROUP" order="24" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_SCREEN_RESOLUTION_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_SCREEN_RESOLUTION_GROUP"/>
+    </attribute>
+    <attribute id="SYS_PANEL_TYPE" order="25" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_PANEL_TYPE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_PANEL_TYPE"/>
+    </attribute>
+    <attribute id="SYS_MANUFACTURER" order="26" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MANUFACTURER"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MANUFACTURER"/>
+    </attribute>
+    <attribute id="SYS_MEMORY_SIZE" order="27" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MEMORY_SIZE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MEMORY_SIZE"/>
+    </attribute>
+    <attribute id="SYS_MEMORY_SIZE_GROUP" order="28" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MEMORY_SIZE_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MEMORY_SIZE_GROUP"/>
+    </attribute>
+    <attribute id="SYS_MEMORY_TYPE" order="29" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_MEMORY_TYPE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_MEMORY_TYPE"/>
+    </attribute>
+    <attribute id="SYS_DIMENSIONS" order="30" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_DIMENSIONS"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_DIMENSIONS"/>
+    </attribute>
+    <attribute id="SYS_Z_HEIGHT" order="31" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_Z_HEIGHT"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_Z_HEIGHT"/>
+    </attribute>
+    <attribute id="SYS_Z_HEIGHT_GROUP" order="32" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_Z_HEIGHT_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_Z_HEIGHT_GROUP"/>
+    </attribute>
+    <attribute id="SYS_WEIGHT" order="33" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_WEIGHT"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_WEIGHT"/>
+    </attribute>
+    <attribute id="SYS_WEIGHT_GROUP" order="34" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_WEIGHT_GROUP"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_WEIGHT_GROUP"/>
+    </attribute>
+    <attribute id="SYS_BRAND" order="35" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_BRAND"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_BRAND"/>
+    </attribute>
+    <attribute id="SYS_BRAND_BRAND_GROUP_ONE" order="36" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_BRAND_BRAND_GROUP_ONE"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_BRAND_BRAND_GROUP_ONE"/>
+    </attribute>
+    <attribute id="SYS_BRAND_BRAND_GROUP_TWO" order="37" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SYS_BRAND_BRAND_GROUP_TWO"/>
+      <keyMapping columnObjectName="Join_1" columnName="SYS_BRAND_BRAND_GROUP_TWO"/>
+    </attribute>
+    <attribute id="ASSIGNED_TO_EMPID" order="38" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ASSIGNED_TO_EMPID"/>
+      <keyMapping columnObjectName="Join_1" columnName="ASSIGNED_TO_EMPID"/>
+    </attribute>
+    <attribute id="EMPLOYEE_NT_ID" order="39" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEE_NT_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="EMPLOYEE_NT_ID"/>
+    </attribute>
+    <attribute id="KNOWNAS" order="40" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="KNOWNAS"/>
+      <keyMapping columnObjectName="Join_1" columnName="KNOWNAS"/>
+    </attribute>
+    <attribute id="FIRST_NAME" order="41" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIRST_NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="FIRST_NAME"/>
+    </attribute>
+    <attribute id="LAST_NAME" order="42" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LAST_NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="LAST_NAME"/>
+    </attribute>
+    <attribute id="DEPARTMENT" order="43" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPARTMENT"/>
+      <keyMapping columnObjectName="Join_1" columnName="DEPARTMENT"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Projection_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="288.7158203125"/>
+    </shape>
+    <shape modelObjectName="Projection_2" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="184.419921875"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

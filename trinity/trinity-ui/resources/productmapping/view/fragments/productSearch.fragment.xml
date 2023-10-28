@@ -1,0 +1,162 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog contentHeight="600px" contentWidth="80%" title="Product Search" class="sapUiSizeCompact" titleAlignment="Center">
+		<content>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<Label labelFor="rgbSelect" text="Select Options"/>
+				<RadioButtonGroup id="rgbSelect" columns="3" width="90%" select="onRBSelect">
+					<RadioButton id="rbSearch" text="Search"/>
+					<RadioButton id="rbSoldToCreate" text="Create New Product"/>
+				</RadioButtonGroup>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" id="searchContainer" visible="{oSelectRBVisibleModel>/visible}">
+				<MessageStrip id="SpecialInstructions" text="{partner/product_mapping_message}" type="Information" showIcon="true"
+					class="sapUiMediumMarginBottom"></MessageStrip>
+				<HBox>
+					<VBox width="10%" class="sapUiTinyMarginEnd">
+						<RadioButton id="advanceSearch" groupName="searchOption" text="Advanced Search" selected="true" select="onFuzzySearchProducts"/>
+					</VBox>
+					<VBox width="30%" class="sapUiTinyMarginEnd">
+						<Input id="idReportedProduct" placeholder="Reported Product ID" tooltip="Reported Product ID" liveChange="onFuzzySearchProducts"/>
+					</VBox>
+					<VBox width="60%" class="sapUiTinyMarginEnd">
+						<Input id="idReportedProductDescription" placeholder="Reported Product Description" tooltip="Reported Product Description"
+							liveChange="onFuzzySearchProducts"/>
+					</VBox>
+					<VBox width="20%" class="sapUiTinyMarginEnd">
+						<Input id="idReportedManufacturer" placeholder="Reported Manufacturer" tooltip="Reported Manufacturer" liveChange="onFuzzySearchProducts"/>
+					</VBox>
+					<VBox width="20%" class="sapUiTinyMarginEnd">
+						<ComboBox id="idSysPlatform" placeholder="Select Platform..." tooltip="System Platform" selectionChange="onFuzzySearchProducts"
+							items="{ path: '/ProductPlatform', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+					</VBox>
+				</HBox>
+				<HBox>
+					<VBox width="10%" class="sapUiTinyMarginEnd">
+						<RadioButton id="freeSearch" groupName="searchOption" text="Free Search" select="onFuzzyFreeSearchProducts"/>
+					</VBox>
+					<VBox width="90%" class="sapUiTinyMarginEnd">
+						<SearchField width="95%" id="searchProducts" showRefreshButton="false" liveChange="onFuzzyFreeSearchProducts"/>
+					</VBox>
+				</HBox>
+				<Table id="idProducts" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" noDataText="No Matching Partner Found" busyIndicatorDelay="0"
+					fixedLayout="false"
+					items="{ path: '/ProductSearchOptimized(QUERY=\'NVIDIA\')/Set', parameters :{ $$operationMode : 'Server', $orderby : 'match_score desc' , $count : true} ,templateShareable: true }"
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridLarge" growingThreshold="100" growing="true" growingScrollToLoad="true"
+					mode="SingleSelectMaster" selectionChange=".productSelect(${$parameters>/listItem})">
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier title="{match_score}"/>
+							<Text text="{rp}"/>
+							<Text text="{region}"/>
+							<Text text="{rp_type}"/>
+							<Text text="{sys_model_no}"/>
+							<Text text="{product_code}"/>
+							<Text text="{sys_platform_id}"/>
+							<Text text="{reported_product_id}"/>
+							<Text text="{reported_product_description}"/>
+							<Text text="{sys_model_id}"/>
+						</cells>
+					</ColumnListItem>
+					<columns>
+						<Column>
+							<Text text="Match Score" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="RP" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="RP Region" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="RP Type" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column >
+							<Text text="System model no" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column >
+							<Text text="Product Code" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column >
+							<Text text="System Platform" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="Reported Product Id" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="Reported Product Description" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+						<Column>
+							<Text text="System model id" minScreenWidth="Tablet" demandPopin="true"/>
+						</Column>
+					</columns>
+				</Table>
+			</VBox>
+			<VBox visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }">
+				<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+					singleContainerFullSize="false">
+					<form:content>
+						<Button id="refresh" width="5%" icon="sap-icon://refresh" press="generate" class="zbutton" visible="true"/>
+						<Label text="System Model No" design="Bold"/>
+						<Input id="sys_model_no" value="{LocalDataModel>/sys_model_no}" placeholder="System Model No" required="true"/>
+						<Label text="System Model Description" design="Bold"/>
+						<Input id="sys_model_description" value="{LocalDataModel>/sys_model_description}" placeholder="System Model Description" required="true"/>
+						<Label text="Platform"/>
+						<!--<ComboBox id="sys_platform_id" placeholder="Select Platform..." editable="{detailViewModel>/editing}" visible="true"-->
+						<!--	selectionChange="onChangePlatform">-->
+						<!--	<core:Item key="Desktop" text="Desktop"/>-->
+						<!--	<core:Item key="NoteBook" text="NoteBook"/>-->
+						<!--</ComboBox>-->
+						<ComboBox id="sys_platform_id" placeholder="Select Platform..." tooltip="System Platform" selectionChange="onChangePlatform"
+							items="{ path: '/ProductPlatform', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="GPU Manufacturer" design="Bold"/>
+						<ComboBox editable="{detailViewModel>/editing}" id="gpumanuf"
+							items="{ path: '/ProductManufacturer', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }" visible="false">
+							<core:ListItem key="{id}" text="{name}"/>
+						</ComboBox>
+						<Label text="GPU Model No" design="Bold"/>
+						<ComboBox id="gpu" editable="{detailViewModel>/editing}"
+							items="{ path: '/ProductGpu', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}" visible="false">
+							<core:ListItem key="{id}" text="{gpu_model_no}"/>
+						</ComboBox>
+						<Label text="CPU Model No" design="Bold"/>
+						<ComboBox id="cpu" editable="{detailViewModel>/editing}"
+							items="{ path: '/ProductCpu', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}" visible="false">
+							<core:ListItem key="{id}" text="{cpu_model_no}"/>
+						</ComboBox>
+						<Label text="GPU Memory Size" design="Bold"/>
+						<ComboBox editable="{detailViewModel>/editing}" id="gpumsize"
+							items="{ path: '/MemorySize', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }" visible="false">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="System Type" design="Bold"/>
+						<ComboBox editable="{detailViewModel>/editing}" id="systemtype"
+							items="{ path: '/SysType', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}" visible="false">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="System Brand" design="Bold"/>
+						<ComboBox editable="{detailViewModel>/editing}" id="sysbrand"
+							items="{ path: '/SysBrand', parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }" visible="false">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+						<Label text="System Screen Size" design="Bold"/>
+						<ComboBox id="sys_screen_size_id" selectionChange="onChangeSysScrnSize" editable="{detailViewModel>/editing}"
+							items="{ path: '/SysScreensize', length: 400, parameters :{ $$operationMode : 'Server', templateShareable: true }}" visible="false">
+							<core:ListItem key="{id}" text="{description}" additionalText="{screen_size_group}"/>
+						</ComboBox>
+					</form:content>
+				</form:SimpleForm>
+			</VBox>
+		</content>
+		<buttons>
+			<Button id="confirmProduct" text="Save" press=".onConfirmProduct" type="Accept"
+				visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }"/>
+			<!--<Button id="rejectCreatePartner" text="Cancel" press=".onRejectPartnerDialog" type="Reject" visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }"/>-->
+			<Button text="Close" press="onSelectProduct"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

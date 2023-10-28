@@ -1,0 +1,132 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog contentHeight="600px" contentWidth="80%" title="Partner Mapping for {LocalDataModel>/reported_id} - {LocalDataModel>/reported_name}"
+		class="sapUiSizeCompact" titleAlignment="Center">
+		<content>
+			<MessageStrip id="idErr" text="Please fillup the required fields" visible="false" type="Error" showIcon="true" showCloseButton="false"
+				class="sapUiMediumMarginBottom"/>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop">
+				<Label labelFor="rgbSelect" text="Select Options"/>
+				<RadioButtonGroup id="rgbSelect" columns="3" width="90%" select="onRBSelect">
+					<RadioButton id="rbSearch" text="Search"/>
+					<RadioButton id="rbSoldToCreate" text="Create New Partner"/>
+				</RadioButtonGroup>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{oSelectRBVisibleModel>/visible}" id="searchContainer">
+				<!--<SearchField width="95%" class="sapUiSmallMargin" id="searchAccountsCreate" showRefreshButton="true" liveChange="onFuzzySearchAccounts"/>-->
+				<HBox>
+					<VBox width="50%" class="sapUiTinyMarginEnd">
+						<Input id="idPartnerName" placeholder="Reported EC Name" tooltip="Reported EC Name" liveChange="onFuzzySearchAccounts"/>
+					</VBox>
+					<VBox width="10%" class="sapUiTinyMarginEnd">
+						<Input id="idCity" placeholder="Reported EC City" tooltip="Reported EC City" liveChange="onFuzzySearchAccounts"/>
+					</VBox>
+					<VBox width="10%" class="sapUiTinyMarginEnd">
+						<Input id="idZip" placeholder="Reported EC ZIP Code" tooltip="Reported EC ZIP Code" liveChange="onFuzzySearchAccounts"/>
+					</VBox>
+					<VBox width="10%" class="sapUiTinyMarginEnd">
+						<Input id="idState" placeholder="Reported EC State" tooltip="Reported EC State" liveChange="onFuzzySearchAccounts"/>
+					</VBox>
+					<VBox width="10%">
+						<Input id="idCountry" placeholder="Reported EC Country" tooltip="Reported EC Country" liveChange="onFuzzySearchAccounts"/>
+					</VBox>
+					<VBox width="10%">
+						<Switch tooltip="Is Person" id="idPerson" customTextOn="Yes" customTextOff="No" change="onFuzzySearchAccounts"/>
+					</VBox>
+				</HBox>
+				<Slider id="accuracySlider" enableTickmarks="true" value="80" min="60" max="100" step="10" class="sapUiLargeMarginBottom"
+					liveChange="onFuzzySearchAccounts" width="100%"/>
+				<Table id="idAccountsCreate" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" noDataText="No Matching Partner Found" busyIndicatorDelay="0"
+					fixedLayout="false"
+					items="{ path: '/PartnerSearch(QUERY=\'NVIDIA\',ACCURACY=1)/Set', parameters :{ $$operationMode : 'Server', $orderby : 'match_score desc' , $count : true} ,templateShareable: true }"
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridLarge" growingThreshold="100" growing="true" growingScrollToLoad="true"
+					mode="SingleSelectMaster" selectionChange=".partnerSelect(${$parameters>/listItem})">
+					<headerToolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button id="popupMapping" icon="sap-icon://action-settings" press="onPersoButtonPressed">
+								<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow"/>
+								</layoutData>
+							</Button>
+							<!--<ToggleButton icon="sap-icon://edit" type="Emphasized" pressed="{editViewModel>/editing}"/>-->
+							<!--<ToggleButton icon="sap-icon://addresses" type="Emphasized" pressed="{LocalDataModel>/visibleAddress}"/>-->
+						</OverflowToolbar>
+					</headerToolbar>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier title="{match_score}"/>
+							<Text text="{partner_id}"/>
+							<Text text="{name}"/>
+							<Text text="{mapped_partner_name}"/>
+							<Text text="{city}"/>
+							<Text text="{zip_code}"/>
+							<Text text="{state}"/>
+							<Text text="{country_id}"/>
+							<Switch state="{ path: 'rp_flag' }" customTextOn="Yes" customTextOff="No" enabled="false"/>
+						</cells>
+					</ColumnListItem>
+					<columns>
+						<Column id="idmatchScore">
+							<Text text="Match Score"/>
+						</Column>
+						<Column id="idmappedPartner">
+							<Text text="Mapped Partner ID"/>
+						</Column>
+						<Column id="idreportedName">
+							<Text text="Reported EC Name"/>
+						</Column>
+						<Column id="idmappedParnerName">
+							<Text text="Mapped Partner Name"/>
+						</Column>
+						<Column id="idreportedCity">
+							<Text text="Reported EC City"/>
+						</Column>
+						<Column id="idrepZipCode">
+							<Text text="Reported EC Zip Code"/>
+						</Column>
+						<Column id="idrepState">
+							<Text text="Reported EC State"/>
+						</Column>
+						<Column id="idrepCountry">
+							<Text text="Reported EC Country"/>
+						</Column>
+						<Column id="idIsRepPartner">
+							<Text text="Is RP"/>
+						</Column>
+					</columns>
+				</Table>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTop" visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }">
+				<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+					adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+					singleContainerFullSize="false">
+					<form:content>
+						<Label text="Name" design="Bold"/>
+						<Input id="name" value="" liveChange="onChangeVal" placeholder="Name.." required="true"/>
+						<Label text="Address" design="Bold"/>
+						<Input id="address_first" value="" placeholder="Address Line 1.."/>
+						<Input id="address_second" value="" placeholder="Address Line 2.."/>
+						<Label text="City /Zip Code" design="Bold"/>
+						<Input id="city" value="" placeholder="City.."/>
+						<Input id="postal_code" value="" placeholder="ZIP Code.."/>
+						<Label text="Country/ State(Province)" design="Bold"/>
+						<ComboBox selectedKey="" change="onChangeVal" id="country_id" placeholder="Select Country..." required="true"
+							selectionChange=".onSuggestionCountrySelected"
+							items="{ path: '/Country', length: 400 ,parameters :{ $$operationMode : 'Server', $orderby : 'country_name' }}">
+							<core:Item key="{id}" text="{country_name}"/>
+						</ComboBox>
+						<ComboBox selectedKey="" id="state_id" placeholder="Select State...">
+							<core:Item key="{id}" text="{description}"/>
+						</ComboBox>
+					</form:content>
+				</form:SimpleForm>
+			</VBox>
+		</content>
+		<buttons>
+			<Button id="confirmCreatePartner" text="Create EC" press=".onConfirmPartnerDialog" type="Accept"
+				visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }"/>
+			<!--<Button id="rejectCreatePartner" text="Cancel" press=".onRejectPartnerDialog" type="Reject" visible="{= ${oSelectRBVisibleModel>/visible} === true ? false : true }"/>-->
+			<Button text="Close" press="onSelectPartner"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

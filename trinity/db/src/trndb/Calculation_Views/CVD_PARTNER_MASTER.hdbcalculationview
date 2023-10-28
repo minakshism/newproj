@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CVD_PARTNER_MASTER" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Partner Master"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="PARTNER_MASTER">
+    <resourceUri>PARTNER_MASTER</resourceUri>
+  </DataSource>
+  <DataSource id="CVD_COUNTRY_MASTER">
+    <resourceUri>CVD_COUNTRY_MASTER</resourceUri>
+  </DataSource>
+  <DataSource id="GEO_STATES">
+    <resourceUri>GEO_STATES</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1_1" cardinality="CN_N" joinType="leftOuter" multiJoinNode="Join_1" multiJoinCentralTable="PARTNER_MASTER" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="OLD_REPORTER_ID"/>
+      <viewAttribute id="CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="ADDRESS_FIRST"/>
+      <viewAttribute id="ADDRESS_SECOND"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="POSTAL_CODE"/>
+      <viewAttribute id="ACTIVE"/>
+      <viewAttribute id="RP_FLAG"/>
+      <viewAttribute id="EC_FLAG"/>
+      <viewAttribute id="PRODUCTION_DATE"/>
+      <viewAttribute id="SIGNED_LOA_DATE"/>
+      <viewAttribute id="POS_DATA_FLAG"/>
+      <viewAttribute id="POS_TEST_FILE_DATE"/>
+      <viewAttribute id="HIST_DATE_REQ"/>
+      <viewAttribute id="TEST_FILE_DATE_REQ"/>
+      <viewAttribute id="INV_TEST_FILE_DATE"/>
+      <viewAttribute id="HIST_DATE_RECV"/>
+      <viewAttribute id="CREATION_DATE"/>
+      <viewAttribute id="CREATION_BY"/>
+      <viewAttribute id="DEACTIVATION_DATE"/>
+      <viewAttribute id="CONTACT_NAME_MAIN"/>
+      <viewAttribute id="CONTACT_PHONE_MAIN"/>
+      <viewAttribute id="CONTACT_EMAIL_MAIN"/>
+      <viewAttribute id="CONTACT_NAME_SECONDARY"/>
+      <viewAttribute id="CONTACT_PHONE_SECONDARY"/>
+      <viewAttribute id="CONTACT_EMAIL_SECONDARY"/>
+      <viewAttribute id="OTHER_INFO"/>
+      <viewAttribute id="VALID_FROM"/>
+      <viewAttribute id="VALID_TO"/>
+      <viewAttribute id="AUTHORIZED_FLAG"/>
+      <viewAttribute id="QUARANTINE_FLAG"/>
+      <viewAttribute id="INV_ADJUST_FLAG"/>
+      <viewAttribute id="ON_HOLD_FLAG"/>
+      <viewAttribute id="STATE_ID"/>
+      <viewAttribute id="COUNTRY_ID"/>
+      <viewAttribute id="NV_SALES_REP_EMPID"/>
+      <viewAttribute id="COUNTRY_NAME"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="REGION_DESCRIPTION"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_DESCRIPTION"/>
+      <viewAttribute id="STD_VAT_RATE"/>
+      <viewAttribute id="REDUCED_VAT_RATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="PARTNER_MASTER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OLD_REPORTER_ID" source="OLD_REPORTER_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS_FIRST" source="ADDRESS_FIRST"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS_SECOND" source="ADDRESS_SECOND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POSTAL_CODE" source="POSTAL_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVE" source="ACTIVE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RP_FLAG" source="RP_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EC_FLAG" source="EC_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCTION_DATE" source="PRODUCTION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SIGNED_LOA_DATE" source="SIGNED_LOA_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POS_DATA_FLAG" source="POS_DATA_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POS_TEST_FILE_DATE" source="POS_TEST_FILE_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HIST_DATE_REQ" source="HIST_DATE_REQ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TEST_FILE_DATE_REQ" source="TEST_FILE_DATE_REQ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INV_TEST_FILE_DATE" source="INV_TEST_FILE_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HIST_DATE_RECV" source="HIST_DATE_RECV"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CREATION_DATE" source="CREATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CREATION_BY" source="CREATION_BY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEACTIVATION_DATE" source="DEACTIVATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_NAME_MAIN" source="CONTACT_NAME_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_PHONE_MAIN" source="CONTACT_PHONE_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_EMAIL_MAIN" source="CONTACT_EMAIL_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_NAME_SECONDARY" source="CONTACT_NAME_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_PHONE_SECONDARY" source="CONTACT_PHONE_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_EMAIL_SECONDARY" source="CONTACT_EMAIL_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OTHER_INFO" source="OTHER_INFO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AUTHORIZED_FLAG" source="AUTHORIZED_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="QUARANTINE_FLAG" source="QUARANTINE_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INV_ADJUST_FLAG" source="INV_ADJUST_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ON_HOLD_FLAG" source="ON_HOLD_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE_ID" source="STATE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY_ID" source="COUNTRY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NV_SALES_REP_EMPID" source="NV_SALES_REP_EMPID"/>
+    </input>
+    <input node="CVD_COUNTRY_MASTER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY_NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="SUB_REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_DESCRIPTION" source="REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_DESCRIPTION" source="MARKET_ECONOMY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STD_VAT_RATE" source="STD_VAT_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REDUCED_VAT_RATE" source="REDUCED_VAT_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY_ID" source="ID"/>
+    </input>
+    <joinAttribute name="COUNTRY_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1_2" cardinality="CN_N" joinType="leftOuter" multiJoinNode="Join_1" multiJoinCentralTable="PARTNER_MASTER" multiJoinOrder="Outside In">
+    <viewAttributes>
+      <viewAttribute id="ID"/>
+      <viewAttribute id="OLD_REPORTER_ID"/>
+      <viewAttribute id="CODE"/>
+      <viewAttribute id="NAME"/>
+      <viewAttribute id="ADDRESS_FIRST"/>
+      <viewAttribute id="ADDRESS_SECOND"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="POSTAL_CODE"/>
+      <viewAttribute id="ACTIVE"/>
+      <viewAttribute id="RP_FLAG"/>
+      <viewAttribute id="EC_FLAG"/>
+      <viewAttribute id="PRODUCTION_DATE"/>
+      <viewAttribute id="SIGNED_LOA_DATE"/>
+      <viewAttribute id="POS_DATA_FLAG"/>
+      <viewAttribute id="POS_TEST_FILE_DATE"/>
+      <viewAttribute id="HIST_DATE_REQ"/>
+      <viewAttribute id="TEST_FILE_DATE_REQ"/>
+      <viewAttribute id="INV_TEST_FILE_DATE"/>
+      <viewAttribute id="HIST_DATE_RECV"/>
+      <viewAttribute id="CREATION_DATE"/>
+      <viewAttribute id="CREATION_BY"/>
+      <viewAttribute id="DEACTIVATION_DATE"/>
+      <viewAttribute id="CONTACT_NAME_MAIN"/>
+      <viewAttribute id="CONTACT_PHONE_MAIN"/>
+      <viewAttribute id="CONTACT_EMAIL_MAIN"/>
+      <viewAttribute id="CONTACT_NAME_SECONDARY"/>
+      <viewAttribute id="CONTACT_PHONE_SECONDARY"/>
+      <viewAttribute id="CONTACT_EMAIL_SECONDARY"/>
+      <viewAttribute id="OTHER_INFO"/>
+      <viewAttribute id="VALID_FROM"/>
+      <viewAttribute id="VALID_TO"/>
+      <viewAttribute id="AUTHORIZED_FLAG"/>
+      <viewAttribute id="QUARANTINE_FLAG"/>
+      <viewAttribute id="INV_ADJUST_FLAG"/>
+      <viewAttribute id="ON_HOLD_FLAG"/>
+      <viewAttribute id="STATE_ID"/>
+      <viewAttribute id="COUNTRY_ID"/>
+      <viewAttribute id="NV_SALES_REP_EMPID"/>
+      <viewAttribute id="STATE_NAME"/>
+      <viewAttribute id="COUNTRY_NAME"/>
+      <viewAttribute id="ISO_CODE"/>
+      <viewAttribute id="GROUPING_ID"/>
+      <viewAttribute id="GROUPING_DESCRIPTION"/>
+      <viewAttribute id="SUB_REGION_ID"/>
+      <viewAttribute id="SUB_REGION_DESCRIPTION"/>
+      <viewAttribute id="REGION_ID"/>
+      <viewAttribute id="REGION_DESCRIPTION"/>
+      <viewAttribute id="TERRITORY_ID"/>
+      <viewAttribute id="TERRITORY_DESCRIPTION"/>
+      <viewAttribute id="MARKET_ECONOMY_ID"/>
+      <viewAttribute id="MARKET_ECONOMY_DESCRIPTION"/>
+      <viewAttribute id="STD_VAT_RATE"/>
+      <viewAttribute id="REDUCED_VAT_RATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Join_1_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OLD_REPORTER_ID" source="OLD_REPORTER_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS_FIRST" source="ADDRESS_FIRST"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS_SECOND" source="ADDRESS_SECOND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POSTAL_CODE" source="POSTAL_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVE" source="ACTIVE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RP_FLAG" source="RP_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EC_FLAG" source="EC_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCTION_DATE" source="PRODUCTION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SIGNED_LOA_DATE" source="SIGNED_LOA_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POS_DATA_FLAG" source="POS_DATA_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="POS_TEST_FILE_DATE" source="POS_TEST_FILE_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HIST_DATE_REQ" source="HIST_DATE_REQ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TEST_FILE_DATE_REQ" source="TEST_FILE_DATE_REQ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INV_TEST_FILE_DATE" source="INV_TEST_FILE_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HIST_DATE_RECV" source="HIST_DATE_RECV"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CREATION_DATE" source="CREATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CREATION_BY" source="CREATION_BY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEACTIVATION_DATE" source="DEACTIVATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_NAME_MAIN" source="CONTACT_NAME_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_PHONE_MAIN" source="CONTACT_PHONE_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_EMAIL_MAIN" source="CONTACT_EMAIL_MAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_NAME_SECONDARY" source="CONTACT_NAME_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_PHONE_SECONDARY" source="CONTACT_PHONE_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CONTACT_EMAIL_SECONDARY" source="CONTACT_EMAIL_SECONDARY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OTHER_INFO" source="OTHER_INFO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AUTHORIZED_FLAG" source="AUTHORIZED_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="QUARANTINE_FLAG" source="QUARANTINE_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INV_ADJUST_FLAG" source="INV_ADJUST_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ON_HOLD_FLAG" source="ON_HOLD_FLAG"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE_ID" source="STATE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY_ID" source="COUNTRY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NV_SALES_REP_EMPID" source="NV_SALES_REP_EMPID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY_NAME" source="COUNTRY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_ID" source="GROUPING_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPING_DESCRIPTION" source="GROUPING_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_ID" source="SUB_REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SUB_REGION_DESCRIPTION" source="SUB_REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_ID" source="REGION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION_DESCRIPTION" source="REGION_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_ID" source="TERRITORY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TERRITORY_DESCRIPTION" source="TERRITORY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_ID" source="MARKET_ECONOMY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKET_ECONOMY_DESCRIPTION" source="MARKET_ECONOMY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STD_VAT_RATE" source="STD_VAT_RATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REDUCED_VAT_RATE" source="REDUCED_VAT_RATE"/>
+    </input>
+    <input node="GEO_STATES">
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE_NAME" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE_ID" source="ID"/>
+    </input>
+    <joinAttribute name="STATE_ID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_1_2">
+  <attributes>
+    <attribute id="ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Partner ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ID"/>
+    </attribute>
+    <attribute id="OLD_REPORTER_ID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Legacy Partner ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="OLD_REPORTER_ID"/>
+    </attribute>
+    <attribute id="CODE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Legacy Partner Code"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CODE"/>
+    </attribute>
+    <attribute id="NAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Partner Name"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="NAME"/>
+    </attribute>
+    <attribute id="ADDRESS_FIRST" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Address Line 1"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ADDRESS_FIRST"/>
+    </attribute>
+    <attribute id="ADDRESS_SECOND" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Address Line 2"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ADDRESS_SECOND"/>
+    </attribute>
+    <attribute id="CITY" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="City"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CITY"/>
+    </attribute>
+    <attribute id="POSTAL_CODE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ZIP Code"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="POSTAL_CODE"/>
+    </attribute>
+    <attribute id="ACTIVE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Is Partner Active"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ACTIVE"/>
+    </attribute>
+    <attribute id="RP_FLAG" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Is Reporting Partner"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="RP_FLAG"/>
+    </attribute>
+    <attribute id="EC_FLAG" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Is End Customer Partner"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="EC_FLAG"/>
+    </attribute>
+    <attribute id="PRODUCTION_DATE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Production Date"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="PRODUCTION_DATE"/>
+    </attribute>
+    <attribute id="SIGNED_LOA_DATE" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Signed LOA Date"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="SIGNED_LOA_DATE"/>
+    </attribute>
+    <attribute id="POS_DATA_FLAG" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Enabled For Manual Data Input"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="POS_DATA_FLAG"/>
+    </attribute>
+    <attribute id="POS_TEST_FILE_DATE" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="POS Test File Date"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="POS_TEST_FILE_DATE"/>
+    </attribute>
+    <attribute id="HIST_DATE_REQ" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Historical Date Requested"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="HIST_DATE_REQ"/>
+    </attribute>
+    <attribute id="TEST_FILE_DATE_REQ" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Test File Date Requested"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="TEST_FILE_DATE_REQ"/>
+    </attribute>
+    <attribute id="INV_TEST_FILE_DATE" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Inventory Test File Date"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="INV_TEST_FILE_DATE"/>
+    </attribute>
+    <attribute id="HIST_DATE_RECV" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Historical Date Recieved"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="HIST_DATE_RECV"/>
+    </attribute>
+    <attribute id="CREATION_DATE" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Created On"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CREATION_DATE"/>
+    </attribute>
+    <attribute id="CREATION_BY" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Created By"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CREATION_BY"/>
+    </attribute>
+    <attribute id="DEACTIVATION_DATE" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Deactivation Date"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="DEACTIVATION_DATE"/>
+    </attribute>
+    <attribute id="CONTACT_NAME_MAIN" order="23" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Main Contact Name"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_NAME_MAIN"/>
+    </attribute>
+    <attribute id="CONTACT_PHONE_MAIN" order="24" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Main Contact Phone Number"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_PHONE_MAIN"/>
+    </attribute>
+    <attribute id="CONTACT_EMAIL_MAIN" order="25" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Main Contact Email"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_EMAIL_MAIN"/>
+    </attribute>
+    <attribute id="CONTACT_NAME_SECONDARY" order="26" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Secondary Contact Name"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_NAME_SECONDARY"/>
+    </attribute>
+    <attribute id="CONTACT_PHONE_SECONDARY" order="27" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Secondary Contact Phone Number"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_PHONE_SECONDARY"/>
+    </attribute>
+    <attribute id="CONTACT_EMAIL_SECONDARY" order="28" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Secondary Contact Email"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="CONTACT_EMAIL_SECONDARY"/>
+    </attribute>
+    <attribute id="OTHER_INFO" order="29" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Other Information"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="OTHER_INFO"/>
+    </attribute>
+    <attribute id="VALID_FROM" order="30" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Valid From"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="VALID_FROM"/>
+    </attribute>
+    <attribute id="VALID_TO" order="31" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Valid To"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="VALID_TO"/>
+    </attribute>
+    <attribute id="AUTHORIZED_FLAG" order="32" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Authorized Flag"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="AUTHORIZED_FLAG"/>
+    </attribute>
+    <attribute id="QUARANTINE_FLAG" order="33" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Quarantine Flag"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="QUARANTINE_FLAG"/>
+    </attribute>
+    <attribute id="INV_ADJUST_FLAG" order="34" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Inv Adjust Fla"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="INV_ADJUST_FLAG"/>
+    </attribute>
+    <attribute id="ON_HOLD_FLAG" order="35" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="On Hold Flag"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ON_HOLD_FLAG"/>
+    </attribute>
+    <attribute id="STATE_ID" order="36" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="State ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="STATE_ID"/>
+    </attribute>
+    <attribute id="NV_SALES_REP_EMPID" order="37" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NV Sales Rep ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="NV_SALES_REP_EMPID"/>
+    </attribute>
+    <attribute id="STATE_NAME" order="38" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="State Name"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="STATE_NAME"/>
+    </attribute>
+    <attribute id="COUNTRY_ID" order="39" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="COUNTRY_ID"/>
+    </attribute>
+    <attribute id="COUNTRY_NAME" order="40" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Name"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="COUNTRY_NAME"/>
+    </attribute>
+    <attribute id="ISO_CODE" order="41" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country ISO Code"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="ISO_CODE"/>
+    </attribute>
+    <attribute id="GROUPING_ID" order="42" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Grouping ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="GROUPING_ID"/>
+    </attribute>
+    <attribute id="GROUPING_DESCRIPTION" order="43" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Country Grouping Description"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="GROUPING_DESCRIPTION"/>
+    </attribute>
+    <attribute id="SUB_REGION_ID" order="44" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Sub Region ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="SUB_REGION_ID"/>
+    </attribute>
+    <attribute id="SUB_REGION_DESCRIPTION" order="45" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Sub Region Description"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="SUB_REGION_DESCRIPTION"/>
+    </attribute>
+    <attribute id="REGION_ID" order="46" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Region ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="REGION_ID"/>
+    </attribute>
+    <attribute id="REGION_DESCRIPTION" order="47" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Region Description"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="REGION_DESCRIPTION"/>
+    </attribute>
+    <attribute id="TERRITORY_ID" order="48" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Territory ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="TERRITORY_ID"/>
+    </attribute>
+    <attribute id="TERRITORY_DESCRIPTION" order="49" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Territory Description"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="TERRITORY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="MARKET_ECONOMY_ID" order="50" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Market Economy ID"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="MARKET_ECONOMY_ID"/>
+    </attribute>
+    <attribute id="MARKET_ECONOMY_DESCRIPTION" order="51" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Market Economy Description"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="MARKET_ECONOMY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="STD_VAT_RATE" order="52" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Standard VAT Rate"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="STD_VAT_RATE"/>
+    </attribute>
+    <attribute id="REDUCED_VAT_RATE" order="53" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Reduced VAT Rate"/>
+      <keyMapping columnObjectName="Join_1_2" columnName="REDUCED_VAT_RATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="PARTNER_MASTER" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput" multiJoinViewNodeName="Join_1">
+      <upperLeftCorner x="16" y="10"/>
+      <rectangleSize width="208.052734375"/>
+    </shape>
+    <shape modelObjectName="GEO_STATES" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput" multiJoinViewNodeName="Join_1">
+      <upperLeftCorner x="923.0830078125" y="233"/>
+      <rectangleSize width="161.173828125"/>
+    </shape>
+    <shape modelObjectName="CVD_COUNTRY_MASTER" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput" multiJoinViewNodeName="Join_1">
+      <upperLeftCorner x="1378" y="157"/>
+      <rectangleSize width="276.0830078125"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

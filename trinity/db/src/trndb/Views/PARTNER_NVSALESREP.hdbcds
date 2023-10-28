@@ -1,0 +1,16 @@
+using VT_BW_ZNVEMPYE as SALESREP;
+
+define view PARTNER_SALESREP as
+    select from SALESREP
+    {
+        key SALESREP."/BIC/ZNVEMPYE"                                                                               as "EMPID",
+            SALESREP."/BIC/ZNVOEMPN"                                                                               as "EMPLOYEE_NT_ID",
+            cast(initcap(SALESREP."/BIC/ZNVKNOWAS") || ' ' || initcap(SALESREP."/BIC/ZNVEMPLNM") as nvarchar(256)) as "KNOWNAS",
+            cast(initcap(SALESREP."/BIC/ZNVEMPFNM") as nvarchar(256))                                              as "FIRST_NAME",
+            cast(initcap(SALESREP."/BIC/ZNVEMPLNM") as nvarchar(256))                                              as "LAST_NAME",
+            cast(initcap(SALESREP."/BIC/ZNVDEPTNM") as nvarchar(256))                                              as "DEPARTMENT",
+            SALESREP.COUNTRY                                                                                       as "COUNTRY"
+    }
+    where
+            SALESREP."/BIC/ZNVEMPSTS" = 'ACTIVE'
+        and SALESREP.OBJVERS          = 'A';

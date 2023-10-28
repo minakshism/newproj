@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+
+			<MessageStrip text="Please Fillup Mandatory Fields." type="Error" showIcon="true" showCloseButton="true"
+				visible="{LocalDataModel>/visibleError}" class="sapUiMediumMarginBottom"></MessageStrip>
+			<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+				adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+				singleContainerFullSize="false">
+				<form:content>
+					<Label text="CPU Model Number" design="Bold"/>
+					<Input value="{LocalDataModel>/cpudata/cpu_model_no}" placeholder="CPU Model No" required="true"/>
+					<Label text="CPU Brand" design="Bold"/>
+					<ComboBox selectedKey="{LocalDataModel>/cpudata/cpu_brand_id}"
+						items="{ path: '/CpuBrand',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{description}"/>
+					</ComboBox>
+					<Label text="CPU Brand Group" design="Bold"/>
+					<ComboBox editable="false" selectedKey="{LocalDataModel>/cpudata/cpu_brand_id}"
+						items="{ path: '/CpuBrand', length: 400,parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{brand_group}"/>
+					</ComboBox>
+					<Label text="CPU Core Frequency" design="Bold"/>
+					<ComboBox selectedKey="{LocalDataModel>/cpudata/cpu_core_frequency_id}"
+						items="{ path: '/CpuCoreFrequency', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{description}"/>
+					</ComboBox>
+					<Label text="CPU Core" design="Bold"/>
+					<ComboBox selectedKey="{LocalDataModel>/cpudata/cpu_core_id}"
+						items="{ path: '/CpuCore', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{description}"/>
+					</ComboBox>
+					<Label text="CPU Manufacturer" design="Bold"/>
+					<ComboBox selectedKey="{LocalDataModel>/cpudata/cpu_manufacturer_id}"
+						items="{ path: '/ProductManufacturer', length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{name}"/>
+					</ComboBox>
+					<Label text="CPU Class" design="Bold"/>
+					<ComboBox selectedKey="{LocalDataModel>/cpudata/cpu_class_id}"
+						items="{ path: '/CpuClass',length: 400, parameters :{ $$operationMode : 'Server', $count : true} ,templateShareable: true }">
+						<core:ListItem key="{id}" text="{description}"/>
+					</ComboBox>
+				</form:content>
+			</form:SimpleForm>
+		
+</core:FragmentDefinition>

@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog id="createPartnerDialog" title="Create New Product">
+		<buttons>
+			<Button id="confirmCreateProduct" text="OK" press=".onConfirmProductDialog" type="Accept"/>
+			<Button id="rejectCreateProduct" text="Cancel" press=".onRejectProductDialog" type="Reject"/>
+		</buttons>
+		<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+			adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+			singleContainerFullSize="false">
+			<form:content>
+				<Label text="System Model No." design="Bold"/>
+				<Input id="sys_model_no"  placeholder="System Model No." required="true"/>
+				<Label text="Description" design="Bold"/>
+				<Input id="sys_model_description" placeholder="Description"/>
+			</form:content>
+		</form:SimpleForm>
+	</Dialog>
+</core:FragmentDefinition>
